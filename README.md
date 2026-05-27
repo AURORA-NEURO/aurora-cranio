@@ -11,6 +11,7 @@
 [![Modules](https://img.shields.io/badge/Modules-30%2B-blue.svg)](#5-module-inventory--maturity-matrix)
 [![Tests](https://img.shields.io/badge/Tests-671%2F671-green.svg)](#10-section-5--cranio-forge)
 [![Predeploy](https://img.shields.io/badge/Predeploy-52%2F52-green.svg)](#10-section-5--cranio-forge)
+[![Horizon](https://img.shields.io/badge/%CE%A9--HORIZON-15_advanced_capabilities-purple.svg)](#27-ω-horizon--the-advanced-capability-program)
 
 ---
 
@@ -44,9 +45,11 @@
 | 24 | [Roadmap](#24-roadmap) |
 | 25 | [How to engage](#25-how-to-engage) |
 | 26 | [Status — module maturity heatmap](#26-status--module-maturity-heatmap) |
-| 27 | [References + citations](#27-references--citations) |
-| 28 | [License](#28-license) |
-| 29 | [One-line summary](#29-one-line-summary) |
+| 27 | [Ω-HORIZON — the advanced capability program](#27-ω-horizon--the-advanced-capability-program) |
+| 28 | [The phased delivery plan](#28-the-phased-delivery-plan) |
+| 29 | [References + citations](#29-references--citations) |
+| 30 | [License](#30-license) |
+| 31 | [One-line summary](#31-one-line-summary) |
 
 ---
 
@@ -358,6 +361,8 @@ AURORA-CRANIO Ω wins against the incumbents not by being prettier but by invent
 12. **Neurodevelopment + Family Outcome Factory (§6)** — school function, development, caregiver burden, quality of life as first-class endpoints. The platform refuses to become a purely surgical or purely imaging tool.
 13. **Open Benchmark + Rare-Case Stress Suite (§7)** — validates on the difficult cases (multisuture, syndromic, post-shunt, late-presenting, refusion, posterior vault distraction with venous risk), not only on clean scans. A model that cannot say "not craniosynostosis" on a deformational plagiocephaly case does not receive a diagnostic-support claim.
 14. **Governance Release Gate (§9)** — prevents unsupported "craniosynostosis AI" claims. Every release requires model card · data card · benchmark report · stress-test report · biomarker-validation state · subgroup report · calibration report · uncertainty report · unsupported-case disclosure · clinical-trial-readiness package · public-language sheet — or the release is blocked at the predeploy gate.
+
+> **The next fifteen inventions are the forward program.** The Ω-HORIZON advanced capability program (§27) catalogues fifteen further capabilities — living 4D twins, a unified multimodal foundation model, federated swarm learning, on-device photogrammetry, a structural causal engine, and more — each carrying a Capability Readiness Level and a non-prescriptive guardrail, with a gated Phase H0→H5 delivery plan in §28. Nothing in the horizon program is claimed as shipped.
 
 ---
 
@@ -1186,7 +1191,233 @@ Total: **≥ 1,650 passing tests across the shipped modules** — each independe
 
 ---
 
-## 27. References + citations
+## 27. Ω-HORIZON — the advanced capability program
+
+Everything in §1–§26 describes what AURORA-CRANIO Ω **is** and what it **ships today**. **Ω-HORIZON** is the forward program: the next-generation, deliberately ambitious capabilities being engineered on top of the shipped substrate. They are the "super-cool" surface of the platform — living 4D twins, a unified multimodal foundation model, privacy-preserving federated learning, on-device photogrammetry, a structural causal engine — but they are catalogued here with the same discipline as the rest of this document.
+
+**To protect the integrity of this README, no horizon capability is claimed as shipped.** Each one carries an explicit **Capability Readiness Level (CRL 0–9)** and a **non-prescriptive guardrail**. A capability that cannot be made auditable, abstaining, privacy-preserving, and specialist-supervised does not enter the program — no matter how impressive the demo.
+
+### 27.0 The Capability Readiness Level (CRL) ladder
+
+CRL is to AURORA-CRANIO Ω what NASA's Technology Readiness Level is to flight hardware: an honest, externally legible maturity scale. Every horizon card below states its current CRL.
+
+| CRL | Name | Meaning | Gate to advance |
+|:---:|---|---|---|
+| 0 | Concept | Idea + literature scan; no code | Written spec (§N.K) with output states + hard-stops |
+| 1 | Spec | Numbered spec, data contract, guardrail defined | SafetyGate stub + prohibited-label set drafted |
+| 2 | Prototype | Offline notebook / research script | Reproducible on a public or synthetic cohort |
+| 3 | Engineered | TypeScript core + tests + deterministic SafetyGate | ≥ 90 % unit coverage on the core engines |
+| 4 | Integrated | CLI + API + sidecar wired into a module | Predeploy gate green; FHIR/registry export works |
+| 5 | Validated (internal) | Retrospective validation on a real cohort | Calibration + subgroup + uncertainty reports filed |
+| 6 | Validated (external) | Multi-site retrospective; specialist adjudication | Model card + data card + stress-test report published |
+| 7 | Regulatory-staged | Q-Sub filed; staging deploy behind SSO | Pre-Sub feedback incorporated; pen test passed |
+| 8 | Cleared (pilot) | 510(k)/De Novo cleared; pilot at lead site | Post-market surveillance plan live |
+| 9 | Post-market | Routine deployment; PCCP-governed updates | Continuous drift + equity monitoring green |
+
+> **Reading the cards.** Each capability states: what it does · why it beats the incumbents · the non-prescriptive guardrail that keeps it inside the safety contract · its dependencies · its current CRL. The CRLs below are deliberately low (0–3): this is a research roadmap, not a product brochure.
+
+### 27.A Family A — Living twins & generative simulation
+
+**H1 · CranioTwin Live — the time-scrubbable 4D growth twin** — `CRL 2`
+A continuously-reconciled 4D digital twin that fuses the §2.1 skull–brain growth model, the §1.3 suture biology atlas, and the §2.2 ICP-reserve object into a single object you can *scrub through time*. Drag the time cursor and watch the modeled cranial-vault volume, suture-fusion stage, and ICP-reserve evidence state co-evolve between imaging timepoints, with every interpolated frame carrying its own uncertainty band.
+- **Beats the incumbents because** Brainlab/Synaptive render a single static timepoint; nobody renders the *trajectory* with calibrated uncertainty between scans.
+- **Guardrail.** Interpolated frames are labeled `modeled — not measured` and never emit an ICP diagnosis; the twin surfaces an `ICP-Risk Evidence Object`, never a number a clinician could act on alone.
+- **Depends on** §2.1, §2.2, §1.3 · conformal uncertainty layer (H5).
+
+**H2 · CranioGEN — generative vault morphogenesis** — `CRL 1`
+A diffusion model that, given a preoperative skull graph and a hypothetical surgical topology, emits a **distribution** of plausible post-remodeling cranial shapes — a "morphogenesis envelope" with per-vertex credible intervals — rather than a single deterministic prediction.
+- **Beats the incumbents because** generic planning tools show the intended geometry; CranioGEN shows the *space of biological outcomes* the geometry could relax into, including the tails.
+- **Guardrail.** Emits an envelope + likelihood, never a "this surgery will work" claim; outputs route through the §5.7 Cranial Vault Graph Edit Distance for honest comparison, and the SafetyGate blocks any single-shape "expected result" framing.
+- **Depends on** §5.6 operative-truth corpus (training signal) · §5.7 graph metric.
+
+**H3 · Counterfactual timing sandbox** — `CRL 1`
+An interactive extension of the §2.6 Timing-Window Forecaster: explore *hypothetical* timing windows ("what does the evidence look like if presentation were at 4 vs 9 vs 14 months?") and watch the resulting **Timing-Relevance Object** change — strictly as structured evidence for the multidisciplinary team.
+- **Beats the incumbents because** no existing tool lets a craniofacial team interrogate the *evidence sensitivity* to timing across the full surgical menu (ESC+helmet, OCVR, FOA, PVD, spring, staged syndromic).
+- **Guardrail.** Every scenario is watermarked `counterfactual — hypothetical — not a recommendation`; the SafetyGate hard-blocks any output that names a preferred timing.
+- **Depends on** §2.6 · §5.x surgical twins.
+
+### 27.B Family B — Foundation intelligence
+
+**H4 · CranioFM-Ω — the unified multimodal foundation model** — `CRL 1`
+One self-supervised foundation model pretrained across CT, MRI, 3D photogrammetry, OCT/RNFL, genomic panels, and de-identified clinical text, exposing frozen embeddings that every downstream module adapts with a small head — superseding today's per-module checkpoint zoo (CranioPVD-FM, CranioFOA, CranioFORGE-VAULT, CranioNeuroDev, CranioFOT).
+- **Beats the incumbents because** incumbents ship task-specific imaging models; a shared cross-modal representation lets a single rare syndromic case inform every module at once.
+- **Guardrail.** Remains a **secondary signal** — the deterministic SafetyGate is still primary in every module; embeddings never bypass the proof-ledger requirement.
+- **Depends on** federated mesh (H7) for multi-site pretraining · provenance ledger (H9) for data lineage.
+
+**H5 · Conformal uncertainty & out-of-distribution sentinel** — `CRL 2`
+A distribution-free wrapper around every model output that produces **calibrated prediction sets** with a guaranteed coverage level, **abstains** when the case falls outside the training manifold, and raises a drift alarm when input statistics shift.
+- **Beats the incumbents because** "AI for skulls" tools rarely say *"I don't know"*; abstention-by-default is a first-class output here.
+- **Guardrail.** On OOD detection the module emits `unsupported case → route to §9.2 Unsupported Case Router` rather than a low-confidence guess; conformal coverage is reported in every release's uncertainty report.
+- **Depends on** §9.2 · §9.3 lifecycle monitor.
+
+**H6 · Specialist Copilot — retrieval-grounded, citation-locked** — `CRL 1`
+A natural-language copilot for the multidisciplinary team that answers only from (a) the patient's own proof ledger and (b) a curated, versioned literature index — every sentence of every answer carries an inline citation to a ledger entry ID or a reference, and **uncited generation is refused**.
+- **Beats the incumbents because** it is a clinical-reasoning surface that is *constitutionally incapable* of hallucinating an unsupported claim — no citation, no sentence.
+- **Guardrail.** The same 16 prohibited-language regexes + structural checks run on copilot output; it will not phrase, hint at, or rank a treatment. Refuses family-facing instructions.
+- **Depends on** proof ledger (§1.1) · provenance ledger (H9) · conformal layer (H5).
+
+### 27.C Family C — Federated learning & privacy
+
+**H7 · Federated swarm-learning mesh** — `CRL 1`
+Cross-institution model training where **raw patient data never leaves the partner site**: each site trains locally, only encrypted gradient updates are exchanged, and a secure-aggregation + differential-privacy layer guarantees no single record is recoverable from the shared model.
+- **Beats the incumbents because** craniosynostosis is rare; no single center has the n. A privacy-preserving mesh is the only way to reach syndromic/multisuture statistical power without a central data lake.
+- **Guardrail.** Formal (ε, δ)-differential-privacy budget per round, reported in the data card; on-site de-identification (already in §1) runs before any computation.
+- **Depends on** §22 partner sites · DUA pack · provenance ledger (H9).
+
+**H8 · Synthetic cohort foundry** — `CRL 1`
+A generative engine that produces **privacy-safe synthetic patients** — full longitudinal trajectories — to expand the §7.3 rare-case stress suite and pre-train models before real-data access, with explicit membership-inference defenses so no synthetic record traces back to a real child.
+- **Beats the incumbents because** it lets the open benchmark cover refusion, post-shunt, and late-presenting tails that are too rare to collect, *before* a single DUA is signed.
+- **Guardrail.** Synthetic records are indelibly flagged `synthetic`; they may train and stress-test but are barred from any validation-evidence tier (§20) used for regulatory claims.
+- **Depends on** §7.3 · CranioGEN (H2) · membership-inference audit.
+
+**H9 · Cryptographic provenance ledger** — `CRL 2`
+Upgrades the existing SHA-256 hash-chained audit log to a **Merkle-anchored, append-only, tamper-evident provenance ledger**: every claim, every model decision, every proof-ledger entry is cryptographically signed and independently verifiable, so an auditor can prove *nothing was altered after the fact*.
+- **Beats the incumbents because** it turns the safety contract from a policy into a *mathematically verifiable artifact* — the difference between "we logged it" and "you can prove we didn't tamper with it."
+- **Guardrail.** Read-only by construction; signing keys are HSM-backed; the ledger records refusals (blocked prescriptive outputs) as first-class events.
+- **Depends on** §17 audit substrate · §9 governance.
+
+### 27.D Family D — Sensing at the edge
+
+**H10 · On-device smartphone photogrammetry capture** — `CRL 1`
+A family-side capture flow that turns a short head-orbit video into a **Cranial Morphotype Vector (§1.2)** entirely **on-device** — no images leave the phone, only the de-identified vector is transmitted — lowering the barrier to longitudinal head-shape tracking between clinic visits.
+- **Beats the incumbents because** it extends measurement reach to the home without a CT, without radiation, and without sending a child's face to a server.
+- **Guardrail.** Output is non-diagnostic evidence for specialist review via the §2.7 Family Observation Translator; the app refuses to display any diagnosis, score, or reassurance to the family.
+- **Depends on** §1.2 morphotype engine · §2.7 FOT · edge runtime (H12).
+
+**H11 · Passive home-monitoring bridge** — `CRL 0`
+A consented bridge that ingests home pulse-oximetry / sleep-wearable summaries and structured caregiver observations into a **sleep/airway evidence object**, contributing longitudinal signal to the §6.3 airway/sleep router between sleep studies.
+- **Beats the incumbents because** syndromic airway risk is dynamic; episodic in-lab studies miss the trajectory that passive home signal can surface for the specialist.
+- **Guardrail.** Strictly non-diagnostic; never triggers an alert or instruction to the family; feeds evidence to the specialist, who owns every decision.
+- **Depends on** §6.3 · conformal layer (H5) · provenance ledger (H9).
+
+**H12 · Low-resource edge deployment** — `CRL 1`
+Quantized, distilled model variants (int8 / 4-bit) that run the radiation-minimizing §4.1 imaging-pathway logic and core measurement engines on commodity hardware, for craniosynostosis care in settings without a research data center.
+- **Beats the incumbents because** the incumbents assume a high-end workstation; global equity demands the safety contract runs on a laptop.
+- **Guardrail.** Edge builds carry the *identical* SafetyGate + prohibited-label set; a degraded model that cannot meet the abstention threshold (H5) refuses to emit rather than guess.
+- **Depends on** CranioFM-Ω distillation (H4) · §4.1.
+
+### 27.E Family E — Causal & equity intelligence
+
+**H13 · Structural causal engine** — `CRL 1`
+A structural-causal-model / do-calculus layer over the longitudinal registry that estimates **research-grade intervention-effect signals** (e.g., the association between timing-window and a neurodevelopmental endpoint) with explicit confounding controls — strictly for hypothesis generation and trial design, never for individual decisions.
+- **Beats the incumbents because** correlation-only dashboards cannot separate "earlier surgery" from "milder disease presents earlier"; the causal engine makes the confounding explicit and contestable.
+- **Guardrail.** Outputs are population-level research artifacts labeled `research-only — not individualized`; the SafetyGate blocks any per-patient causal claim.
+- **Depends on** §8 endpoints · §6 outcome factory · provenance ledger (H9).
+
+**H14 · Equity & fairness sentinel** — `CRL 2`
+Continuous, release-blocking monitoring of subgroup calibration and error parity across ancestry, sex, syndromic status, age band, and care setting — with an equity dashboard and an automatic **disparity-drift gate** that fails a release if any subgroup degrades beyond tolerance.
+- **Beats the incumbents because** it makes fairness a *gate*, not a footnote: a model that improves on average but worsens for a subgroup does not ship.
+- **Guardrail.** Wired into the §9.4 release package and §26 maturity matrix; disparity drift is a hard-stop, not a warning.
+- **Depends on** §9.4 · subgroup reports · §20 validation tiers.
+
+**H15 · Closed-loop outcome learning — the "Time Machine"** — `CRL 1`
+The longitudinal registry feeds 5-, 10-, and 20-year outcomes back into model refresh under a **Predetermined Change Control Plan (PCCP)** — so the system that learns from a child at 9 months keeps learning from that same child through school age, and every refresh is gated, versioned, and auditable.
+- **Beats the incumbents because** craniosynostosis outcomes mature over two decades; a static cleared model silently rots. Closed-loop, PCCP-governed learning is the only honest answer.
+- **Guardrail.** Every refresh re-runs the full §9.4 release gate (model/data/benchmark/stress/calibration/uncertainty/subgroup/equity) before deployment; no silent updates.
+- **Depends on** §8 registry · H9 provenance · H14 equity sentinel · §9.3 lifecycle monitor.
+
+### 27.F The five horizon invariants
+
+Ω-HORIZON does not relax the [10 core invariants](#6-the-10-core-invariants--the-safety-contract); it adds five more that any advanced-AI capability must satisfy to enter the program.
+
+| # | Horizon invariant | Enforced by |
+|:---:|---|---|
+| 11 | **Abstention by default.** A model that cannot meet its calibrated coverage threshold refuses rather than guesses. | Conformal sentinel (H5) → §9.2 router |
+| 12 | **Privacy by construction.** Patient data is computed on where it lives; only de-identified vectors / DP-protected gradients move. | Federated mesh (H7) · on-device capture (H10) |
+| 13 | **Provenance by default.** Every claim and model decision is cryptographically signed and independently verifiable. | Provenance ledger (H9) |
+| 14 | **Equity as a gate.** Subgroup disparity drift blocks a release; fairness is never a post-hoc footnote. | Equity sentinel (H14) → §9.4 |
+| 15 | **Human authority preserved.** No horizon capability — however advanced — emits an autonomous or prescriptive clinical decision. | SafetyGate in every module · the entire safety contract |
+
+---
+
+## 28. The phased delivery plan
+
+Ω-HORIZON ships through six gated phases, **H0 → H5**, mirroring the CRL ladder in §27.0. The discipline is deliberate: every phase has an **entry gate**, a small number of **workstreams**, a measurable **exit gate**, and explicit **kill criteria**. No phase begins until the prior phase's exit gate is green. Phases overlap across capabilities (H1 may be at H2 while H9 is at H4), but no *single* capability skips a gate.
+
+### 28.0 Program shape at a glance
+
+```
+        H0          H1          H2          H3          H4          H5
+     Foundation  Prototype   Validate    Federate    Stage       Closed-loop
+     ──────────  ──────────  ──────────  ──────────  ──────────  ──────────
+H9   ▓▓▓▓▓▓▓▓▓▓  ▓▓▓▓▓▓▓▓▓▓  ▓▓▓▓▓░░░░░  ░░░░░░░░░░  ░░░░░░░░░░  ░░░░░░░░░░  provenance ledger (earliest — everything signs to it)
+H5   ░░░░░░░░░░  ▓▓▓▓▓▓▓▓▓▓  ▓▓▓▓▓▓▓▓░░  ░░░░░░░░░░  ░░░░░░░░░░  ░░░░░░░░░░  conformal sentinel
+H1   ░░░░░░░░░░  ▓▓▓▓▓▓▓▓▓▓  ▓▓▓▓▓░░░░░  ░░░░░░░░░░  ░░░░░░░░░░  ░░░░░░░░░░  CranioTwin Live 4D
+H6   ░░░░░░░░░░  ░░░░░▓▓▓▓▓  ▓▓▓▓▓▓▓▓▓▓  ▓▓▓▓░░░░░░  ░░░░░░░░░░  ░░░░░░░░░░  Specialist Copilot
+H4   ░░░░░░░░░░  ░░░░░▓▓▓▓▓  ▓▓▓▓▓▓▓▓▓▓  ▓▓▓▓▓▓▓▓▓▓  ▓▓▓▓▓░░░░░  ░░░░░░░░░░  CranioFM-Ω foundation model
+H7   ░░░░░░░░░░  ░░░░░░░░░░  ░░░░░▓▓▓▓▓  ▓▓▓▓▓▓▓▓▓▓  ▓▓▓▓▓▓░░░░  ░░░░░░░░░░  federated mesh
+H14  ░░░░░░░░░░  ░░░░░░░░░░  ▓▓▓▓▓▓▓▓▓▓  ▓▓▓▓▓▓▓▓▓▓  ▓▓▓▓▓▓▓▓▓▓  ▓▓▓▓▓▓▓▓▓▓  equity sentinel (runs forever once on)
+H15  ░░░░░░░░░░  ░░░░░░░░░░  ░░░░░░░░░░  ░░░░░░░░░░  ░░░░░▓▓▓▓▓  ▓▓▓▓▓▓▓▓▓▓  closed-loop "Time Machine"
+                                              ▓ = active   ░ = not yet
+```
+
+### 28.1 Phase H0 — Foundation (provenance + guardrail spine)
+
+- **Entry gate.** §17 audit substrate green across shipped modules; §9 governance pattern documented.
+- **Objective.** Stand up the cryptographic spine (**H9**) and the five horizon invariants so that *every later capability has something to sign to and abstain into*. Nothing clever ships before the safety scaffolding exists.
+- **Workstreams.** (a) Merkle-anchored provenance ledger + HSM key management; (b) horizon-invariant SafetyGate extensions (abstention hook, refusal-as-event logging); (c) CRL governance — every capability gets a tracked CRL record.
+- **Exit gate.** Provenance ledger verifies an independently-reconstructed Merkle root on shipped-module audit logs; SafetyGate emits and *records* a refusal event end-to-end.
+- **Kill criteria.** If tamper-evidence cannot be demonstrated to an external auditor, H0 stops and the whole program pauses — provenance is non-negotiable.
+
+### 28.2 Phase H1 — Prototype (twins, conformal, copilot seed)
+
+- **Entry gate.** H0 exit green.
+- **Objective.** Reach **CRL 2–3** on the capabilities that need no multi-site data yet: **H1 CranioTwin Live**, **H5 conformal sentinel**, and the **H6 copilot** retrieval seed.
+- **Workstreams.** (a) 4D interpolation engine + uncertainty bands over §2.1/§2.2/§1.3; (b) conformal wrapper + OOD detector with abstention routing to §9.2; (c) citation-locked retrieval over the proof ledger + versioned literature index.
+- **Exit gate.** CranioTwin Live renders a scrubbed trajectory with per-frame `modeled — not measured` labels; conformal coverage holds on a held-out synthetic cohort; copilot refuses every uncited generation in a red-team suite.
+- **Kill criteria.** If conformal coverage cannot be empirically guaranteed, H5 reverts to CRL 1 and blocks all downstream capabilities that depend on abstention.
+
+### 28.3 Phase H2 — Validate (foundation model + equity sentinel, internal)
+
+- **Entry gate.** H1 exit green; ≥ 1 partner DUA executed (per §22) **or** synthetic-foundry (H8) coverage sufficient for internal validation.
+- **Objective.** Train **H4 CranioFM-Ω** on available single-site + synthetic data; turn on **H14 equity sentinel** as a release-blocking gate; mature **H2 CranioGEN** and **H8 synthetic foundry**.
+- **Workstreams.** (a) self-supervised multimodal pretraining + per-module adapter heads; (b) subgroup calibration dashboards + disparity-drift gate wired into §9.4; (c) generative morphogenesis envelope validated against §5.7 graph edit distance; (d) membership-inference audit on synthetic cohorts.
+- **Exit gate.** CranioFM-Ω adapters match or beat the per-module checkpoints on §7 benchmarks; equity sentinel fails a deliberately-biased candidate release in CI; synthetic records pass the membership-inference audit.
+- **Kill criteria.** If CranioFM-Ω cannot beat the existing checkpoint zoo on the rare-case stress suite (§7.3), the unified-model bet is shelved and modules keep their bespoke checkpoints.
+
+### 28.4 Phase H3 — Federate (multi-site, privacy-preserving)
+
+- **Entry gate.** H2 exit green; ≥ 2 partner sites live behind SSO with executed DUA + BAA.
+- **Objective.** Stand up the **H7 federated swarm-learning mesh** and graduate the **H6 copilot** to multi-site literature + ledger grounding.
+- **Workstreams.** (a) secure aggregation + per-round (ε, δ)-DP budget reporting; (b) on-site de-identification verified before any computation; (c) cross-site CranioFM-Ω refresh via mesh.
+- **Exit gate.** A model improves on the held-out site *without any raw data leaving any site*, with the DP budget reported in the data card and verified by the provenance ledger.
+- **Kill criteria.** If the DP budget required for utility exceeds the privacy tolerance agreed with partner IRBs, federation pauses and falls back to synthetic-foundry pretraining only.
+
+### 28.5 Phase H4 — Stage (edge + sensing + regulatory)
+
+- **Entry gate.** H3 exit green; conformal abstention (H5) at CRL ≥ 4.
+- **Objective.** Push capability to the **edge** (**H10** on-device photogrammetry, **H11** home monitoring, **H12** low-resource builds) and file **Q-Subs** for the horizon capabilities that have a defined intended use.
+- **Workstreams.** (a) on-device morphotype extraction + de-identified-vector-only transmission; (b) quantized/distilled edge builds carrying the identical SafetyGate; (c) regulatory staging — model cards, uncertainty + equity reports, pen test.
+- **Exit gate.** Edge build passes the *identical* predeploy gate as the data-center build; on-device capture proves no image leaves the phone; first horizon Q-Sub filed.
+- **Kill criteria.** Any edge build that cannot enforce the abstention threshold (H5) is pulled — a guessing model on a laptop is worse than no model.
+
+### 28.6 Phase H5 — Closed-loop (the Time Machine)
+
+- **Entry gate.** H4 exit green; ≥ 1 horizon capability cleared (CRL 8); equity sentinel green for ≥ 2 consecutive releases.
+- **Objective.** Turn on **H13 structural causal engine** (research-only) and **H15 closed-loop outcome learning** under a PCCP, completing the lifelong learning loop.
+- **Workstreams.** (a) SCM/do-calculus over the longitudinal registry with explicit confounder graphs; (b) PCCP-governed model refresh re-running the full §9.4 gate; (c) 5/10/20-year outcome ingestion feeding the next refresh.
+- **Exit gate.** A PCCP-governed refresh deploys with a *complete, signed* release package and *zero* silent updates; causal outputs ship labeled `research-only — not individualized`.
+- **Kill criteria.** Any refresh that degrades a subgroup (H14) or cannot reproduce its provenance chain (H9) is rolled back automatically; closed-loop learning never trades safety for freshness.
+
+### 28.7 Program-level risk register
+
+| # | Risk | Likelihood | Impact | Mitigation | Owning gate |
+|:---:|---|:---:|:---:|---|:---:|
+| R1 | Federated utility too low under acceptable DP budget | Med | High | Synthetic-foundry fallback (H8); negotiate budget with IRBs early | H3 |
+| R2 | Foundation model underperforms bespoke checkpoints | Med | Med | Keep checkpoint zoo until CranioFM-Ω beats §7.3; no forced migration | H2 |
+| R3 | Edge model degrades silently below abstention threshold | Low | High | Identical SafetyGate + hard abstention floor; refuse-not-guess | H4 |
+| R4 | Provenance keys compromised | Low | Critical | HSM-backed keys; rotation; append-only verifiable ledger | H0 |
+| R5 | Equity gate blocks otherwise-strong release | Med | Med | Treat as success, not friction; root-cause subgroup gap before ship | H2+ |
+| R6 | Closed-loop model rot / silent drift | Med | High | PCCP re-runs full §9.4 gate per refresh; auto-rollback on regression | H5 |
+| R7 | Causal claims over-interpreted as individual guidance | Med | High | `research-only` watermark + SafetyGate block on per-patient causal output | H5 |
+
+### 28.8 How the phase plan ties back to the shipped system
+
+Ω-HORIZON is not a parallel universe — it is the **next layer on the same substrate**. H9 signs the same audit logs §17 already hash-chains; H5 abstains into the §9.2 router that already exists; H14 plugs into the §9.4 release gate that already blocks unsupported claims; H15 closes the loop on the §8 registry that shipped modules already export to. **Every advanced capability inherits the safety contract before it inherits the spotlight.**
+
+---
+
+## 29. References + citations
 
 [^cdc]: Centers for Disease Control and Prevention (CDC). _Craniosynostosis — Facts about Craniosynostosis._ https://www.cdc.gov/birth-defects/about/craniosynostosis.html
 [^guideline]: Mathijssen IMJ, et al. Updated guideline on treatment and management of craniosynostosis. _Europe PMC_, 2021. https://europepmc.org/article/MED/33255334
@@ -1203,7 +1434,7 @@ Total: **≥ 1,650 passing tests across the shipped modules** — each independe
 
 ---
 
-## 28. License
+## 30. License
 
 Apache 2.0 across every module, with per-module governance overlays documented in each module's `SAFETY.md`.
 
@@ -1213,7 +1444,7 @@ The Apache 2.0 license applies to code and infrastructure-as-code. It does NOT c
 
 ---
 
-## 29. One-line summary
+## 31. One-line summary
 
 > **AURORA-CRANIO Ω is the first craniosynostosis-specific research–clinical operating system — 9 sections, 30+ modules, a non-prescriptive safety contract baked into every release, evidence-anchored proof ledgers for every claim it makes, and 1,650+ passing tests across the shipped modules.**
 
