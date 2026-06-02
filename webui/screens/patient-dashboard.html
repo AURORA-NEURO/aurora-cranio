@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AURORA Care · Patient</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="patient.css">
+<style>
+  body { width: 1440px; height: 952px; overflow: hidden; }
+  .page { width: 1440px; height: 952px; padding: 22px 26px; display: flex; flex-direction: column; gap: 18px; }
+
+  /* ── top strip ── */
+  .topstrip { display: flex; align-items: center; gap: 18px; }
+  .brand { display: flex; align-items: center; gap: 11px; }
+  .logo { width: 30px; height: 30px; border-radius: 9px; background: linear-gradient(135deg, var(--blue), var(--teal)); box-shadow: 0 6px 16px -6px var(--blue); }
+  .brand .wm { font-size: 16px; font-weight: 800; letter-spacing: -.01em; }
+  .brand .wm span { color: var(--muted); font-weight: 600; }
+  .topstrip .seg { margin: 0 auto; }
+  .ts-right { display: flex; align-items: center; gap: 10px; }
+  .ava-sm { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg,#FFC98B,#F79E7C); display: grid; place-items: center; color: #7a3f1e; font-weight: 800; font-size: 14px; box-shadow: var(--sh); }
+
+  /* ── frame ── */
+  .frame { flex: 1; min-height: 0; background: var(--bg); border: 1px solid var(--line-2); border-radius: var(--r-frame); box-shadow: var(--sh-2); overflow: hidden; }
+  .dash { display: grid; grid-template-columns: 1fr 376px; height: 100%; }
+  .main { padding: 20px 28px; display: flex; flex-direction: column; gap: 15px; min-width: 0; }
+  .rail { border-left: 1px solid var(--line); padding: 26px 24px; display: flex; flex-direction: column; gap: 22px; background: linear-gradient(180deg, rgba(255,255,255,.5), transparent 40%); }
+
+  /* ── header ── */
+  .dhead { display: flex; align-items: center; gap: 16px; }
+  .greet .h { font-size: 25px; font-weight: 800; letter-spacing: -.025em; }
+  .greet .s { font-size: 13.5px; color: var(--muted); margin-top: 3px; }
+  .dhead .actions { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+  .search { display: flex; align-items: center; gap: 9px; height: 40px; padding: 0 15px; border-radius: var(--r-pill); background: var(--card); border: 1px solid var(--line); color: var(--faint); font-size: 13px; width: 230px; box-shadow: var(--sh); }
+
+  /* ── top row ── */
+  .toprow { display: grid; grid-template-columns: 320px 1fr; gap: 18px; }
+  .stack { display: flex; flex-direction: column; gap: 18px; min-width: 0; }
+  .gradrow { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+
+  /* profile card */
+  .profile { padding: 22px; display: flex; flex-direction: column; align-items: center; text-align: center; }
+  .pf-ring { position: relative; width: 116px; height: 116px; margin-bottom: 6px; }
+  .pf-ring .mono-ava { position: absolute; inset: 13px; border-radius: 50%; background: linear-gradient(150deg,#7FA8FF,#5BD7C8); display: grid; place-items: center; color: #0f2f57; font-weight: 800; font-size: 30px; }
+  .pf-star { position: absolute; right: 4px; bottom: 8px; width: 30px; height: 30px; border-radius: 50%; background: #FFB020; display: grid; place-items: center; box-shadow: 0 4px 10px -3px rgba(255,176,32,.8); border: 2.5px solid var(--card); }
+  .pf-name { font-size: 18px; font-weight: 800; letter-spacing: -.02em; }
+  .pf-role { font-size: 12.5px; color: var(--muted); margin-top: 2px; }
+  .pf-chips { display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap; justify-content: center; }
+  .pf-chip { display: inline-flex; align-items: center; gap: 6px; height: 30px; padding: 0 12px; border-radius: var(--r-pill); background: var(--card-2); font-size: 12px; font-weight: 600; }
+  .pf-chip svg { width: 14px; height: 14px; }
+  .pf-foot { display: flex; align-items: center; gap: 9px; margin-top: 18px; padding: 12px 14px; width: 100%;
+    border-radius: var(--r-md); background: var(--card-2); font-size: 12px; color: var(--muted); }
+  .pf-foot b { color: var(--ink); font-weight: 700; }
+  .pf-foot svg { flex: 0 0 auto; }
+
+  /* gradient stat cards */
+  .gstat { position: relative; border-radius: var(--r-card); padding: 18px; overflow: hidden; box-shadow: var(--sh); border: 1px solid rgba(255,255,255,.5); min-height: 150px; display: flex; flex-direction: column; }
+  .gstat.warm { background:
+      radial-gradient(120% 130% at 0% 0%, #FFE0B0 0%, transparent 55%),
+      radial-gradient(120% 120% at 100% 10%, #FFB9A6 0%, transparent 52%),
+      radial-gradient(140% 150% at 70% 130%, #F79C7B 0%, transparent 60%),
+      linear-gradient(135deg, #FFD49B, #F9A982); color: #6a3414; }
+  .gstat.cool { background:
+      radial-gradient(120% 130% at 0% 0%, #CFE0FF 0%, transparent 55%),
+      radial-gradient(120% 120% at 100% 10%, #B6F0E6 0%, transparent 52%),
+      radial-gradient(140% 150% at 70% 130%, #7FA8FF 0%, transparent 62%),
+      linear-gradient(135deg, #AFC8FF, #74D8C8); color: #143a63; }
+  .gstat .tile { width: 38px; height: 38px; border-radius: 12px; background: rgba(255,255,255,.5); backdrop-filter: blur(6px); display: grid; place-items: center; box-shadow: var(--sh-in); }
+  .gstat .tile svg { width: 19px; height: 19px; }
+  .gstat .lab { font-size: 12.5px; font-weight: 700; opacity: .85; margin-top: auto; }
+  .gstat .val { font-size: 40px; font-weight: 800; line-height: 1.05; letter-spacing: -.03em; margin-top: 4px; }
+  .gstat .cap { font-size: 11.5px; font-weight: 600; opacity: .72; margin-top: 2px; }
+
+  /* connected / care team card */
+  .team { padding: 18px 20px; }
+  .ct-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+  .ct-head .t { font-size: 14px; font-weight: 700; white-space: nowrap; }
+  .ct-head .st { font-size: 11.5px; color: var(--up); display: flex; align-items: center; gap: 6px; font-weight: 600; white-space: nowrap; }
+  .ct-list { display: flex; flex-direction: column; gap: 12px; }
+  .ct-item { display: flex; align-items: center; gap: 12px; }
+  .ct-ava { width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; font-weight: 700; font-size: 13px; color: #fff; flex: 0 0 auto; }
+  .ct-name { font-size: 13.5px; font-weight: 700; white-space: nowrap; }
+  .ct-role { font-size: 11.5px; color: var(--muted); white-space: nowrap; }
+  .ct-item > div:nth-child(2) { min-width: 0; }
+  .ct-item .msg { margin-left: auto; }
+
+  /* chart card */
+  .chart { padding: 16px 20px; display: flex; flex-direction: column; gap: 10px; flex: 1; min-height: 0; }
+  .ch-head { display: flex; align-items: flex-start; gap: 16px; }
+  .ch-head .t { font-size: 15px; font-weight: 700; }
+  .ch-head .s { font-size: 12.5px; color: var(--muted); margin-top: 2px; }
+  .ch-head .seg { margin-left: auto; }
+  .ch-head .seg .opt { height: 28px; padding: 0 13px; font-size: 12px; }
+  .plot { display: flex; flex-direction: column; gap: 10px; flex: 1; min-height: 0; }
+  .plot-area { position: relative; flex: 1; min-height: 124px; }
+  .plot-grid {
+    position: absolute; inset: 0; border-radius: var(--r-md);
+    background-image: radial-gradient(circle, rgba(60,70,90,.10) 1.1px, transparent 1.1px);
+    background-size: 26px 30px; background-position: 6px 6px;
+  }
+  .tooltip {
+    position: absolute; transform: translate(-50%, -120%); padding: 8px 11px; border-radius: 12px;
+    background: var(--card); box-shadow: var(--sh-2); border: 1px solid var(--line);
+    font-size: 11.5px; font-weight: 600; white-space: nowrap; z-index: 3;
+  }
+  .tooltip .k { color: var(--muted); font-weight: 600; }
+  .tooltip .b { color: var(--blue); font-weight: 800; }
+  .bigstat { position: absolute; right: 8px; bottom: 8px; text-align: right; }
+  .bigstat .v { font-size: 30px; font-weight: 800; letter-spacing: -.03em; }
+  .bigstat .c { font-size: 11px; color: var(--muted); font-weight: 600; }
+  .months { display: flex; justify-content: space-between; padding: 0 4px; }
+  .months span { font-size: 11px; font-weight: 600; color: var(--faint); }
+  .months span.on { color: var(--blue); }
+  .legend { display: flex; gap: 18px; }
+  .lg { display: flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 600; color: var(--muted); }
+  .lg .sw { width: 12px; height: 12px; border-radius: 4px; }
+
+  /* rail sections */
+  .rs-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+  .rs-head .t { font-size: 14px; font-weight: 700; }
+  .rs-head .sub { font-size: 11.5px; color: var(--muted); margin-top: 2px; }
+  .see { font-size: 12px; font-weight: 600; color: var(--blue); }
+
+  .sched { display: flex; flex-direction: column; }
+  .sevent { display: flex; align-items: center; gap: 13px; padding: 12px 0; border-bottom: 1px solid var(--line); }
+  .sevent:last-child { border-bottom: 0; }
+  .se-date { width: 46px; flex: 0 0 auto; text-align: center; }
+  .se-date .d { font-size: 17px; font-weight: 800; line-height: 1; }
+  .se-date .m { font-size: 10px; font-weight: 700; color: var(--faint); text-transform: uppercase; letter-spacing: .06em; margin-top: 3px; }
+  .se-body { flex: 1; min-width: 0; }
+  .se-title { font-size: 13.5px; font-weight: 700; }
+  .se-ch { display: flex; align-items: center; gap: 6px; font-size: 11.5px; color: var(--muted); margin-top: 3px; }
+  .se-dot { width: 7px; height: 7px; border-radius: 50%; }
+  .se-time { font-size: 11.5px; font-weight: 700; color: var(--ink); margin-left: auto; flex: 0 0 auto; }
+
+  .goals { display: flex; flex-direction: column; gap: 14px; }
+  .goal .g-top { display: flex; align-items: center; gap: 9px; margin-bottom: 7px; }
+  .goal .g-name { font-size: 12.5px; font-weight: 700; white-space: nowrap; }
+  .goal .g-pct { margin-left: auto; font-size: 12px; font-weight: 700; }
+  .trend { display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; border-radius: 6px; }
+  .trend.up { background: color-mix(in oklab, var(--up) 14%, white); color: var(--up); }
+  .trend.down { background: color-mix(in oklab, var(--down) 14%, white); color: var(--down); }
+  .trend.flat { background: var(--card-2); color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ── top strip ── -->
+  <div class="topstrip">
+    <div class="brand">
+      <div class="logo"></div>
+      <div class="wm">AURORA <span>Care</span></div>
+    </div>
+    <div class="seg">
+      <span class="thumb" style="left:4px; width:104px;"></span>
+      <span class="opt on">
+        <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="8" cy="5" r="2.6"/><path d="M3 13c0-2.5 2.2-4 5-4s5 1.5 5 4"/></svg>
+        Patient
+      </span>
+      <a class="opt" href="../clinician.html" style="text-decoration:none">
+        <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2.5 13.5V5L8 2l5.5 3v8.5"/><path d="M8 8v3M6.5 9.5h3"/></svg>
+        Hospital
+      </a>
+    </div>
+    <div class="ts-right">
+      <span class="badge-syn">
+        <svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="8" cy="8" r="6"/><path d="M5.5 8l1.6 1.6L10.5 6"/></svg>
+        Synthetic preview
+      </span>
+      <button class="icon-btn" aria-label="Help">
+        <svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="8" cy="8" r="6"/><path d="M6.4 6.2a1.6 1.6 0 0 1 3 .6c0 1-1.4 1.3-1.4 2.2M8 11.4v.1" stroke-linecap="round"/></svg>
+      </button>
+      <div class="ava-sm">MR</div>
+    </div>
+  </div>
+
+  <!-- ── frame ── -->
+  <div class="frame">
+    <div class="dash">
+
+      <!-- ───── main column ───── -->
+      <div class="main">
+
+        <!-- header -->
+        <div class="dhead fu">
+          <div class="greet">
+            <div class="h">Good morning, Maya</div>
+            <div class="s">Your care overview · pilocytic astrocytoma surveillance · Year 2</div>
+          </div>
+          <div class="actions">
+            <div class="search">
+              <svg viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="7" cy="7" r="5"/><path d="M14 14l-3-3" stroke-linecap="round"/></svg>
+              Search your care…
+            </div>
+            <button class="icon-btn" aria-label="Notifications">
+              <svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 7a4 4 0 0 1 8 0c0 3 1 4 1 4H3s1-1 1-4z"/><path d="M6.5 13a1.6 1.6 0 0 0 3 0"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- top row -->
+        <div class="toprow">
+
+          <!-- profile -->
+          <div class="card profile fu d1">
+            <div class="pf-ring">
+              <svg width="116" height="116" viewBox="0 0 116 116">
+                <circle cx="58" cy="58" r="52" fill="none" stroke="var(--card-2)" stroke-width="9"/>
+                <circle class="ring-arc" cx="58" cy="58" r="52" fill="none" stroke="url(#pr)" stroke-width="9" stroke-linecap="round" transform="rotate(-90 58 58)" style="--circ:327; --off:72;"/>
+                <defs><linearGradient id="pr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3D6EF5"/><stop offset="1" stop-color="#18C7B0"/></linearGradient></defs>
+              </svg>
+              <div class="mono-ava">M</div>
+              <div class="pf-star">
+                <svg viewBox="0 0 16 16" width="15" height="15" fill="#fff"><path d="M8 1.6l1.8 3.8 4.1.5-3 2.9.8 4.1L8 11.5 4.3 13.4l.8-4.1-3-2.9 4.1-.5z"/></svg>
+              </div>
+            </div>
+            <div class="pf-name">Maya R.</div>
+            <div class="pf-role">Care plan 78% complete this cycle</div>
+            <div class="pf-chips">
+              <span class="pf-chip"><svg viewBox="0 0 16 16" fill="none" stroke="#E0A106" stroke-width="1.6"><path d="M9 1.5L3.5 9H8l-1 5.5L13 6.5H8.5z"/></svg> 142-day streak</span>
+              <span class="pf-chip"><svg viewBox="0 0 16 16" fill="none" stroke="var(--up)" stroke-width="1.7"><path d="M3 8.5l3 3 7-7" stroke-linecap="round"/></svg> On track</span>
+            </div>
+            <div class="pf-foot">
+              <svg viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="var(--blue)" stroke-width="1.6"><rect x="2.5" y="3" width="11" height="10.5" rx="2.5"/><path d="M2.5 6h11M6 1.5v2.6M10 1.5v2.6" stroke-linecap="round"/></svg>
+              <span>Next milestone — <b>Surveillance MRI</b> in 1 day</span>
+            </div>
+          </div>
+
+          <!-- stack -->
+          <div class="stack">
+            <div class="gradrow">
+              <div class="gstat warm fu d2">
+                <div class="tile">
+                  <svg viewBox="0 0 16 16" fill="none" stroke="#6a3414" stroke-width="1.7"><path d="M5.5 8l1.6 1.6L11 6"/><rect x="2.5" y="2.5" width="11" height="11" rx="3"/></svg>
+                </div>
+                <div class="lab">Care tasks today</div>
+                <div class="val"><span data-countup="4">0</span>/6</div>
+                <div class="cap">2 left — you’re nearly there</div>
+              </div>
+              <div class="gstat cool fu d3">
+                <div class="tile">
+                  <svg viewBox="0 0 16 16" fill="none" stroke="#143a63" stroke-width="1.7"><path d="M1.5 8h3l1.5-4 3 8 1.5-4h3.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+                <div class="lab">Daily check-in streak</div>
+                <div class="val" data-countup="142">0</div>
+                <div class="cap">days in a row</div>
+              </div>
+            </div>
+
+            <!-- care team -->
+            <div class="card team fu d3">
+              <div class="ct-head">
+                <div class="t">Your care team</div>
+                <div class="st"><span class="se-dot" style="background:var(--up)"></span> Records connected</div>
+              </div>
+              <div class="ct-list">
+                <div class="ct-item">
+                  <div class="ct-ava" style="background:linear-gradient(135deg,#5B8DEF,#2BD4C0)">AO</div>
+                  <div><div class="ct-name">Dr. A. Okafor</div><div class="ct-role">Neuro-oncology · lead</div></div>
+                  <button class="btn msg" style="height:32px;padding:0 13px;font-size:12px">Message</button>
+                </div>
+                <div class="ct-item">
+                  <div class="ct-ava" style="background:linear-gradient(135deg,#F79E7C,#FFC98B);color:#6a3414">JL</div>
+                  <div><div class="ct-name">Jordan Lee, RN</div><div class="ct-role">Nurse navigator</div></div>
+                  <button class="btn msg" style="height:32px;padding:0 13px;font-size:12px">Message</button>
+                </div>
+                <div class="ct-item">
+                  <div class="ct-ava" style="background:linear-gradient(135deg,#7C5CF0,#A78BFA)">PT</div>
+                  <div><div class="ct-name">Sam Rivera, PT</div><div class="ct-role">Physical therapy</div></div>
+                  <button class="btn msg" style="height:32px;padding:0 13px;font-size:12px">Message</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- chart card -->
+        <div class="card chart fu d4">
+          <div class="ch-head">
+            <div>
+              <div class="t">Wellbeing</div>
+              <div class="s">How you’ve been feeling — energy &amp; symptoms, last 6 months</div>
+            </div>
+            <div class="seg">
+              <span class="thumb" style="left:4px; width:62px;"></span>
+              <span class="opt on">Month</span>
+              <span class="opt">Quarter</span>
+              <span class="opt">Year</span>
+            </div>
+          </div>
+
+          <div class="plot">
+            <div class="plot-area">
+              <div class="plot-grid"></div>
+              <svg width="100%" height="100%" viewBox="0 0 800 200" preserveAspectRatio="none" style="position:absolute;inset:0">
+                <defs>
+                  <linearGradient id="energyFill" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0" stop-color="#3D6EF5" stop-opacity=".18"/>
+                    <stop offset="1" stop-color="#3D6EF5" stop-opacity="0"/>
+                  </linearGradient>
+                  <linearGradient id="energyLine" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0" stop-color="#3D6EF5"/><stop offset="1" stop-color="#18C7B0"/>
+                  </linearGradient>
+                </defs>
+                <path d="M0,86 L160,80 L320,83 L480,64 L640,52 L800,42 L800,200 L0,200 Z" fill="url(#energyFill)"/>
+                <polyline class="draw" pathLength="1" points="0,86 160,80 320,83 480,64 640,52 800,42" fill="none" stroke="url(#energyLine)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>
+                <polyline class="draw d2" pathLength="1" points="0,75 160,83 320,92 480,103 640,117 800,127" fill="none" stroke="#E8A23C" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="1" vector-effect="non-scaling-stroke" opacity=".9"/>
+              </svg>
+              <!-- highlight point + tooltip at Apr (640,52) -->
+              <svg width="100%" height="100%" viewBox="0 0 800 200" preserveAspectRatio="none" style="position:absolute;inset:0;overflow:visible">
+                <circle class="dot-pop" cx="640" cy="52" r="5.5" fill="#fff" stroke="#3D6EF5" stroke-width="3" vector-effect="non-scaling-stroke"/>
+              </svg>
+              <div class="tooltip dot-pop" style="left:80%; top:26%;">
+                <span class="k">Apr · energy</span> <span class="b">7.8</span>
+              </div>
+              <div class="bigstat">
+                <div class="v"><span data-countup="8.4" data-dec="1">0.0</span></div>
+                <div class="c">avg energy this month · /10</div>
+              </div>
+            </div>
+            <div class="months">
+              <span>Dec</span><span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span class="on">May</span>
+            </div>
+          </div>
+
+          <div style="display:flex;align-items:center;gap:18px">
+            <div class="legend">
+              <span class="lg"><span class="sw" style="background:linear-gradient(135deg,#3D6EF5,#18C7B0)"></span> Energy</span>
+              <span class="lg"><span class="sw" style="background:#E8A23C"></span> Symptom load</span>
+            </div>
+            <div class="np-note" style="margin-left:auto">
+              <svg class="i" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="8" cy="8" r="6"/><path d="M8 7.4v3.2M8 5.2v.1" stroke-linecap="round"/></svg>
+              <span>For tracking and sharing with your care team — <b>not medical advice</b>.</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ───── right rail ───── -->
+      <div class="rail">
+
+        <!-- upcoming -->
+        <div class="fu d2">
+          <div class="rs-head">
+            <div class="t">Upcoming</div>
+            <span class="see">See all</span>
+          </div>
+          <div class="sched">
+            <div class="sevent">
+              <div class="se-date"><div class="d">23</div><div class="m">May</div></div>
+              <div class="se-body">
+                <div class="se-title">Surveillance MRI</div>
+                <div class="se-ch"><span class="se-dot" style="background:var(--ev-definite)"></span> Imaging · Children’s</div>
+              </div>
+              <div class="se-time">09:30</div>
+            </div>
+            <div class="sevent">
+              <div class="se-date"><div class="d">28</div><div class="m">May</div></div>
+              <div class="se-body">
+                <div class="se-title">Neuro-oncology review</div>
+                <div class="se-ch"><span class="se-dot" style="background:var(--blue)"></span> Telehealth · Dr. Okafor</div>
+              </div>
+              <div class="se-time">14:00</div>
+            </div>
+            <div class="sevent">
+              <div class="se-date"><div class="d">03</div><div class="m">Jun</div></div>
+              <div class="se-body">
+                <div class="se-title">Physical therapy</div>
+                <div class="se-ch"><span class="se-dot" style="background:var(--ev-indeterminate)"></span> In person · Clinic B</div>
+              </div>
+              <div class="se-time">11:15</div>
+            </div>
+            <div class="sevent">
+              <div class="se-date"><div class="d">10</div><div class="m">Jun</div></div>
+              <div class="se-body">
+                <div class="se-title">Bloodwork</div>
+                <div class="se-ch"><span class="se-dot" style="background:var(--ev-probable)"></span> Lab · fasting</div>
+              </div>
+              <div class="se-time">16:00</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- care goals -->
+        <div class="fu d3" style="flex:1">
+          <div class="rs-head">
+            <div>
+              <div class="t">Care goals</div>
+              <div class="sub">This week vs. last</div>
+            </div>
+          </div>
+          <div class="goals">
+            <div class="goal">
+              <div class="g-top">
+                <span class="g-name">PT exercises</span>
+                <span class="trend up"><svg viewBox="0 0 12 12" width="10" height="10" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 8l3-3 2 2 3-4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                <span class="g-pct">80%</span>
+              </div>
+              <div class="bar"><i style="--p:.8; background:linear-gradient(90deg,#3D6EF5,#18C7B0)"></i></div>
+            </div>
+            <div class="goal">
+              <div class="g-top">
+                <span class="g-name">Medication adherence</span>
+                <span class="trend flat"><svg viewBox="0 0 12 12" width="10" height="10" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 6h8" stroke-linecap="round"/></svg></span>
+                <span class="g-pct">100%</span>
+              </div>
+              <div class="bar"><i style="--p:1; background:linear-gradient(90deg,#3D6EF5,#18C7B0)"></i></div>
+            </div>
+            <div class="goal">
+              <div class="g-top">
+                <span class="g-name">Sleep</span>
+                <span class="trend down"><svg viewBox="0 0 12 12" width="10" height="10" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 4l3 3 2-2 3 4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                <span class="g-pct">65%</span>
+              </div>
+              <div class="bar"><i style="--p:.65; background:linear-gradient(90deg,#E8A23C,#F79E7C)"></i></div>
+            </div>
+            <div class="goal">
+              <div class="g-top">
+                <span class="g-name">Daily activity</span>
+                <span class="trend up"><svg viewBox="0 0 12 12" width="10" height="10" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 8l3-3 2 2 3-4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                <span class="g-pct">72%</span>
+              </div>
+              <div class="bar"><i style="--p:.72; background:linear-gradient(90deg,#3D6EF5,#18C7B0)"></i></div>
+            </div>
+            <div class="goal">
+              <div class="g-top">
+                <span class="g-name">Hydration</span>
+                <span class="trend up"><svg viewBox="0 0 12 12" width="10" height="10" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 8l3-3 2 2 3-4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                <span class="g-pct">58%</span>
+              </div>
+              <div class="bar"><i style="--p:.58; background:linear-gradient(90deg,#3D6EF5,#18C7B0)"></i></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+<script src="aurora.js"></script>
+</body>
+</html>

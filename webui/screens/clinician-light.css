@@ -1,0 +1,132 @@
+/* ============================================================
+   AURORA — Clinician workstation · LIGHT + COMFORTABLE
+   Loads after aurora.css + clinician.css. Everything is scoped
+   under body.theme-light so the same React app re-skins to a
+   calm, airy, high-legibility light surface.
+   ============================================================ */
+
+body.theme-light {
+  /* neutrals — clean white, near-neutral (no blue tint) */
+  --ink-900: #F2F3F5;   /* app base   */
+  --ink-850: #FBFBFC;   /* rail/topbar */
+  --ink-800: #FFFFFF;   /* surface/cards */
+  --ink-750: #F6F7F9;   /* sunken tiles */
+  --ink-700: #EEF0F3;   /* raised/hover */
+  --ink-650: #E7EAEF;
+  --ink-600: #DDE1E7;   /* border/hover */
+  --ink-500: #C7CDD6;
+  --ink-450: #AEB6C2;
+
+  /* text — strong contrast for readability */
+  --fg:       #14181F;
+  --fg-muted: #4B5563;
+  --fg-faint: #7A828F;
+
+  --glass:      rgba(255,255,255,.86);
+  --glass-2:    rgba(255,255,255,.74);
+  --glass-line: rgba(20,30,55,.09);
+
+  --hair:      1px solid rgba(20,30,55,.10);
+  --hair-soft: 1px solid rgba(20,30,55,.06);
+
+  --el-1: 0 1px 2px rgba(20,30,55,.05), inset 0 1px 0 rgba(255,255,255,.5);
+  --el-2: 0 1px 3px rgba(20,30,55,.06), 0 14px 30px -20px rgba(20,30,55,.18);
+  --el-3: 0 22px 56px -16px rgba(20,30,55,.22);
+
+  color: var(--fg);
+  font-size: 14.5px;
+  background:
+    radial-gradient(1100px 700px at 84% -10%, color-mix(in oklab, var(--accent) 7%, transparent), transparent 60%),
+    #EEF0F3;
+}
+
+/* ── chrome ── */
+.theme-light .rail { background: rgba(255,255,255,.9); border-right: 1px solid rgba(20,30,55,.07); }
+.theme-light .rail .logo { box-shadow: 0 6px 18px -6px color-mix(in oklab, var(--accent) 50%, transparent); }
+.theme-light .rail-btn:hover { background: var(--ink-700); }
+.theme-light .rail-btn .tip { box-shadow: var(--el-2); }
+.theme-light .topbar { background: rgba(255,255,255,.82); border-bottom: 1px solid rgba(20,30,55,.07); }
+.theme-light .rail .ava { background: linear-gradient(135deg, #EEF1F7, #E2E7F0); color: var(--fg-muted); }
+
+/* ── hero (soft, calm, mostly white) ── */
+.theme-light .hero { background: linear-gradient(160deg, #FFFFFF, #FAFBFC); }
+.theme-light .hero-media .render {
+  background:
+    radial-gradient(58% 78% at 66% 44%, rgba(91,141,239,.16), transparent 64%),
+    radial-gradient(44% 58% at 74% 38%, rgba(43,212,192,.12), transparent 60%),
+    radial-gradient(40% 54% at 52% 66%, rgba(167,139,250,.10), transparent 60%),
+    linear-gradient(135deg, #F4F8FE, #FCFDFE);
+}
+.theme-light .hero-media .grid-tex {
+  opacity: .35;
+  background-image: linear-gradient(rgba(20,30,55,.045) 1px, transparent 1px), linear-gradient(90deg, rgba(20,30,55,.045) 1px, transparent 1px);
+}
+.theme-light .hero-h .sub { color: var(--fg-muted); }
+.theme-light .hero-info { background: rgba(255,255,255,.92); }
+.theme-light .hero-media .pin { background: var(--accent); box-shadow: 0 0 0 4px color-mix(in oklab, var(--accent) 18%, transparent), 0 0 12px color-mix(in oklab, var(--accent) 45%, transparent); }
+.theme-light .hero-media .pin::after { background: #fff; }
+.theme-light .hero-media .pin:nth-of-type(5) { display: none; } /* fewer pins = calmer */
+.theme-light .hero-spark path { stroke: color-mix(in oklab, var(--accent) 58%, transparent) !important; }
+.theme-light .hero-spark circle { fill: var(--accent) !important; }
+.theme-light .hero-cta .bubble {
+  background: color-mix(in oklab, var(--ev-mimic) 15%, #fff);
+  border-color: color-mix(in oklab, var(--ev-mimic) 34%, #fff);
+}
+.theme-light .hero-cta .bubble .t { color: #6b4e07; }
+.theme-light .hero-cta .bubble a { color: #9a6b06; }
+
+/* imaging/scan surfaces stay dark on purpose (medical images read on dark),
+   but lift the chrome contrast a touch */
+.theme-light .imgc .player .pp { background: rgba(255,255,255,.16); }
+
+/* ── table ── */
+.theme-light .dgrid th { background: var(--ink-800); }
+.theme-light .dgrid tr:hover td { background: rgba(28,38,66,.028); }
+
+/* ── settings scrim ── */
+.theme-light .scrim { background: rgba(28,38,66,.26); }
+.theme-light .settings { box-shadow: -24px 0 64px rgba(28,38,66,.20); }
+
+/* ── engine status & misc ── */
+.theme-light .engine .ico { background: color-mix(in oklab, var(--accent) 12%, #fff); }
+
+/* ============================================================
+   COMFORTABLE — more air, larger type, softer corners,
+   less clutter. (Applied with the light surface.)
+   ============================================================ */
+.theme-light .content { padding: 24px 32px 30px; }
+.theme-light .crumbs { margin-bottom: 18px; }
+.theme-light .crumbs .h { font-size: 22px; }
+.theme-light .crumbs .mod { font-size: 14px; }
+
+.theme-light .bento { gap: 20px; }
+.theme-light .bento-top, .theme-light .bento-bot { gap: 20px; }
+.theme-light .bento-right { gap: 20px; }
+
+.theme-light .gcard { border-radius: 22px; }
+.theme-light .card-k { font-size: 11px; letter-spacing: .14em; color: var(--fg-faint); }
+.theme-light .card-t { font-size: 17px; }
+
+.theme-light .hero-in { padding: 28px 30px; }
+.theme-light .hero-h { font-size: 28px; line-height: 34px; }
+.theme-light .hero-h .sub { font-size: 13.5px; margin-top: 9px; }
+.theme-light .hero-info { padding: 17px 19px; border-radius: 18px; width: 290px; }
+.theme-light .hero-info .ttl { font-size: 14.5px; }
+.theme-light .hero-info .desc { font-size: 12.5px; line-height: 19px; }
+
+.theme-light .statusc, .theme-light .triage, .theme-light .ringc { padding: 20px 22px; }
+.theme-light .statusc .time { font-size: 33px; }
+.theme-light .status-rows { gap: 11px; }
+.theme-light .srow { font-size: 12.5px; }
+
+.theme-light .triage-scroll { gap: 14px; }
+.theme-light .tcase { flex-basis: 186px; padding: 15px; border-radius: 16px; }
+.theme-light .tcase .dx { font-size: 13px; line-height: 17px; }
+
+.theme-light .mtile { padding: 15px 17px; border-radius: 15px; }
+.theme-light .mtile .val { font-size: 23px; }
+
+/* settings panel — roomier rows */
+.theme-light .set-body { gap: 24px; padding: 20px 22px; }
+.theme-light .set-row { padding: 13px 0; }
+.theme-light .set-row .nm { font-size: 13.5px; }

@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AURORA · Sign in</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #EEF0F3; --card: #FFFFFF; --sunken: #F6F7F9; --hover: #EEF0F3;
+    --fg: #14181F; --muted: #4B5563; --faint: #7A828F;
+    --line: rgba(20,30,55,.10); --line-soft: rgba(20,30,55,.06);
+    --brand: #3D6EF5; --brand-ink: #2A56D6; --teal: #18C7B0;
+    --ev-definite: #0EA5E9; --ev-probable: #10B981; --teal2: #2BD4C0;
+    --font: "Geist", "Inter", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    --mono: "Geist Mono", ui-monospace, monospace;
+    --r: 12px; --pill: 999px;
+    --ease: cubic-bezier(.4,0,.2,1); --emph: cubic-bezier(.2,0,0,1);
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; margin: 0; }
+  body {
+    font-family: var(--font); color: var(--fg); letter-spacing: -.01em;
+    -webkit-font-smoothing: antialiased; font-variant-numeric: tabular-nums;
+    background:
+      radial-gradient(1100px 720px at 82% -12%, rgba(61,110,245,.10), transparent 60%),
+      radial-gradient(860px 600px at -5% 112%, rgba(24,199,176,.08), transparent 60%),
+      var(--bg);
+    display: grid; place-items: center; overflow: hidden;
+  }
+  .login {
+    width: min(1080px, 94vw); height: min(680px, 92vh);
+    display: grid; grid-template-columns: 1.02fr 1fr;
+    background: var(--card); border: 1px solid var(--line); border-radius: 26px;
+    box-shadow: 0 30px 70px -28px rgba(20,30,55,.3); overflow: hidden;
+    opacity: 0; transform: translateY(12px) scale(.99); animation: lin .5s var(--emph) forwards;
+  }
+  @keyframes lin { to { opacity: 1; transform: none; } }
+
+  /* ── left brand panel (soft light gradient) ── */
+  .brand-side { position: relative; padding: 42px 44px; display: flex; flex-direction: column; overflow: hidden;
+    background:
+      radial-gradient(72% 60% at 76% 26%, rgba(61,110,245,.16), transparent 62%),
+      radial-gradient(60% 56% at 26% 92%, rgba(24,199,176,.14), transparent 60%),
+      linear-gradient(150deg, #F3F7FF, #FBFCFE); border-right: 1px solid var(--line); }
+  .grid-tex { position: absolute; inset: 0; opacity: .5;
+    background-image: linear-gradient(rgba(20,30,55,.045) 1px, transparent 1px), linear-gradient(90deg, rgba(20,30,55,.045) 1px, transparent 1px);
+    background-size: 36px 36px; mask-image: radial-gradient(75% 75% at 65% 35%, #000, transparent 78%); }
+  .bs-top { position: relative; z-index: 2; display: flex; align-items: center; gap: 12px; }
+  .bs-logo { width: 34px; height: 34px; border-radius: 11px; background: linear-gradient(135deg, var(--brand), var(--teal)); box-shadow: 0 8px 20px -7px var(--brand); }
+  .bs-wm { font-size: 16px; font-weight: 600; letter-spacing: .16em; }
+  .bs-body { position: relative; z-index: 2; margin-top: auto; }
+  .bs-h { font-size: 30px; line-height: 37px; font-weight: 600; letter-spacing: -.025em; max-width: 15ch; }
+  .bs-p { font-size: 13.5px; color: var(--muted); line-height: 21px; margin-top: 13px; max-width: 36ch; }
+  .bs-pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+  .bs-pill { display: inline-flex; align-items: center; gap: 7px; height: 30px; padding: 0 12px; border-radius: var(--pill);
+    background: var(--card); border: 1px solid var(--line); font-size: 12px; color: var(--fg); box-shadow: 0 1px 2px rgba(20,30,55,.04); }
+  .bs-pill .dot { width: 7px; height: 7px; border-radius: 50%; }
+  .bs-foot { position: relative; z-index: 2; margin-top: 24px; font-size: 11.5px; color: var(--faint); display: flex; align-items: center; gap: 8px; }
+  .bs-pin { position: absolute; z-index: 1; width: 11px; height: 11px; border-radius: 50%; background: var(--brand); box-shadow: 0 0 0 4px rgba(61,110,245,.14), 0 0 12px rgba(61,110,245,.4); }
+  .bs-pin::after { content: ""; position: absolute; inset: 3px; border-radius: 50%; background: #fff; }
+
+  /* ── right form ── */
+  .form-side { padding: 40px 46px; display: flex; flex-direction: column; overflow-y: auto; }
+  .fs-h { font-size: 22px; font-weight: 600; letter-spacing: -.02em; }
+  .fs-s { font-size: 13px; color: var(--muted); margin-top: 5px; }
+
+  .role { display: flex; padding: 4px; background: var(--sunken); border: 1px solid var(--line); border-radius: var(--r); margin-top: 20px; position: relative; }
+  .role .rthumb { position: absolute; z-index: 0; top: 4px; bottom: 4px; border-radius: 8px; background: var(--card); box-shadow: 0 2px 6px rgba(20,30,55,.12); border: 1px solid var(--line); transition: all .28s var(--emph); }
+  .role .ro { position: relative; z-index: 1; flex: 1; height: 42px; display: flex; align-items: center; justify-content: center; gap: 9px; font-size: 13.5px; font-weight: 500; color: var(--faint); cursor: pointer; transition: color .14s; }
+  .role .ro.on { color: var(--fg); }
+  .role .ro svg { width: 17px; height: 17px; }
+
+  /* SSO providers */
+  .sso-grid { display: flex; flex-direction: column; gap: 9px; margin-top: 20px; }
+  .sso { height: 46px; width: 100%; border: 1px solid var(--line); border-radius: var(--r); background: var(--card); color: var(--fg);
+    font-family: inherit; font-size: 13.5px; font-weight: 500; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;
+    transition: background .14s, box-shadow .14s, transform .12s; box-shadow: 0 1px 2px rgba(20,30,55,.04); }
+  .sso:hover { background: var(--hover); }
+  .sso:active { transform: scale(.99); }
+  .sso .pv { width: 18px; height: 18px; flex: 0 0 auto; }
+  .sso .tag { margin-left: auto; font-size: 11px; color: var(--faint); }
+
+  .or { display: flex; align-items: center; gap: 12px; margin: 18px 0 4px; color: var(--faint); font-size: 11.5px; }
+  .or::before, .or::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+
+  .field { margin-top: 14px; }
+  .field label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 6px; }
+  .field .inp { display: flex; align-items: center; gap: 10px; height: 46px; padding: 0 14px; background: var(--card); border: 1px solid var(--line); border-radius: var(--r); transition: border-color .14s, box-shadow .14s; }
+  .field .inp:focus-within { border-color: color-mix(in oklab, var(--brand) 55%, transparent); box-shadow: 0 0 0 3px rgba(61,110,245,.14); }
+  .field .inp svg { color: var(--faint); flex: 0 0 auto; }
+  .field .inp input { flex: 1; background: none; border: none; outline: none; color: var(--fg); font-family: inherit; font-size: 14px; }
+  .field .inp input::placeholder { color: var(--faint); }
+  .field .inp .reveal { color: var(--faint); cursor: pointer; font-size: 12px; }
+
+  .row-between { display: flex; align-items: center; justify-content: space-between; margin-top: 14px; }
+  .check { display: flex; align-items: center; gap: 9px; font-size: 12.5px; color: var(--muted); cursor: pointer; }
+  .check .box { width: 18px; height: 18px; border-radius: 5px; border: 1px solid var(--faint); background: var(--card); display: grid; place-items: center; }
+  .check.on .box { background: var(--brand); border-color: transparent; }
+  .check .box svg { opacity: 0; }
+  .check.on .box svg { opacity: 1; }
+  .link { font-size: 12.5px; color: var(--brand-ink); cursor: pointer; font-weight: 500; }
+
+  .signin { margin-top: 18px; height: 48px; width: 100%; border: none; border-radius: var(--r);
+    background: var(--brand); color: #fff; font-family: inherit; font-size: 14.5px; font-weight: 600; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; gap: 9px;
+    box-shadow: 0 10px 26px -10px var(--brand); transition: transform .12s, filter .14s; }
+  .signin:hover { filter: brightness(1.05); }
+  .signin:active { transform: scale(.985); }
+
+  .fs-foot { margin-top: auto; padding-top: 20px; display: flex; align-items: center; gap: 8px; font-size: 11.5px; color: var(--faint); }
+  .fs-foot .lock { width: 13px; height: 13px; flex: 0 0 auto; }
+
+  @media (prefers-reduced-motion: reduce) { .login { animation: none; opacity: 1; transform: none; } .role .rthumb { transition: none; } }
+</style>
+</head>
+<body>
+  <div class="login">
+    <!-- brand -->
+    <div class="brand-side">
+      <div class="grid-tex"></div>
+      <span class="bs-pin" style="left:62%;top:34%"></span>
+      <span class="bs-pin" style="left:74%;top:50%"></span>
+      <span class="bs-pin" style="left:56%;top:60%"></span>
+      <div class="bs-top">
+        <div class="bs-logo"></div>
+        <div class="bs-wm">AURORA</div>
+      </div>
+      <div class="bs-body">
+        <div class="bs-h" id="brandH">Evidence with calibrated uncertainty.</div>
+        <div class="bs-p" id="brandP">A neurosurgical decision-support workstation — every claim carries its provenance, and the system abstains when evidence is insufficient.</div>
+        <div class="bs-pills">
+          <span class="bs-pill"><span class="dot" style="background:var(--ev-definite)"></span> 9 disease programs</span>
+          <span class="bs-pill"><span class="dot" style="background:var(--ev-probable)"></span> Runs locally</span>
+          <span class="bs-pill"><span class="dot" style="background:var(--teal2)"></span> De-identified</span>
+        </div>
+      </div>
+      <div class="bs-foot">
+        <svg class="lock" width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4.5 7.5V5.5a3.5 3.5 0 0 1 7 0v2M3.5 7.5h9v6h-9z"/></svg>
+        Decision support only — not a diagnosis or treatment recommendation.
+      </div>
+    </div>
+
+    <!-- form -->
+    <div class="form-side">
+      <div class="fs-h" id="formH">Welcome back, clinician</div>
+      <div class="fs-s" id="formS">Sign in to your AURORA workstation.</div>
+
+      <div class="role" id="role">
+        <span class="rthumb" id="rthumb" style="left:4px;width:calc(50% - 4px)"></span>
+        <div class="ro on" data-role="clinician">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2.5 13.5V5L8 2l5.5 3v8.5"/><path d="M8 8v3M6.5 9.5h3"/></svg>
+          Clinician
+        </div>
+        <div class="ro" data-role="patient">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="8" cy="5" r="2.6"/><path d="M3 13c0-2.5 2.2-4 5-4s5 1.5 5 4"/></svg>
+          Patient
+        </div>
+      </div>
+
+      <!-- SSO providers -->
+      <div class="sso-grid">
+        <button class="sso" data-sso="google">
+          <svg class="pv" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.64-.06-1.25-.16-1.84H9v3.48h4.84a4.14 4.14 0 0 1-1.8 2.72v2.26h2.92c1.7-1.57 2.68-3.88 2.68-6.62z"/><path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.92-2.26c-.81.54-1.84.86-3.04.86-2.34 0-4.32-1.58-5.03-3.7H.96v2.33A9 9 0 0 0 9 18z"/><path fill="#FBBC05" d="M3.97 10.72a5.4 5.4 0 0 1 0-3.44V4.95H.96a9 9 0 0 0 0 8.1l3.01-2.33z"/><path fill="#EA4335" d="M9 3.58c1.32 0 2.5.45 3.44 1.35l2.58-2.58A9 9 0 0 0 .96 4.95l3.01 2.33C4.68 5.16 6.66 3.58 9 3.58z"/></svg>
+          Continue with Google
+        </button>
+        <button class="sso" data-sso="microsoft">
+          <svg class="pv" viewBox="0 0 18 18"><rect x="1" y="1" width="7.6" height="7.6" fill="#F25022"/><rect x="9.4" y="1" width="7.6" height="7.6" fill="#7FBA00"/><rect x="1" y="9.4" width="7.6" height="7.6" fill="#00A4EF"/><rect x="9.4" y="9.4" width="7.6" height="7.6" fill="#FFB900"/></svg>
+          Continue with Microsoft
+        </button>
+        <button class="sso" data-sso="okta" id="ssoClinical">
+          <svg class="pv" viewBox="0 0 18 18" fill="none" stroke="#3D6EF5" stroke-width="1.5"><path d="M9 1.5l6 2.4v4.6c0 3.4-2.5 5.9-6 6.9-3.5-1-6-3.5-6-6.9V3.9z"/><path d="M6.5 9l1.7 1.7L12 7"/></svg>
+          <span id="ssoLabel">Continue with clinical SSO</span>
+          <span class="tag">SAML</span>
+        </button>
+      </div>
+
+      <div class="or">or use email</div>
+
+      <div class="field">
+        <label id="lblEmail">Work email</label>
+        <div class="inp">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3.5" width="12" height="9" rx="2"/><path d="M2.5 4.5L8 9l5.5-4.5"/></svg>
+          <input type="email" id="email" placeholder="r.kaur@hospital.org" autocomplete="username">
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Password</label>
+        <div class="inp">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4.5 7.5V5.5a3.5 3.5 0 0 1 7 0v2M3.5 7.5h9v6h-9z"/></svg>
+          <input type="password" id="pw" placeholder="••••••••••" autocomplete="current-password">
+          <span class="reveal" id="reveal">Show</span>
+        </div>
+      </div>
+
+      <div class="row-between">
+        <div class="check on" id="remember">
+          <span class="box"><svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="2.4"><path d="M3.5 8.5l3 3 6-7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          Keep me signed in
+        </div>
+        <span class="link">Forgot password?</span>
+      </div>
+
+      <button class="signin" id="signin">
+        <span id="signinLabel">Sign in to workstation</span>
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 8h9M9 5l3 3-3 3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+
+      <div class="fs-foot">
+        <svg class="lock" width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4.5 7.5V5.5a3.5 3.5 0 0 1 7 0v2M3.5 7.5h9v6h-9z"/></svg>
+        <span id="footNote">Processed on-device · de-identified · no PHI leaves this machine</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let role = 'clinician';
+    const rthumb = document.getElementById('rthumb');
+    const copy = {
+      clinician: {
+        brandH: 'Evidence with calibrated uncertainty.',
+        brandP: 'A neurosurgical decision-support workstation — every claim carries its provenance, and the system abstains when evidence is insufficient.',
+        formH: 'Welcome back, clinician', formS: 'Sign in to your AURORA workstation.',
+        lblEmail: 'Work email', email: 'r.kaur@hospital.org',
+        signinLabel: 'Sign in to workstation', ssoLabel: 'Continue with clinical SSO',
+        footNote: 'Processed on-device · de-identified · no PHI leaves this machine',
+        dest: 'clinician-light.html',
+      },
+      patient: {
+        brandH: 'Your care, clearly explained.',
+        brandP: 'AURORA Care brings your appointments, wellbeing and care team into one calm place — written for you, never as medical advice.',
+        formH: 'Welcome back', formS: 'Sign in to AURORA Care.',
+        lblEmail: 'Email', email: 'maya.r@email.com',
+        signinLabel: 'Sign in to my care', ssoLabel: 'Continue with patient portal',
+        footNote: 'Private & encrypted · you control what your care team sees',
+        dest: 'screens/patient-dashboard.html',
+      },
+    };
+    function setRole(r) {
+      role = r;
+      document.querySelectorAll('.role .ro').forEach(o => o.classList.toggle('on', o.dataset.role === r));
+      rthumb.style.left = r === 'clinician' ? '4px' : '50%';
+      const c = copy[r];
+      for (const id of ['brandH','brandP','formH','formS','lblEmail','signinLabel','ssoLabel','footNote']) {
+        const el = document.getElementById(id); if (el) el.textContent = c[id];
+      }
+      document.getElementById('email').placeholder = c.email;
+    }
+    document.querySelectorAll('.role .ro').forEach(o => o.addEventListener('click', () => setRole(o.dataset.role)));
+    document.getElementById('remember').addEventListener('click', e => e.currentTarget.classList.toggle('on'));
+    const pw = document.getElementById('pw');
+    document.getElementById('reveal').addEventListener('click', e => {
+      const show = pw.type === 'password'; pw.type = show ? 'text' : 'password'; e.target.textContent = show ? 'Hide' : 'Show';
+    });
+    function go() { window.location.href = copy[role].dest; }
+    document.getElementById('signin').addEventListener('click', go);
+    document.querySelectorAll('.sso').forEach(b => b.addEventListener('click', go));
+  </script>
+</body>
+</html>

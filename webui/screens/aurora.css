@@ -1,0 +1,185 @@
+/* ============================================================
+   AURORA — shared design tokens + component atoms
+   Dark-first clinical-research workstation. Values are lifted
+   directly from the AURORA design dossier.
+   ============================================================ */
+
+:root {
+  /* — Neutrals (dark, primary theme) — */
+  --ink-900: #0B0E14;   /* app base            */
+  --ink-850: #0E121A;
+  --ink-800: #12161F;   /* surface             */
+  --ink-750: #161B26;
+  --ink-700: #1A1F2B;   /* raised              */
+  --ink-650: #1E2431;
+  --ink-600: #232A38;   /* border / hover      */
+  --ink-500: #2E3647;
+  --ink-450: #3A4456;
+
+  --fg:        #E6EAF2;
+  --fg-muted:  #9AA4B2;
+  --fg-faint:  #6B7689;
+
+  /* — Brand: cool, calm, precise — */
+  --brand:    #5B8DEF;   /* clinical indigo-blue */
+  --brand-2:  #2BD4C0;   /* teal                 */
+  --brand-grad: linear-gradient(135deg, #5B8DEF, #2BD4C0);
+
+  /* — Evidence-state semantics (color + icon + label, never color alone) — */
+  --ev-definite:      #38BDF8;  /* sky    — filled ring  */
+  --ev-probable:      #34D399;  /* emerald— 75% ring     */
+  --ev-mimic:         #FBBF24;  /* amber  — dashed ring  */
+  --ev-indeterminate: #A78BFA;  /* violet — dotted ring  */
+  --ev-insufficient:  #94A3B8;  /* slate  — hatched fill */
+
+  /* — Status — */
+  --critical: #F87171;
+  --warning:  #FBBF24;
+  --positive: #34D399;
+  --info:     #60A5FA;
+
+  /* — Type — */
+  --font-sans: "Geist", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --font-mono: "Geist Mono", "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* — Radius — */
+  --r-sm: 6px;  --r-md: 10px;  --r-lg: 14px;  --r-xl: 20px;  --r-pill: 999px;
+
+  /* — Motion — */
+  --dur-instant: 80ms; --dur-fast: 120ms; --dur-base: 200ms;
+  --dur-moderate: 280ms; --dur-slow: 360ms; --dur-page: 440ms;
+  --ease-standard: cubic-bezier(.4,0,.2,1);
+  --ease-decel:    cubic-bezier(0,0,.2,1);
+  --ease-accel:    cubic-bezier(.4,0,1,1);
+  --ease-emph:     cubic-bezier(.2,0,0,1);
+
+  /* — Elevation (soft, layered, lit-from-above) — */
+  --el-1: 0 1px 2px rgba(0,0,0,.30), inset 0 1px 0 rgba(255,255,255,.04);
+  --el-2: 0 4px 16px rgba(0,0,0,.34), inset 0 1px 0 rgba(255,255,255,.045);
+  --el-3: 0 12px 40px rgba(0,0,0,.42), inset 0 1px 0 rgba(255,255,255,.05);
+  --hair: 1px solid rgba(35,42,56,.9);
+  --hair-soft: 1px solid rgba(46,54,71,.5);
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: var(--font-sans);
+  background: var(--ink-900);
+  color: var(--fg);
+  font-size: 14px;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.003em;
+}
+::-webkit-scrollbar { width: 0; height: 0; }
+* { scrollbar-width: none; }
+
+.num { font-variant-numeric: tabular-nums; }
+.mono { font-family: var(--font-mono); font-feature-settings: "ss01"; }
+.uplabel {
+  font-size: 11px; line-height: 15px; font-weight: 500;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--fg-faint);
+}
+
+/* ───────── Evidence state chip ───────── */
+.ev-chip {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 4px 11px 4px 8px; border-radius: var(--r-pill);
+  font-size: 12.5px; font-weight: 500; line-height: 1;
+  border: 1px solid transparent; white-space: nowrap;
+}
+.ev-chip .ring { width: 15px; height: 15px; flex: 0 0 auto; }
+.ev-chip.definite      { color: var(--ev-definite);      background: color-mix(in oklab, var(--ev-definite) 13%, transparent);      border-color: color-mix(in oklab, var(--ev-definite) 30%, transparent); }
+.ev-chip.probable      { color: var(--ev-probable);      background: color-mix(in oklab, var(--ev-probable) 13%, transparent);      border-color: color-mix(in oklab, var(--ev-probable) 30%, transparent); }
+.ev-chip.mimic         { color: var(--ev-mimic);         background: color-mix(in oklab, var(--ev-mimic) 13%, transparent);         border-color: color-mix(in oklab, var(--ev-mimic) 30%, transparent); }
+.ev-chip.indeterminate { color: var(--ev-indeterminate); background: color-mix(in oklab, var(--ev-indeterminate) 13%, transparent); border-color: color-mix(in oklab, var(--ev-indeterminate) 30%, transparent); }
+.ev-chip.insufficient  { color: var(--ev-insufficient);  background: color-mix(in oklab, var(--ev-insufficient) 12%, transparent);  border-color: color-mix(in oklab, var(--ev-insufficient) 26%, transparent); }
+
+/* ───────── Uncertainty bar (calibrated interval) ───────── */
+.unc { display: flex; flex-direction: column; gap: 8px; }
+.unc-track {
+  position: relative; height: 8px; border-radius: var(--r-pill);
+  background: var(--ink-700); overflow: hidden;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,.4);
+}
+.unc-fill {
+  position: absolute; top: 0; bottom: 0; border-radius: var(--r-pill);
+  transform: scaleX(0); transform-origin: left center;
+  transition: transform var(--dur-slow) var(--ease-decel);
+}
+.reveal-in .unc-fill { transform: scaleX(1); }
+/* calibrated interval band */
+.unc-band {
+  position: relative; height: 26px; border-radius: var(--r-sm);
+  background: var(--ink-750); border: var(--hair-soft); overflow: hidden;
+}
+.unc-interval {
+  position: absolute; top: 0; bottom: 0; border-radius: 3px;
+  background: color-mix(in oklab, var(--brand) 26%, transparent);
+  border-left: 2px solid var(--brand); border-right: 2px solid var(--brand);
+  transform: scaleX(.001); transform-origin: left center;
+  transition: transform var(--dur-slow) var(--ease-decel);
+}
+.reveal-in .unc-interval { transform: scaleX(1); }
+.unc-point {
+  position: absolute; top: -3px; bottom: -3px; width: 2px; background: var(--fg);
+  box-shadow: 0 0 0 3px var(--ink-750);
+}
+.unc-scale { display: flex; justify-content: space-between; font-size: 10.5px; color: var(--fg-faint); font-family: var(--font-mono); }
+
+/* ───────── Confidence dial ───────── */
+.dial { position: relative; }
+.dial svg { display: block; transform: rotate(-90deg); }
+.dial .arc {
+  stroke-dasharray: var(--circ, 339);
+  stroke-dashoffset: var(--circ, 339);
+  transition: stroke-dashoffset var(--dur-page) var(--ease-emph);
+}
+.reveal-in .dial .arc { stroke-dashoffset: var(--arc-off, 100); }
+.dial-val {
+  position: absolute; inset: 0; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 1px;
+}
+
+/* ───────── Buttons ───────── */
+.btn {
+  display: inline-flex; align-items: center; gap: 7px;
+  height: 32px; padding: 0 13px; border-radius: var(--r-md);
+  font-family: inherit; font-size: 13px; font-weight: 500; letter-spacing: -.01em;
+  border: var(--hair); background: var(--ink-700); color: var(--fg);
+  cursor: pointer; white-space: nowrap; transition: background var(--dur-fast) var(--ease-standard), transform var(--dur-fast) var(--ease-standard);
+}
+.btn:hover { background: var(--ink-650); }
+.btn:active { transform: scale(.97); }
+.btn.primary { background: var(--brand); border-color: transparent; color: #0A1020; font-weight: 600; }
+.btn.ghost { background: transparent; border-color: transparent; color: var(--fg-muted); }
+.btn.ghost:hover { background: var(--ink-700); color: var(--fg); }
+
+/* ───────── Cards / surfaces ───────── */
+.card {
+  background: var(--ink-800); border: var(--hair); border-radius: var(--r-lg);
+  box-shadow: var(--el-1);
+}
+
+/* keycap */
+.kbd {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 18px; height: 18px; padding: 0 5px; border-radius: 5px;
+  font-family: var(--font-mono); font-size: 11px; color: var(--fg-muted);
+  background: var(--ink-700); border: 1px solid var(--ink-600);
+  box-shadow: inset 0 -1px 0 rgba(0,0,0,.3);
+}
+
+/* small status dot */
+.dot { width: 7px; height: 7px; border-radius: 50%; flex: 0 0 auto; }
+
+/* ───────── Reveal / entrance helpers ───────── */
+.fade-up { opacity: 0; transform: translateY(8px); transition: opacity var(--dur-moderate) var(--ease-decel), transform var(--dur-moderate) var(--ease-decel); }
+.reveal-in .fade-up { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition-duration: 1ms !important; }
+}

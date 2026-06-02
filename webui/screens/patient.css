@@ -1,0 +1,173 @@
+/* ============================================================
+   AURORA — Patient surface
+   Warm, calm, Throne-style care dashboard. The friendly
+   counterpart to the dark clinical workstation. Light theme.
+   ============================================================ */
+
+:root {
+  /* surfaces — clean white (was warm cream) */
+  --bg-outer: #E9EBEF;
+  --bg:       #FFFFFF;   /* frame canvas       */
+  --card:     #FFFFFF;
+  --card-2:   #F5F6F8;   /* sunken / subtle    */
+
+  /* ink — strong contrast for readability */
+  --ink:      #14181F;
+  --muted:    #515967;
+  --faint:    #858C97;
+  --line:     #ECEEF1;   /* hairline           */
+  --line-2:   #E2E5EA;
+
+  /* brand */
+  --blue:     #3D6EF5;
+  --blue-ink: #2A56D6;
+  --teal:     #18C7B0;
+  --blue-wash:#EDF2FE;
+
+  /* evidence semantics (light) */
+  --ev-definite:      #0EA5E9;
+  --ev-probable:      #10B981;
+  --ev-mimic:         #E0A106;
+  --ev-indeterminate: #7C5CF0;
+  --ev-insufficient:  #8A929E;
+
+  /* status */
+  --up:   #1FA971;
+  --down: #E8783C;
+
+  /* type */
+  --font: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --mono: "Geist Mono", "JetBrains Mono", ui-monospace, monospace;
+
+  /* radius */
+  --r-frame: 30px; --r-card: 26px; --r-md: 18px; --r-sm: 13px; --r-pill: 999px;
+
+  /* elevation — soft, layered */
+  --sh:   0 1px 2px rgba(20,22,40,.05), 0 10px 26px -14px rgba(24,28,52,.16);
+  --sh-2: 0 2px 6px rgba(20,22,40,.07), 0 22px 46px -18px rgba(24,28,52,.22);
+  --sh-in: inset 0 1px 0 rgba(255,255,255,.7);
+
+  /* motion */
+  --dur: 240ms; --dur-fast: 140ms; --dur-slow: 420ms;
+  --ease: cubic-bezier(.4,0,.2,1); --ease-out: cubic-bezier(0,0,.2,1);
+  --spring: cubic-bezier(.34,1.4,.5,1);
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: var(--font);
+  background: var(--bg-outer);
+  color: var(--ink);
+  font-size: 14px; line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -.012em;
+}
+::-webkit-scrollbar { width: 0; height: 0; }
+* { scrollbar-width: none; }
+.num { font-variant-numeric: tabular-nums; }
+.mono { font-family: var(--mono); }
+
+/* ───────── Card ───────── */
+.card {
+  background: var(--card); border-radius: var(--r-card);
+  border: 1px solid var(--line);
+  box-shadow: var(--sh);
+}
+
+/* ───────── Segmented control ───────── */
+.seg {
+  position: relative; display: inline-flex; padding: 4px;
+  background: var(--card-2); border: 1px solid var(--line); border-radius: var(--r-pill);
+}
+.seg .opt {
+  position: relative; z-index: 1; display: inline-flex; align-items: center; gap: 7px;
+  height: 32px; padding: 0 16px; border-radius: var(--r-pill);
+  font-size: 13px; font-weight: 600; color: var(--muted); cursor: pointer;
+  transition: color var(--dur) var(--ease);
+}
+.seg .opt.on { color: var(--ink); }
+.seg .thumb {
+  position: absolute; z-index: 0; top: 4px; bottom: 4px; border-radius: var(--r-pill);
+  background: var(--card); box-shadow: var(--sh); transition: all var(--dur) var(--spring);
+}
+
+/* ───────── Pills / chips ───────── */
+.chip {
+  display: inline-flex; align-items: center; gap: 7px;
+  height: 30px; padding: 0 12px; border-radius: var(--r-pill);
+  background: var(--card-2); border: 1px solid var(--line);
+  font-size: 12.5px; font-weight: 600; color: var(--ink);
+}
+.chip .i { width: 14px; height: 14px; color: var(--muted); }
+.badge-syn {
+  display: inline-flex; align-items: center; gap: 7px; height: 30px; padding: 0 12px; white-space: nowrap;
+  border-radius: var(--r-pill); font-size: 12px; font-weight: 600;
+  color: var(--ev-indeterminate); background: color-mix(in oklab, var(--ev-indeterminate) 12%, white);
+  border: 1px solid color-mix(in oklab, var(--ev-indeterminate) 26%, white);
+}
+
+/* ───────── Buttons ───────── */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  height: 40px; padding: 0 16px; border-radius: var(--r-pill);
+  font-family: inherit; font-size: 13.5px; font-weight: 600; cursor: pointer;
+  border: 1px solid var(--line); background: var(--card); color: var(--ink);
+  transition: transform var(--dur-fast) var(--ease), box-shadow var(--dur) var(--ease), background var(--dur) var(--ease);
+  box-shadow: var(--sh);
+}
+.btn:active { transform: scale(.97); }
+.btn.primary { background: var(--blue); border-color: transparent; color: #fff; box-shadow: 0 6px 16px -6px var(--blue); }
+.icon-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 40px; height: 40px; border-radius: 50%; cursor: pointer;
+  border: 1px solid var(--line); background: var(--card); color: var(--muted);
+  box-shadow: var(--sh); transition: transform var(--dur-fast) var(--ease), color var(--dur) var(--ease);
+}
+.icon-btn:hover { color: var(--ink); }
+.icon-btn:active { transform: scale(.94); }
+
+/* ───────── Ring progress ───────── */
+.ring-arc {
+  stroke-dasharray: var(--circ); stroke-dashoffset: var(--circ);
+  transition: stroke-dashoffset var(--dur-slow) var(--ease-out);
+}
+.reveal-in .ring-arc { stroke-dashoffset: var(--off); }
+
+/* ───────── Progress bar ───────── */
+.bar { position: relative; height: 8px; border-radius: var(--r-pill); background: var(--card-2); overflow: hidden; }
+.bar > i {
+  position: absolute; inset: 0; border-radius: var(--r-pill); transform: scaleX(0); transform-origin: left;
+  transition: transform var(--dur-slow) var(--ease-out);
+}
+.reveal-in .bar > i { transform: scaleX(var(--p, 1)); }
+
+/* ───────── Non-prescriptive note ───────── */
+.np-note {
+  display: flex; align-items: center; gap: 10px; padding: 11px 15px;
+  border-radius: var(--r-md); font-size: 12.5px; color: var(--muted);
+  background: var(--blue-wash); border: 1px solid color-mix(in oklab, var(--blue) 14%, white);
+}
+.np-note b { color: var(--blue-ink); font-weight: 700; }
+.np-note .i { width: 15px; height: 15px; color: var(--blue); flex: 0 0 auto; }
+
+/* ───────── chart line draw-in (uses pathLength="1") ───────── */
+.draw { stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 760ms var(--ease-out); }
+.reveal-in .draw { stroke-dashoffset: 0; }
+.draw.d2 { transition-delay: 120ms; }
+.dot-pop { opacity: 0; transition: opacity var(--dur) var(--ease) 600ms; }
+.reveal-in .dot-pop { opacity: 1; }
+
+/* ───────── reveal helpers ───────── */
+.fu { opacity: 0; transform: translateY(10px); transition: opacity var(--dur) var(--ease-out), transform var(--dur) var(--ease-out); }
+.reveal-in .fu { opacity: 1; transform: none; }
+.reveal-in .fu.d1 { transition-delay: 40ms; }
+.reveal-in .fu.d2 { transition-delay: 90ms; }
+.reveal-in .fu.d3 { transition-delay: 140ms; }
+.reveal-in .fu.d4 { transition-delay: 190ms; }
+.reveal-in .fu.d5 { transition-delay: 240ms; }
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition-duration: 1ms !important; }
+}
