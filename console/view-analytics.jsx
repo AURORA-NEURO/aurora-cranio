@@ -1,6 +1,3 @@
-// ════════════════════════════════════════════════════════════════════
-//  VIEW · ANALYTICS — cohort, outcomes, benchmarks, model evaluation
-// ════════════════════════════════════════════════════════════════════
 window.AV = window.AV || {};
 
 window.AV.analytics = function Analytics({ m, ops, go }) {

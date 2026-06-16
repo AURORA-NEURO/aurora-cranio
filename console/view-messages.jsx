@@ -1,6 +1,3 @@
-// ════════════════════════════════════════════════════════════════════
-//  VIEW · MESSAGES — secure MDT / clinical threads, linked to cases
-// ════════════════════════════════════════════════════════════════════
 window.AV = window.AV || {};
 
 window.AV.messages = function Messages({ m, ops, go, openCase }) {
@@ -31,7 +28,6 @@ window.AV.messages = function Messages({ m, ops, go, openCase }) {
 
       <div className="card" style={{ overflow: "hidden" }}>
         <div style={{ display: "grid", gridTemplateColumns: "320px 1fr", minHeight: 560 }}>
-          {/* thread list */}
           <div style={{ borderRight: "1px solid var(--line)", display: "flex", flexDirection: "column" }}>
             <div style={{ padding: 12, borderBottom: "1px solid var(--line)", display: "flex", gap: 4 }}>
               {["all", "MDT", "secure"].map((k) => (
@@ -53,7 +49,6 @@ window.AV.messages = function Messages({ m, ops, go, openCase }) {
             </div>
           </div>
 
-          {/* conversation */}
           <div style={{ display: "flex", flexDirection: "column" }}>
             <div className="card-h" style={{ padding: "12px 16px" }}>
               <div>
@@ -79,7 +74,6 @@ window.AV.messages = function Messages({ m, ops, go, openCase }) {
               ))}
             </div>
 
-            {/* composer */}
             <div style={{ padding: 14, borderTop: "1px solid var(--line)", display: "flex", gap: 9, alignItems: "flex-end" }}>
               <textarea value={draft} onChange={(e) => setDraft(e.target.value)} placeholder={`Message the ${t.subject} team…`} rows={1}
                 style={{ flex: 1, minHeight: 40, maxHeight: 120, border: "1px solid var(--line)", borderRadius: 10, padding: "10px 13px", font: "inherit", fontSize: 13, lineHeight: 1.5, color: "var(--text)", background: "var(--panel-2)", resize: "none", outline: "none" }} />

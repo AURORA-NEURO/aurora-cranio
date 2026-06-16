@@ -1,6 +1,3 @@
-// ════════════════════════════════════════════════════════════════════
-//  VIEW · SETTINGS — comprehensive, with a working appearance system
-// ════════════════════════════════════════════════════════════════════
 window.AV = window.AV || {};
 
 const ST_SECTIONS = [

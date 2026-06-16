@@ -1,8 +1,3 @@
-// ════════════════════════════════════════════════════════════════════
-//  VIEW · GUIDES — getting started, how-to, and the TEMPLATE GUIDE
-//  This is the documentation that makes the console clone-able to any
-//  module OR subsystem devtool.
-// ════════════════════════════════════════════════════════════════════
 window.AV = window.AV || {};
 
 window.AV.guides = function Guides({ m, go }) {

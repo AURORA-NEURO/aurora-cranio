@@ -1,20 +1,7 @@
-// ════════════════════════════════════════════════════════════════════
-//  AURORA CONSOLE · synthetic operational data layer
-// ────────────────────────────────────────────────────────────────────
-//  AURORA_DATA (from data.jsx) holds the canonical, real module spec.
-//  This file adds the *operational* data a running console would show:
-//  patients/cases, model cards, deployments, users, audit, monitoring.
-//
-//  Everything is generated deterministically PER MODULE from a seeded
-//  PRNG so the console looks coherent for all 9 diseases without hand
-//  authoring 9× the data. To replace with real data: swap the builders
-//  below for fetches, keep the shapes.
-// ════════════════════════════════════════════════════════════════════
 
 (function () {
   const DATA = window.AURORA_DATA;
 
-  // ── tiny seeded PRNG (mulberry32) ─────────────────────────────────
   const seeded = (seed) => {
     let a = seed >>> 0;
     return () => {
@@ -32,7 +19,6 @@
   const pick = (rng, arr) => arr[Math.floor(rng() * arr.length)];
   const rint = (rng, lo, hi) => Math.floor(lo + rng() * (hi - lo + 1));
 
-  // ── shared vocab ──────────────────────────────────────────────────
   const FIRST = ["A.", "M.", "J.", "L.", "S.", "R.", "K.", "N.", "T.", "E.", "C.", "P.", "D.", "H.", "O.", "F."];
   const LAST = ["Okafor", "Lindqvist", "Moreau", "Tanaka", "Rossi", "Patel", "Nguyen", "García", "Müller", "Haddad",
     "Andersson", "Kowalski", "Silva", "Ferrari", "Schmidt", "Rahman", "Costa", "Novak", "Ibrahim", "Larsen"];
@@ -40,28 +26,22 @@
 
   const initials = (rng) => `${pick(rng, FIRST)} ${pick(rng, LAST)}`;
 
-  // ── caseStages depend on the module's clinical shape ──────────────
   const STAGES = ["Intake", "Imaging review", "Molecular pending", "MDT scheduled", "MDT review",
     "Plan drafting", "Awaiting sign-off", "Signed · monitoring", "Closed"];
   const PRIORITIES = ["routine", "expedited", "urgent"];
   const CONSENT = ["cohort-2026", "cohort-2026", "cohort-2026", "research-opt-in", "pending"];
 
-  // ════════════════════════════════════════════════════════════════
-  //  PER-MODULE BUILDER
-  // ════════════════════════════════════════════════════════════════
   const buildForModule = (m) => {
     const rng = seeded(hashStr(m.seedKey || m.slug));
     const subs = m.subsystems;
     const accent = m.accent;
 
-    // ── fleet-level scalars ─────────────────────────────────────────
     const activeCases = rint(rng, 18, 64);
     const cohortSize = rint(rng, 280, 1900);
     const pilotCount = parseInt((m.stats.pilots.match(/\d+/) || [rint(rng, 1, 4)])[0], 10);
     const uptime = (99 + rng()).toFixed(2);
     const latencyMs = parseInt((m.stats.latency.match(/\d+/) || [120])[0], 10);
 
-    // ── CASES (patient tracking) ───────────────────────────────────
     const dxPool = m.dxPool || (() => {
       switch (m.slug) {
         case "glio": return ["GBM IDH-WT", "Astro IDH-mut G3", "Oligo 1p19q-codel", "GBM IDH-WT · MGMT+", "Diffuse midline H3K27M"];
@@ -99,7 +79,6 @@
       };
     }).sort((a, b) => a.stageIdx - b.stageIdx);
 
-    // ── FOUNDATION + SUBSYSTEM MODELS ──────────────────────────────
     const aiSub = subs.find((s) => /AI|FOUNDATION/.test(s.code)) || subs[0];
     const models = subs.map((s, i) => {
       const isFoundation = s === aiSub;
@@ -127,7 +106,6 @@
       };
     });
 
-    // ── REAL headline / foundation model (from m.fm overrides) ──────
     let foundation = models.find((x) => /AI|FOUND/.test(x.code)) || models[0];
     if (m.fm) {
       const tgt = models.find((x) => x.code === m.fm.code);
@@ -135,7 +113,6 @@
       else { foundation = { ...foundation, ...m.fm }; models.unshift(foundation); }
     }
 
-    // ── EQUITY STRATA (for audit + admin) ──────────────────────────
     const strata = [
       { k: "Ancestry · African", v: +(0.79 + rng() * 0.15).toFixed(2) },
       { k: "Ancestry · European", v: +(0.86 + rng() * 0.11).toFixed(2) },
@@ -147,7 +124,6 @@
       { k: "Access proxy · low", v: +(0.74 + rng() * 0.16).toFixed(2) },
     ].map((s) => ({ ...s, pass: s.v >= 0.78 }));
 
-    // ── DEPLOYMENTS (federation nodes) ──────────────────────────────
     const SITE_NAMES = DATA.pilotSites;
     const deployments = SITE_NAMES.slice(0, Math.max(2, pilotCount + rint(rng, 1, 4))).map((name, i) => ({
       site: name,
@@ -161,7 +137,6 @@
       gpu: pick(rng, ["1× A100", "2× A100", "1× RTX 4090", "CPU-only", "4× H100"]),
     }));
 
-    // ── USERS / RBAC ────────────────────────────────────────────────
     const ROLES = ["Neurosurgeon", "Radiologist", "Researcher", "Module maintainer", "Site admin", "Trial coordinator"];
     const users = Array.from({ length: 12 }, (_, i) => ({
       name: initials(rng),
@@ -172,7 +147,6 @@
       mfa: rng() > 0.1,
     }));
 
-    // ── ACTIVITY FEED ───────────────────────────────────────────────
     const ACT_VERBS = [
       (rng) => ({ icon: "sign", t: `signed integrated report on ${pick(rng, cases).id}` }),
       (rng) => ({ icon: "override", t: `logged override on ${pick(rng, subs).code}` }),
@@ -186,7 +160,6 @@
       return { ...ev, who: initials(rng), when: `${rint(rng, 1, 240)}m ago` };
     });
 
-    // ── 30-pt throughput series ─────────────────────────────────────
     const series = (base, jit) => Array.from({ length: 30 }, (_, i) =>
       Math.max(0, Math.round(base + Math.sin(i / 3) * jit + (rng() - 0.5) * jit)));
 
@@ -201,14 +174,10 @@
     };
   };
 
-  // ════════════════════════════════════════════════════════════════
-  //  RICH PER-CASE DETAIL (clinical workstation)
-  // ════════════════════════════════════════════════════════════════
   window.CASE_DETAIL = (m, c) => {
     const rng = seeded(hashStr(c.id));
     const subs = m.subsystems;
 
-    // imaging series
     const SERIES_BY_MOD = {
       glio: ["T1", "T1c", "T2", "FLAIR", "DWI/ADC", "DSC-perf"],
       hydrocephalus: ["T1", "T2", "FLAIR", "cine-PC", "CISS"],
@@ -218,7 +187,6 @@
       name: s, slices: rint(rng, 24, 192), thick: pick(rng, ["1.0", "1.5", "3.0"]), done: true, active: i === 1,
     }));
 
-    // measurements / radiomics
     const measures = [
       ["Primary ROI volume", `${(8 + rng() * 40).toFixed(1)} cm³`],
       ["Max diameter", `${(18 + rng() * 50).toFixed(0)} mm`],
@@ -228,18 +196,15 @@
       ["Necrotic fraction", `${(rng() * 30).toFixed(0)} %`],
     ];
 
-    // longitudinal scans
     const months = ["Jan", "Mar", "May", "Jul", "Sep", "Nov"];
     const longitudinal = months.slice(0, rint(rng, 3, 6)).map((mo, i) => ({
       when: `${mo} 26`, vol: +(10 + i * 4 + rng() * 6).toFixed(1),
       event: i === 0 ? "baseline" : i === 1 ? "post-op" : pick(rng, ["RT", "surveillance", "TMZ cycle", "—"]),
     }));
 
-    // care team
     const ROLES = ["Attending neurosurgeon", "Neuro-radiologist", "Neuro-oncologist", "Radiation oncologist", "Path / molecular", "Trial coordinator"];
     const team = ROLES.map((r) => ({ role: r, name: initials(rng) }));
 
-    // recommendations
     const recs = subs.slice(0, 5).map((s, i) => ({
       code: s.code, name: s.name,
       rec: [
@@ -253,7 +218,6 @@
       level: i < 2 ? "strong" : i < 4 ? "moderate" : "advisory",
     }));
 
-    // trial matches
     const trials = Array.from({ length: 4 }, (_, i) => ({
       id: `NCT0${rint(rng, 4000000, 5999999)}`,
       name: pick(rng, ["Adaptive RT dose-escalation", "Anti-PD1 + SOC", "IDH inhibitor maintenance", "Tumour-treating fields", "Neoadjuvant immunotherapy"]),
@@ -263,10 +227,8 @@
       status: pick(rng, ["enrolling", "enrolling", "screening", "paused"]),
     })).sort((a, b) => b.fit - a.fit);
 
-    // differential
     const diff = (m.diff || CLASSIFY_DIFF[m.slug] || [["Primary dx", 0.86], ["Alt A", 0.09], ["Alt B", 0.05]]);
 
-    // alerts
     const alerts = [
       c.consent === "pending" && { sev: "warn", t: "Consent scope pending — predictions gated until cohort policy attached." },
       c.flagged && { sev: "bad", t: "Equity stratum below threshold for this subgroup — flagged before MDT." },
@@ -274,7 +236,6 @@
       { sev: "info", t: "Foundation model v" + ops0(m).models[0].version + " — last re-run 2 min ago." },
     ].filter(Boolean);
 
-    // vitals / encounter
     const encounter = [
       ["Encounter", pick(rng, ["Outpatient MDT", "Inpatient", "Pre-op clinic", "Surveillance"])],
       ["Referred by", initials(rng)],
@@ -284,13 +245,10 @@
       ["Comorbidity (CCI)", `${rint(rng, 0, 5)}`],
     ];
 
-    // ── PROMs (evidence-based: index + dimensional, trend, peer band, goals) ──
-    // Generic EQ-5D-5L index (0–1) over time + VAS (0–100)
     const promMonths = ["Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May"];
     const eqBase = 0.42 + rng() * 0.2;
     const eqTrend = promMonths.map((mo, i) => +(Math.min(0.97, eqBase + i * (0.04 + rng() * 0.03))).toFixed(2));
     const vasTrend = promMonths.map((mo, i) => Math.round(Math.min(95, 45 + i * 6 + rng() * 8)));
-    // EQ-5D dimensions: 1 (no problems) → 5 (extreme). lower is better.
     const eqDims = [
       { k: "Mobility", v: rint(rng, 1, 4) },
       { k: "Self-care", v: rint(rng, 1, 3) },
@@ -298,7 +256,6 @@
       { k: "Pain / discomfort", v: rint(rng, 2, 5) },
       { k: "Anxiety / depression", v: rint(rng, 1, 4) },
     ];
-    // disease-specific PROM
     const DISEASE_PROM = {
       glio: { name: "FACT-Br", unit: "/200", v: rint(rng, 110, 175), peer: 148, dir: "higher" },
       "spina-bifida": { name: "ASKp mobility", unit: "/100", v: rint(rng, 40, 85), peer: 72, dir: "higher" },
@@ -312,14 +269,12 @@
     };
     const dPROM = m.prom || DISEASE_PROM[m.slug] || { name: "Disease PROM", unit: "/100", v: rint(rng, 40, 90), peer: 70, dir: "higher" };
 
-    // health goals (set with patient, track achievement)
     const goals = [
       { g: "Return to independent ambulation", target: "EQ mobility ≤2", prog: rint(rng, 30, 95), due: "Aug 26" },
       { g: "Pain controlled without opioids", target: "Pain ≤2 / VAS ≥70", prog: rint(rng, 20, 90), due: "Jul 26" },
       { g: dPROM.dir === "higher" ? `${dPROM.name} ≥ peer (${dPROM.peer})` : `${dPROM.name} ≤ peer (${dPROM.peer})`, target: `${dPROM.peer}${dPROM.unit}`, prog: rint(rng, 25, 88), due: "Sep 26" },
     ];
 
-    // key events timeline (surgeries, chemo/RT start-complete — per the paper)
     const events = [
       { d: "08 Jan 26", t: "Diagnosis confirmed", k: "dx" },
       { d: "21 Jan 26", t: m.slug === "glio" ? "Maximal safe resection" : "Index surgery", k: "surgery" },
@@ -329,7 +284,6 @@
       { d: "10 May 26", t: "Surveillance scan — stable", k: "scan" },
     ].filter(Boolean);
 
-    // ── ROUTINE WORKFLOW — the standardised pathway every case completes ──
     const doneTo = Math.min(c.stageIdx + rint(rng, 0, 1), 99);
     const ROUTINE = [
       { group: "Intake", items: [
@@ -360,7 +314,7 @@
       group: grp.group,
       items: grp.items.map(([t, owner]) => {
         const gi = idx++;
-        const pctThru = (c.stageIdx / 9) * 21; // total ~21 items
+        const pctThru = (c.stageIdx / 9) * 21;
         const done = gi < pctThru;
         const active = gi === Math.floor(pctThru);
         return { t, owner, done, active };
@@ -369,7 +323,6 @@
     const routineDone = routine.flatMap((g) => g.items).filter((i) => i.done).length;
     const routineTotal = routine.flatMap((g) => g.items).length;
 
-    // ── REPORT payload (printable PDF document) ──
     const report = {
       generated: "30 May 2026 · 14:22",
       reportId: `RPT-${c.id}`,
@@ -390,16 +343,12 @@
   };
   const ops0 = (m) => window.OPS(m.slug);
 
-  // ════════════════════════════════════════════════════════════════
   //  FLEET-WIDE ADMIN DATA (deep ops — releases, security, data,
-  //  incidents, billing, services, config, system audit)
-  // ════════════════════════════════════════════════════════════════
   window.OPS_ADMIN = () => {
     const rng = seeded(99173);
     const DATA2 = window.AURORA_DATA;
     const SITE_NAMES = DATA2.pilotSites;
 
-    // model releases / promotions across fleet
     const channels = ["dev", "staging", "pilot", "public-alpha"];
     const releases = [];
     DATA2.modules.forEach((m) => {
@@ -415,7 +364,6 @@
       });
     });
 
-    // datasets / registries (federated data governance)
     const datasets = SITE_NAMES.slice(0, 9).map((s, i) => ({
       name: `${s.split(" ")[0]} neuro registry`, site: s,
       modality: pick(rng, ["MRI + molecular", "MRI + WSI", "CT + MRI", "Imaging only", "Multi-omic"]),
@@ -437,7 +385,6 @@
       expires: `${rint(rng, 30, 320)}d`, status: rng() > 0.12 ? "valid" : "rotate-soon",
     }));
 
-    // incidents
     const incidents = [
       { id: "INC-2041", sev: "minor", t: "Federation sync lag at Charité", status: "resolved", when: "2d ago", mttr: "38m" },
       { id: "INC-2044", sev: "major", t: "Equity gate block on GLIO-RAD release", status: "resolved", when: "5d ago", mttr: "3h 10m" },
@@ -445,7 +392,6 @@
       { id: "INC-2050", sev: "info", t: "Scheduled weight rotation — CRANIO foundation", status: "planned", when: "in 2d", mttr: "—" },
     ];
 
-    // services / infra health
     const services = [
       ["federation-control-plane", "healthy", 99.99, "12ms"],
       ["inference-gateway", "healthy", 99.96, "44ms"],
@@ -457,7 +403,6 @@
       ["object-store", "healthy", 99.99, "15ms"],
     ].map(([name, status, up, lat]) => ({ name, status, up, lat }));
 
-    // billing / license / usage metering
     const usage = DATA2.modules.map((m) => {
       const o = window.OPS(m.slug);
       return { module: m.code.replace("AURORA-", ""), accent: m.accent,
@@ -465,7 +410,6 @@
         storage: +(rng() * 40 + 4).toFixed(1), seats: rint(rng, 4, 60) };
     });
 
-    // config / feature flags
     const flags = [
       { k: "ethics.equityGate", v: "on", scope: "all modules", locked: true },
       { k: "telemetry.enabled", v: "off", scope: "all sites", locked: false },
@@ -476,7 +420,6 @@
       { k: "rollout.canaryPercent", v: "5%", scope: "pilot", locked: false },
     ];
 
-    // RFCs (governance)
     const rfcs = [
       { id: "RFC-018", t: "Equity threshold revision for paediatric strata", status: "in review", owner: initials(rng) },
       { id: "RFC-021", t: "Federated trial-routing data contract", status: "ratified", owner: initials(rng) },
@@ -484,7 +427,6 @@
       { id: "RFC-026", t: "Public-alpha registry signing policy", status: "in review", owner: initials(rng) },
     ];
 
-    // SLO / error-budget dashboards
     const slos = [
       { name: "Inference availability", target: 99.9, actual: 99.96, window: "30d" },
       { name: "Report sign latency (p95)", target: 95, actual: 92, window: "30d", unit: "% < 5s" },
@@ -493,14 +435,12 @@
       { name: "Audit write durability", target: 100, actual: 100, window: "30d" },
     ].map((s) => ({ ...s, budget: +(((s.actual - s.target) / (100 - s.target || 1)) * 100).toFixed(0), burn: rng() })); 
 
-    // cost / capacity planner
     const costPlan = {
       gpuHrs: rint(rng, 9000, 24000), gpuTrend: Array.from({ length: 12 }, (_, i) => rint(rng, 600, 2200)),
       perModule: DATA2.modules.map((m) => ({ module: m.code.replace("AURORA-", ""), accent: m.accent, gpuHrs: rint(rng, 200, 4200), proj: rint(rng, 240, 4800) })),
       headroom: rint(rng, 18, 52),
     };
 
-    // notification routing rules
     const notifRules = [
       { event: "equity.gate.block", channel: "PagerDuty · governance", sev: "critical", on: true },
       { event: "incident.major", channel: "Slack #aurora-sre + email", sev: "critical", on: true },
@@ -510,7 +450,6 @@
       { event: "key.expiry < 30d", channel: "Email · security officer", sev: "warning", on: true },
     ];
 
-    // approvals queue (promotion gates, access, RFC votes)
     const approvals = [
       { kind: "Model promotion", item: "GLIO-RAD → public-alpha", requester: initials(rng), votes: "2/3", status: "awaiting", gate: "equity + eval" },
       { kind: "Access request", item: "Site admin · AIIMS", requester: initials(rng), votes: "—", status: "awaiting", gate: "identity" },
@@ -519,7 +458,6 @@
       { kind: "Model promotion", item: "CRANIO-AI → pilot", requester: initials(rng), votes: "3/3", status: "approved", gate: "equity + eval" },
     ];
 
-    // system-wide audit event log (enriched: actor, role, ip, resource, signature)
     const AUDIT_KINDS = [
       ["model.promote", "Promoted model to channel"], ["override.log", "Clinician override recorded"],
       ["consent.verify", "Consent policy verified"], ["federation.sync", "Federation update pulled"],
@@ -547,11 +485,6 @@
       slos, costPlan, notifRules, approvals, SITE_NAMES };
   };
 
-  // ════════════════════════════════════════════════════════════════
-  //  HOSPITAL TENANTS — per-site administration, delegated admins,
-  //  granular scoped permissions, full site audit, brand, onboarding
-  // ════════════════════════════════════════════════════════════════
-  // granular capability catalogue
   window.AURORA_CAPS = [
     { k: "cases.view", g: "Clinical" }, { k: "cases.bind", g: "Clinical" },
     { k: "reports.sign", g: "Clinical" }, { k: "overrides.log", g: "Clinical" },
@@ -563,7 +496,7 @@
   ];
   const CAP_KEYS = window.AURORA_CAPS.map((c) => c.k);
   const ADMIN_ROLE_CAPS = {
-    "Site administrator": CAP_KEYS, // full
+    "Site administrator": CAP_KEYS,
     "Delegated admin": ["cases.view", "cases.bind", "reports.sign", "overrides.log", "models.view", "users.manage", "site.configure", "audit.view"],
     "Security officer": ["audit.view", "audit.export", "keys.rotate", "users.manage", "site.configure", "admins.delegate"],
     "Data steward": ["data.manage", "consent.manage", "audit.view", "audit.export", "cases.view"],
@@ -590,7 +523,6 @@
       const status = hi < 4 ? "live" : pick(rng, statusPool);
       const onbDone = status === "live" ? 7 : status === "onboarding" ? rint(rng, 3, 6) : status === "scoping" ? rint(rng, 0, 2) : 7;
 
-      // delegated admins
       const roles = ["Site administrator", "Delegated admin", "Security officer", "Data steward", "Clinical lead"];
       const admins = roles.slice(0, rint(rng, 3, 5)).map((role) => ({
         name: initials(rng), role, caps: ADMIN_ROLE_CAPS[role],
@@ -599,11 +531,9 @@
         since: `${pick(rng, ["Jan", "Feb", "Mar"])} 26`,
       }));
 
-      // enabled modules
       const enabled = DATA2.modules.filter(() => rng() > 0.45).map((m) => m.slug);
       if (enabled.length === 0) enabled.push("glio");
 
-      // site users breakdown
       const userTotal = rint(rng, 18, 240);
       const byRole = [
         ["Neurosurgeons", Math.round(userTotal * 0.22)], ["Radiologists", Math.round(userTotal * 0.18)],
@@ -611,32 +541,27 @@
         ["Trial coordinators", Math.round(userTotal * 0.08)], ["Admins", Math.round(userTotal * 0.08)],
       ];
 
-      // nodes
       const nodes = Array.from({ length: rint(rng, 1, 3) }, (_, i) => ({
         node: `aurora-${tag.toLowerCase()}-${i + 1}:8443`, mode: pick(rng, ["on-prem", "federated", "air-gapped"]),
         gpu: pick(rng, ["2× A100", "1× RTX 4090", "4× H100", "CPU-only"]), version: `pilot.${rint(rng, 8, 24)}`,
         status: rng() > 0.15 ? "synced" : "syncing", lastSync: `${rint(rng, 1, 50)}m`,
       }));
 
-      // registries / consent
       const registries = [
         { name: `${name.split(" ")[0]} imaging registry`, records: rint(rng, 800, 18000), consent: +(0.7 + rng() * 0.28).toFixed(2), dp: pick(rng, ["ε=1.0", "ε=2.0", "off"]) },
         { name: `${name.split(" ")[0]} molecular bank`, records: rint(rng, 200, 6000), consent: +(0.6 + rng() * 0.35).toFixed(2), dp: pick(rng, ["ε=2.0", "ε=4.0"]) },
       ];
 
-      // settings
       const settings = [
         ["Federation mode", nodes[0].mode], ["Data residency", country], ["Identity provider", pick(rng, ["Microsoft AD FS", "Okta", "Keycloak"])],
         ["Equity gate", "enforced (locked)"], ["Telemetry", "off"], ["Audit retention", `${rint(rng, 3, 10)} years`],
         ["Consent enforcement", "refuse-without-policy"], ["Time zone", pick(rng, ["CET", "EST", "GMT", "JST", "IST"])],
       ];
 
-      // pending access requests
       const accessReq = Array.from({ length: rint(rng, 0, 4) }, () => ({
         name: initials(rng), role: pick(rng, roles), requested: `${rint(rng, 1, 5)}d ago`, by: initials(rng),
       }));
 
-      // site-scoped audit (full detail)
       const KIND = [["user.login", "Authenticated"], ["report.sign", "Signed report"], ["override.log", "Override logged"], ["consent.verify", "Consent verified"], ["admin.grant", "Permission granted"], ["data.export", "Audit exported"], ["config.change", "Setting changed"], ["model.deploy", "Model deployed"]];
       const audit = Array.from({ length: 22 }, (_, i) => {
         const [k, d] = pick(rng, KIND);
@@ -657,9 +582,6 @@
   };
   window.ONBOARD_STEPS = ONBOARD_STEPS;
 
-  // ════════════════════════════════════════════════════════════════
-  //  MESSAGING — secure MDT / clinical threads, linked to cases & sites
-  // ════════════════════════════════════════════════════════════════
   window.OPS_MESSAGES = (slug) => {
     const m = DATA.modules.find((x) => x.slug === slug);
     const o = window.OPS(slug);
@@ -700,15 +622,11 @@
     return threads;
   };
 
-  // ════════════════════════════════════════════════════════════════
-  //  ANALYTICS — cohort, outcomes, benchmarks, model evaluation
-  // ════════════════════════════════════════════════════════════════
   window.OPS_ANALYTICS = (slug) => {
     const m = DATA.modules.find((x) => x.slug === slug);
     const o = window.OPS(slug);
     const rng = seeded(hashStr("an-" + slug));
 
-    // KM survival — step curves per subgroup
     const mkSteps = (drop, n) => {
       let s = 1; const steps = [];
       for (let i = 1; i <= n; i++) { const d = drop * (0.6 + rng() * 0.8) / n; const to = Math.max(0.04, s - d); steps.push({ t: (i / n) * 36, from: s, to }); s = to; }
@@ -720,7 +638,6 @@
       { label: "High risk", color: "#e8489f", steps: mkSteps(0.85, 9) },
     ];
 
-    // pathway funnel
     const base = o.kpis.cohortSize;
     const funnel = [
       { l: "Referred", v: base }, { l: "Imaged + bound", v: Math.round(base * 0.86) },
@@ -728,20 +645,16 @@
       { l: "Plan signed", v: Math.round(base * 0.49) }, { l: "Trial matched", v: Math.round(base * 0.21) },
     ];
 
-    // dx distribution (donut)
     const palette = [m.accent, m.accent2 || "#0099e0", "#8a7bff", "#e8489f", "#e87b1f"];
     const dx = (o.cases || []).reduce((acc, c) => { acc[c.dx] = (acc[c.dx] || 0) + 1; return acc; }, {});
     const dxDist = Object.entries(dx).slice(0, 5).map(([l, v], i) => ({ l, v, color: palette[i % palette.length] }));
 
-    // enrolment over time (12 mo)
     const months = ["Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May"];
     const enrol = months.map((_, i) => Math.round(20 + i * 4 + rng() * 14));
 
-    // PROM aggregate (EQ index by month, cohort vs peer)
     const promCohort = months.map((_, i) => +(0.5 + i * 0.025 + rng() * 0.03).toFixed(3));
     const promPeer = months.map(() => +(0.72 + rng() * 0.04).toFixed(3));
 
-    // outcome distribution (response categories)
     const outcomes = [
       { l: "Complete response", v: rint(rng, 8, 22), color: "#15935f" },
       { l: "Partial response", v: rint(rng, 20, 38), color: m.accent },
@@ -749,13 +662,11 @@
       { l: "Progression", v: rint(rng, 8, 20), color: "#c43d4b" },
     ];
 
-    // drift over time per top subsystem
     const drift = m.subsystems.slice(0, 3).map((s, i) => ({
       label: s.code, color: palette[i],
       data: months.map((_, j) => +(0.02 + Math.sin(j / 3 + i) * 0.05 + rng() * 0.04).toFixed(3)),
     }));
 
-    // ── model eval — ROC, calibration, confusion, per-stratum ──
     const mkROC = (auc) => { const pts = [[0, 0]]; for (let x = 0.05; x <= 1.0001; x += 0.05) { const y = Math.min(1, Math.pow(x, (1 - auc) * 2)); pts.push([x, +y.toFixed(3)]); } return pts; };
     const evalModels = o.models.map((mdl) => ({
       code: mdl.code, name: mdl.name, auc: mdl.auc, eval: mdl.eval, ece: mdl.ece, color: m.accent,
@@ -770,7 +681,6 @@
       confLabels: ["Class A", "Class B", "Class C"] };
   };
 
-  // fleet benchmark (cross-module)
   window.OPS_BENCHMARK = () => {
     const rng = seeded(424242);
     return DATA.modules.map((m) => ({
@@ -780,7 +690,6 @@
     }));
   };
 
-  // ── build + cache per module ────────────────────────────────────
   const cache = {};
   window.OPS = (slug) => {
     if (!cache[slug]) {
@@ -790,7 +699,6 @@
     return cache[slug];
   };
 
-  // ── fleet-wide rollup (for admin home) ──────────────────────────
   window.OPS_FLEET = () => {
     const mods = DATA.modules.map((m) => {
       const o = window.OPS(m.slug);

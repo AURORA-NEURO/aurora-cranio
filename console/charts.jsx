@@ -1,10 +1,4 @@
-// ════════════════════════════════════════════════════════════════════
-//  AURORA CONSOLE · charting engine (dependency-free SVG)
-//  Theme-aware via CSS vars; pass explicit colors for series.
-//  Exported to window for cross-file use.
-// ════════════════════════════════════════════════════════════════════
 
-// shared axis frame
 const _Frame = ({ w, h, pad, xticks, yticks, xfmt, yfmt, yMin, yMax }) => {
   const [pl, pr, pt, pb] = pad;
   const iw = w - pl - pr, ih = h - pt - pb;
@@ -27,7 +21,6 @@ const _Frame = ({ w, h, pad, xticks, yticks, xfmt, yfmt, yMin, yMax }) => {
   );
 };
 
-// ── Multi-series line / area chart ─────────────────────────────────
 const LineChart = ({ series, labels, height = 200, yMax, yMin = 0, area = true, yfmt, fmtPct }) => {
   const w = 520, h = height, pad = [40, 14, 14, 26];
   const [pl, pr, pt, pb] = pad;
@@ -57,7 +50,6 @@ const LineChart = ({ series, labels, height = 200, yMax, yMin = 0, area = true, 
   );
 };
 
-// ── Donut / pie ────────────────────────────────────────────────────
 const Donut = ({ segments, size = 150, thickness = 22, center }) => {
   const r = size / 2 - 4, c = size / 2, circ = 2 * Math.PI * (r - thickness / 2);
   const total = segments.reduce((a, b) => a + b.v, 0) || 1;
@@ -89,7 +81,6 @@ const Legend = ({ items, cols = 1 }) => (
   </div>
 );
 
-// ── Kaplan–Meier survival (step) curves ────────────────────────────
 const KMCurve = ({ curves, height = 220, months = 36 }) => {
   const w = 520, h = height, pad = [40, 14, 14, 28];
   const [pl, pr, pt, pb] = pad, iw = w - pl - pr, ih = h - pt - pb;
@@ -112,7 +103,6 @@ const KMCurve = ({ curves, height = 220, months = 36 }) => {
   );
 };
 
-// ── ROC curve ──────────────────────────────────────────────────────
 const ROC = ({ points, auc, color, height = 180 }) => {
   const s = height, pad = 28, iw = s - pad - 10, ih = s - pad - 10;
   const px = (x) => pad + x * iw, py = (y) => (s - pad) - y * ih;
@@ -129,7 +119,6 @@ const ROC = ({ points, auc, color, height = 180 }) => {
   );
 };
 
-// ── Calibration plot ───────────────────────────────────────────────
 const Calibration = ({ points, color, height = 180 }) => {
   const s = height, pad = 28, iw = s - pad - 10, ih = s - pad - 10;
   const px = (x) => pad + x * iw, py = (y) => (s - pad) - y * ih;
@@ -145,7 +134,6 @@ const Calibration = ({ points, color, height = 180 }) => {
   );
 };
 
-// ── Confusion matrix ───────────────────────────────────────────────
 const Confusion = ({ matrix, labels, color }) => {
   const max = Math.max(...matrix.flat()) || 1;
   return (
@@ -164,7 +152,6 @@ const Confusion = ({ matrix, labels, color }) => {
   );
 };
 
-// ── Pathway funnel ─────────────────────────────────────────────────
 const Funnel = ({ stages, color }) => {
   const max = stages[0] ? stages[0].v : 1;
   return (
@@ -187,7 +174,6 @@ const Funnel = ({ stages, color }) => {
   );
 };
 
-// ── Grouped/stacked horizontal bars (benchmark) ────────────────────
 const HBars = ({ rows, color, max = 100, unit = "" }) => (
   <div style={{ display: "flex", flexDirection: "column", gap: 9 }}>
     {rows.map((r, i) => (
@@ -202,7 +188,6 @@ const HBars = ({ rows, color, max = 100, unit = "" }) => (
   </div>
 );
 
-// ── Radar (multi-axis comparison) ──────────────────────────────────
 const Radar = ({ axes, series, size = 240 }) => {
   const c = size / 2, r = size / 2 - 30, n = axes.length;
   const pt = (ai, val) => { const a = (Math.PI * 2 * ai) / n - Math.PI / 2; return [c + Math.cos(a) * r * val, c + Math.sin(a) * r * val]; };
@@ -219,9 +204,8 @@ const Radar = ({ axes, series, size = 240 }) => {
   );
 };
 
-// ── Donut gauge (single value) ─────────────────────────────────────
 const Gauge = ({ value, max = 100, color, label, size = 120 }) => {
-  const r = size / 2 - 8, c = size / 2, circ = Math.PI * r; // half
+  const r = size / 2 - 8, c = size / 2, circ = Math.PI * r;
   const frac = Math.min(1, value / max);
   return (
     <svg viewBox={`0 0 ${size} ${size / 1.7}`} style={{ width: "100%", maxWidth: size, height: "auto" }}>

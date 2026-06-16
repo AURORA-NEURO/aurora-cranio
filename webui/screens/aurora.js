@@ -1,6 +1,3 @@
-/* AURORA — tiny mock runtime: count-up + staged reveal.
-   Screens are shown as static iframes on the canvas; this plays the
-   evidence/uncertainty entrance once on load so the stills feel alive. */
 (function () {
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -13,7 +10,7 @@
     var dur = 620, start = performance.now();
     function frame(now) {
       var t = Math.min(1, (now - start) / dur);
-      var e = 1 - Math.pow(1 - t, 3); // easeOutCubic
+      var e = 1 - Math.pow(1 - t, 3);
       el.textContent = prefix + (target * e).toFixed(dec) + suffix;
       if (t < 1) requestAnimationFrame(frame);
       else el.textContent = prefix + target.toFixed(dec) + suffix;
@@ -22,7 +19,6 @@
   }
 
   function run() {
-    // staged reveal of the whole screen
     requestAnimationFrame(function () {
       document.body.classList.add('reveal-in');
     });

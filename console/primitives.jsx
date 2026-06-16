@@ -1,9 +1,4 @@
-// ════════════════════════════════════════════════════════════════════
-//  AURORA CONSOLE · shared primitives + icon set
-//  Exported to window for cross-file use (Babel scopes are per-script).
-// ════════════════════════════════════════════════════════════════════
 
-// ── ICONS (1.6 stroke, currentColor) ──────────────────────────────
 const I = {
   overview: "M3 3h7v7H3zM14 3h7v4h-7zM14 10h7v11h-7zM3 14h7v7H3z",
   grid: "M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h7v7h-7z",
@@ -49,7 +44,6 @@ const Icon = ({ n, className = "", style }) => (
   </svg>
 );
 
-// ── STATUS PILL ────────────────────────────────────────────────────
 const STATUS_LABEL = { live: "live", beta: "beta", soon: "soon", synced: "synced", syncing: "syncing", degraded: "degraded" };
 const Pill = ({ s, children }) => (
   <span className={`pill ${s}`}><span className="d" />{children || STATUS_LABEL[s] || s}</span>
@@ -58,7 +52,6 @@ const Chip = ({ children, dot }) => (
   <span className="chip">{dot && <span className="d" />}{children}</span>
 );
 
-// ── KPI ────────────────────────────────────────────────────────────
 const Kpi = ({ label, icon, value, unit, foot, delta, dir, edge }) => (
   <div className="kpi">
     {edge && <div className="accent-edge" />}
@@ -73,7 +66,6 @@ const Kpi = ({ label, icon, value, unit, foot, delta, dir, edge }) => (
   </div>
 );
 
-// ── CARD ───────────────────────────────────────────────────────────
 const Card = ({ title, sub, right, children, flush, className = "", style }) => (
   <div className={`card ${className}`} style={style}>
     {(title || right) && (
@@ -86,7 +78,6 @@ const Card = ({ title, sub, right, children, flush, className = "", style }) => 
   </div>
 );
 
-// ── METER / BAR ────────────────────────────────────────────────────
 const Meter = ({ pct, color }) => (
   <div className="meter"><div className="fill" style={{ width: Math.max(2, Math.min(100, pct)) + "%", background: color }} /></div>
 );
@@ -100,7 +91,6 @@ const BarRow = ({ code, name, pct, color, unit = "%" }) => (
   </div>
 );
 
-// ── SPARKLINE (line or bars) ───────────────────────────────────────
 const Spark = ({ data, color, kind = "line", h = 44 }) => {
   const w = 200, max = Math.max(...data, 1), min = Math.min(...data, 0);
   const rng = max - min || 1;
@@ -129,7 +119,6 @@ const Spark = ({ data, color, kind = "line", h = 44 }) => {
   );
 };
 
-// ── TABS ───────────────────────────────────────────────────────────
 const Tabs = ({ items, value, onChange, underline }) => (
   <div className={underline ? "utabs" : "tabs"}>
     {items.map((it) => {
@@ -142,7 +131,6 @@ const Tabs = ({ items, value, onChange, underline }) => (
   </div>
 );
 
-// ── ACCORDION ──────────────────────────────────────────────────────
 const Accordion = ({ head, children, defaultOpen }) => {
   const [open, setOpen] = React.useState(!!defaultOpen);
   return (
@@ -153,7 +141,6 @@ const Accordion = ({ head, children, defaultOpen }) => {
   );
 };
 
-// ── AVATAR ─────────────────────────────────────────────────────────
 const AV_HUES = [200, 150, 270, 330, 30, 90];
 const Avatar = ({ name, sm }) => {
   const init = (name || "?").split(" ").map((x) => x[0]).join("").slice(0, 2);
@@ -161,7 +148,6 @@ const Avatar = ({ name, sm }) => {
   return <div className={sm ? "av-sm" : "av-sm"} style={{ background: `oklch(0.62 0.13 ${hue})` }}>{init}</div>;
 };
 
-// ── VIEW HEADER ────────────────────────────────────────────────────
 const ViewHead = ({ eyebrow, title, sub, actions }) => (
   <div className="vhead">
     <div>
@@ -173,7 +159,6 @@ const ViewHead = ({ eyebrow, title, sub, actions }) => (
   </div>
 );
 
-// ── CODE highlighter (very light) ──────────────────────────────────
 const Code = ({ children }) => {
   const html = String(children)
     .replace(/&/g, "&amp;").replace(/</g, "&lt;")

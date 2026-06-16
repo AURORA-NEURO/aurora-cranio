@@ -1,13 +1,5 @@
-// ════════════════════════════════════════════════════════════════════
-//  VIEW · CLINICAL SURFACE — full clinical workstation
-//  Integrates AI/molecular outputs WITH the evidence-based clinical-
-//  dashboard design components (Bischof et al. 2024, JMIR): patient
-//  info, key-events timeline, PROMs (index + dimensional + trend +
-//  peer band), health goals, alerts, free write-in notes, audit.
-// ════════════════════════════════════════════════════════════════════
 window.AV = window.AV || {};
 
-// per-module molecular / classification facts
 const CLASSIFY = {
   glio: [["IDH", "wildtype", 0.99], ["MGMT", "methylated", 0.83], ["TERT", "C228T mut", 0.97], ["EGFR", "amplified", 0.94], ["Chr 7/10", "+7 / −10", 0.91], ["WHO 2021", "GBM IDH-WT", 0.96]],
   "spina-bifida": [["Lesion", "L3 level", 0.95], ["Defect", "open NTD", 0.98], ["Hindbrain", "Chiari II", 0.9], ["Ventricles", "16 mm", 0.93], ["Repair", "prenatal cand.", 0.81], ["Folate axis", "low", 0.77]],
@@ -59,7 +51,6 @@ window.AV.clinical = function Clinical({ m, ops, activeCase, go }) {
         actions={<><button className="btn btn-sm" onClick={() => go("cases")}><Icon n="arrow" style={{ transform: "rotate(180deg)" }} /> Queue</button><button className="btn btn-sm" onClick={() => go("messages")}><Icon n="doc" /> MDT thread</button><button className="btn btn-sm" onClick={() => setShowReport(true)}><Icon n="doc" /> Generate PDF</button><button className="btn btn-pri btn-sm" style={{ background: a, borderColor: a }} onClick={() => setShowSign(true)}><Icon n="sign" /> Sign report</button></>}
       />
 
-      {/* patient banner */}
       <div className="card" style={{ marginBottom: 14, borderLeft: `3px solid ${a}` }}>
         <div className="card-b" style={{ display: "flex", gap: 18, alignItems: "center", flexWrap: "wrap", padding: "14px 18px" }}>
           <div className="av-sm" style={{ width: 44, height: 44, fontSize: 14, background: a }}>{c.clinician.split(" ").map((x) => x[0]).join("")}</div>
@@ -79,7 +70,6 @@ window.AV.clinical = function Clinical({ m, ops, activeCase, go }) {
         </div>
       </div>
 
-      {/* alerts (threshold-based, per paper) */}
       {D.alerts.length > 0 && (
         <div className="grid" style={{ gap: 8, marginBottom: 14 }}>
           {D.alerts.map((al, i) => (
@@ -93,7 +83,6 @@ window.AV.clinical = function Clinical({ m, ops, activeCase, go }) {
 
       <div className="card" style={{ overflow: "hidden" }}>
         <div style={{ display: "grid", gridTemplateColumns: "200px 1fr" }}>
-          {/* surface nav */}
           <div style={{ borderRight: "1px solid var(--line)", padding: 12, background: "var(--panel-2)" }}>
             <div className="mono" style={{ fontSize: 9.5, letterSpacing: ".1em", textTransform: "uppercase", color: "var(--muted)", padding: "4px 8px 8px" }}>{m.code} · surfaces</div>
             {SURF.map((s) => (
@@ -110,7 +99,6 @@ window.AV.clinical = function Clinical({ m, ops, activeCase, go }) {
             ))}
           </div>
 
-          {/* surface body */}
           <div style={{ padding: 18, minHeight: 520 }}>
             {tab === "overview" && <CSOverview {...{ m, c, D, a, classify }} />}
             {tab === "imaging" && <CSImaging {...{ m, D, a, showRoi }} />}
@@ -129,7 +117,6 @@ window.AV.clinical = function Clinical({ m, ops, activeCase, go }) {
   );
 };
 
-// ── Case overview ──────────────────────────────────────────────────
 function CSOverview({ m, c, D, a, classify }) {
   return (
     <div className="grid" style={{ gridTemplateColumns: "1.4fr 1fr", gap: 16, alignItems: "start" }}>
@@ -179,7 +166,6 @@ function CSOverview({ m, c, D, a, classify }) {
   );
 }
 
-// ── Imaging & radiomics ────────────────────────────────────────────
 function CSImaging({ m, D, a, showRoi }) {
   return (
     <div className="grid" style={{ gridTemplateColumns: "1.3fr 1fr", gap: 16, alignItems: "start" }}>
@@ -223,7 +209,6 @@ function CSImaging({ m, D, a, showRoi }) {
   );
 }
 
-// ── AI signals & differential ──────────────────────────────────────
 function CSSignals({ m, sigs, classify, D, a }) {
   return (
     <div className="grid" style={{ gridTemplateColumns: "1fr 1fr", gap: 16, alignItems: "start" }}>
@@ -252,7 +237,6 @@ function CSSignals({ m, sigs, classify, D, a }) {
   );
 }
 
-// ── PROMs (the paper's centerpiece) ────────────────────────────────
 function CSProms({ P, a }) {
   const dimColor = (v) => v <= 1 ? "var(--ok)" : v <= 2 ? a : v <= 3 ? "var(--warn)" : "var(--bad)";
   const dp = P.dPROM;
@@ -312,7 +296,6 @@ function CSProms({ P, a }) {
   );
 }
 
-// ── Plan & trials ──────────────────────────────────────────────────
 function CSPlan({ D, a }) {
   return (
     <div className="grid" style={{ gap: 16 }}>
@@ -345,7 +328,6 @@ function CSPlan({ D, a }) {
   );
 }
 
-// ── Free write-in notes (per paper) ────────────────────────────────
 function CSNotes({ note, setNote, D, a }) {
   const presets = ["Discussed at MDT — consensus on plan.", "Patient prefers watchful waiting; reassess 3 months.", "Flag for re-imaging in 6 weeks.", "Counselled family re: risks/benefits."];
   return (
@@ -369,7 +351,6 @@ function CSNotes({ note, setNote, D, a }) {
   );
 }
 
-// ── Routine workflow completer ─────────────────────────────────────
 function CSRoutine({ D, a, onReport }) {
   const pct = Math.round((D.routineDone / D.routineTotal) * 100);
   return (
@@ -414,7 +395,6 @@ function CSRoutine({ D, a, onReport }) {
   );
 }
 
-// ── Printable clinical report (PDF via browser print) ──────────────
 function ClinicalReport({ m, c, D, classify, onClose }) {
   const bp = m.accent;
   return (
@@ -486,7 +466,6 @@ function ClinicalReport({ m, c, D, classify, onClose }) {
   );
 }
 
-// ── Order sets ─────────────────────────────────────────────────────
 function CSOrders({ D, m, a }) {
   const [checked, setChecked] = React.useState({});
   const sets = [
@@ -526,7 +505,6 @@ function CSOrders({ D, m, a }) {
   );
 }
 
-// ── Patient companion (PROMs rendered for the patient) ─────────────
 function CSPatient({ P, c, a }) {
   const dimWord = (v) => ["", "No problems", "Slight", "Moderate", "Severe", "Extreme"][v];
   const dimColor = (v) => v <= 1 ? "var(--ok)" : v <= 2 ? a : v <= 3 ? "var(--warn)" : "var(--bad)";
@@ -558,9 +536,8 @@ function CSPatient({ P, c, a }) {
   );
 }
 
-// ── E-signature ceremony ───────────────────────────────────────────
 function ESignCeremony({ m, c, D, onClose }) {
-  const [step, setStep] = React.useState(0); // 0 review, 1 attest, 2 signed
+  const [step, setStep] = React.useState(0);
   const [pin, setPin] = React.useState("");
   const a = m.accent;
   return (
@@ -599,7 +576,6 @@ function ESignCeremony({ m, c, D, onClose }) {
   );
 }
 
-// ── Per-case audit ─────────────────────────────────────────────────
 function CSAudit({ m, c, ops, a }) {
   const chain = [
     { k: "Inputs", v: `study ${c.mrn} · consent ${c.consent}`, h: "a3f1c9e" },

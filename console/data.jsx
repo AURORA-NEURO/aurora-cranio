@@ -1,8 +1,3 @@
-// ════════════════════════════════════════════════════════════════════
-//  AURORA-CRANIO — console data (generated, single-module)
-//  AURORA-CRANIO Ω · module program
-//  The first craniosynostosis-specific research-clinical operating system: 9 sections, 30+ modules, a non-prescriptive safety contract baked into every release.
-// ════════════════════════════════════════════════════════════════════
 
 window.AURORA_DATA = {
   "meta": {

@@ -1,6 +1,3 @@
-/* AURORA clinician — module panels + shared UI. Exposes window.CLIN.
-   Loaded as a Babel script; shares nothing by scope, so everything the
-   app needs is attached to window.CLIN at the end. */
 
 const ICONS = {
   home: 'M3 9.2L10 3.5l7 5.7V17a1 1 0 0 1-1 1h-4v-5H8v5H4a1 1 0 0 1-1-1z',
@@ -57,7 +54,6 @@ function EvChip({ state, label }) {
   return (<span className={'ev-chip ' + state}><EvRing state={state}/>{label || EV_LABEL[state]}</span>);
 }
 
-/* ── live clock status card ── */
 function StatusCard({ d, ctx }) {
   const [now, setNow] = React.useState(new Date());
   React.useEffect(() => { const t = setInterval(() => setNow(new Date()), 1000); return () => clearInterval(t); }, []);
@@ -84,13 +80,11 @@ function StatusCard({ d, ctx }) {
   );
 }
 
-/* ── OVERVIEW (bento) ── */
 function Overview({ d, ctx }) {
   return (
     <div className="bento mod-enter">
       <div className="bento-top">
 
-        {/* hero */}
         <div className="gcard hero">
           <div className="hero-media">
             <div className="render"></div>
@@ -129,7 +123,6 @@ function Overview({ d, ctx }) {
           </div>
         </div>
 
-        {/* right column */}
         <div className="bento-right">
           <StatusCard d={d} ctx={ctx} />
           <div className="gcard imgc">
@@ -156,10 +149,8 @@ function Overview({ d, ctx }) {
         </div>
       </div>
 
-      {/* bottom row */}
       <div className="bento-bot">
 
-        {/* triage */}
         <div className="gcard triage">
           <div className="triage-head">
             <div>
@@ -183,7 +174,6 @@ function Overview({ d, ctx }) {
           </div>
         </div>
 
-        {/* metrics */}
         <div className="gcard" style={{ padding: '16px 18px', display: 'flex', flexDirection: 'column', gap: 10 }}>
           <div className="card-k">Program metrics · 7 days</div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 9, flex: 1 }}>
@@ -199,7 +189,6 @@ function Overview({ d, ctx }) {
           </div>
         </div>
 
-        {/* calibration ring */}
         <div className="gcard ringc">
           <div style={{ display: 'flex', width: '100%', alignItems: 'flex-start' }}>
             <div className="card-k">Model calibration</div>
@@ -224,7 +213,6 @@ function Overview({ d, ctx }) {
   );
 }
 
-/* ── IMAGING ── */
 function Imaging({ d }) {
   const series = ['T2 FLAIR', 'T1 +C', 'DWI', 'SWI', 'rCBV'];
   return (
@@ -287,7 +275,6 @@ function Imaging({ d }) {
   );
 }
 
-/* ── ENGINES ── */
 function Engines({ d }) {
   return (
     <div className="modwrap mod-enter">
@@ -332,7 +319,6 @@ function Engines({ d }) {
   );
 }
 
-/* ── REGISTRY ── */
 function Registry({ d }) {
   const rows = d.triage.concat(d.triage.slice(0, 2)).map((c, i) => ({ ...c, age: c.age, last: ['2d', '5d', '1w', '2w', '3w', '1mo', '6w', '2mo'][i] }));
   return (
@@ -368,7 +354,6 @@ function Registry({ d }) {
   );
 }
 
-/* ── GOVERNANCE ── */
 function Govern({ d }) {
   return (
     <div className="modwrap mod-enter">
@@ -418,7 +403,6 @@ function Govern({ d }) {
   );
 }
 
-/* ── WORKSPACE / CANVAS (template import surface) ── */
 function Workspace({ d }) {
   const targets = [
     { id: 'overview', name: 'Overview', icon: 'home' },
@@ -491,16 +475,14 @@ function Workspace({ d }) {
   );
 }
 
-/* ── CALENDAR (uniform across all programs, hospital-paired) ── */
 function Calendar({ d }) {
   const { days, dates, hours, events } = window.AURORA.calendar;
   const sites = window.AURORA.sites;
   const siteOf = (id) => sites.find(s => s.id === id) || sites[0];
   const H0 = hours[0], HN = hours[hours.length - 1];
   const span = HN - H0;
-  const todayIdx = 2; // Wed highlighted
+  const todayIdx = 2;
   const localize = (title) => title.replace('{D}', d.name);
-  // agenda = today's events
   const agenda = events.filter(e => e.day === todayIdx).sort((a, b) => a.start - b.start);
 
   return (

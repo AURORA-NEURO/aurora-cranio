@@ -1,10 +1,5 @@
-// ════════════════════════════════════════════════════════════════════
-//  VIEW · USE CASES — I/O spec, workflow, integrations
-//  Mirrors the per-module product spec (inputs → pipeline → outputs).
-// ════════════════════════════════════════════════════════════════════
 window.AV = window.AV || {};
 
-// generic builders (replace with real per-module content when cloning)
 const buildIO = (m) => {
   const D = m.code.replace("AURORA-", "");
   return {
@@ -36,7 +31,6 @@ window.AV.product = function Product({ m, ops }) {
   const io = buildIO(m);
   const [tab, setTab] = React.useState("workflow");
 
-  // workflow from subsystems firing order
   const steps = m.subsystems.slice(0, 8).map((s, i) => ({
     code: s.code, name: s.name, desc: s.desc,
     lat: i === 0 ? "≤1s" : `${2 + i * 2}–${5 + i * 2}s`,
@@ -53,7 +47,6 @@ window.AV.product = function Product({ m, ops }) {
         sub={`${m.code} reads the inputs a real ${m.name.toLowerCase()} case already produces, runs them through ${m.subsystems.length} subsystems on a shared substrate, and returns explainable artefacts. Every override is logged.`}
       />
 
-      {/* personas */}
       <div className="grid g4" style={{ marginBottom: 18 }}>
         {personas.map((p, i) => (
           <div key={i} className="card" style={{ padding: "13px 15px" }}>

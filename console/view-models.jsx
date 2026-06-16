@@ -1,9 +1,5 @@
-// ════════════════════════════════════════════════════════════════════
-//  VIEW · SUBSYSTEMS  +  FOUNDATION MODELS
-// ════════════════════════════════════════════════════════════════════
 window.AV = window.AV || {};
 
-// per-subsystem artefact + io (generic, derived from desc)
 const artefactOf = (code) => {
   const t = code.toLowerCase();
   if (/ai|found/.test(t)) return "case representation (.aurora.case)";
@@ -76,9 +72,6 @@ window.AV.subsystems = function Subsystems({ m, ops, go }) {
   );
 };
 
-// ════════════════════════════════════════════════════════════════════
-//  FOUNDATION MODELS
-// ════════════════════════════════════════════════════════════════════
 window.AV.models = function Models({ m, ops }) {
   const a = m.accent;
   const meta = (window.AURORA_DATA && window.AURORA_DATA.meta) || {};
@@ -95,7 +88,6 @@ window.AV.models = function Models({ m, ops }) {
         actions={<><button className="btn btn-sm"><Icon n="hist" /> Versions</button><button className="btn btn-pri btn-sm"><Icon n="download" /> Pull weights</button></>}
       />
 
-      {/* foundation spotlight */}
       <Card className="span2" style={{ marginBottom: 16, borderTop: `2px solid ${a}` }}>
         <div className="card-b" style={{ display: "grid", gridTemplateColumns: "1.3fr 1fr", gap: 22, padding: 20 }}>
           <div>
@@ -129,7 +121,6 @@ window.AV.models = function Models({ m, ops }) {
         </div>
       </Card>
 
-      {/* registry table */}
       <Card title="Model registry" sub={`${ops.models.length} models`} flush>
         <table className="tbl">
           <thead><tr><th>Code</th><th>Name</th><th>Kind</th><th>Params</th><th>Version</th><th className="rt">Eval</th><th className="rt">AUC</th><th className="rt">ECE</th><th className="rt">Drift</th><th>Signed</th><th>Status</th></tr></thead>

@@ -1,4 +1,3 @@
-/* AURORA clinician — app shell. Reads window.AURORA (data) + window.CLIN (modules). */
 const { useState, useEffect, useRef } = React;
 const A = window.AURORA;
 const { Icon } = window.CLIN;
@@ -184,7 +183,6 @@ function App() {
   const accent2 = st.accent === 'disease' ? d.accent2 : d.accent2;
   const curMod = A.modules.find((m) => m.id === mod);
 
-  // count-up on module/disease change (unless reduced motion)
   useEffect(() => {
     const nums = document.querySelectorAll('[data-countup]');
     nums.forEach((el) => {
@@ -204,7 +202,6 @@ function App() {
 
   return (
     <div className={rootCls} style={{ '--accent': accent, '--accent-2': accent2 }}>
-      {/* rail */}
       <nav className="rail">
         <div className="brand-row">
           <div className="logo"></div>
@@ -234,7 +231,6 @@ function App() {
         </div>
       </nav>
 
-      {/* main */}
       <div className="mainc">
         <header className="topbar">
           <DiseaseSwitcher dz={dz} setDz={setDz} />

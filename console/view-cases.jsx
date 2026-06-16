@@ -1,7 +1,3 @@
-// ════════════════════════════════════════════════════════════════════
-//  VIEW · CASES (patient tracking / case queue)
-//  Clinical surface lives in view-clinical.jsx.
-// ════════════════════════════════════════════════════════════════════
 window.AV = window.AV || {};
 
 window.AV.cases = function Cases({ m, ops, openCase }) {

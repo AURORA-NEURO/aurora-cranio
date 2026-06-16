@@ -1,20 +1,15 @@
-// ════════════════════════════════════════════════════════════════════
-//  VIEW · AUDIT — override log, provenance chain, equity, consent
-// ════════════════════════════════════════════════════════════════════
 window.AV = window.AV || {};
 
 window.AV.audit = function Audit({ m, ops }) {
   const a = m.accent;
   const [tab, setTab] = React.useState("overrides");
 
-  // override log derived from flagged/override cases
   const log = ops.cases.filter((c) => c.overrides > 0).slice(0, 14).map((c, i) => ({
     ts: `2026-05-${String(28 - (i % 27)).padStart(2, "0")} ${String(9 + (i % 12)).padStart(2, "0")}:${String((i * 7) % 60).padStart(2, "0")}`,
     who: c.clinician, sub: m.subsystems[i % m.subsystems.length].code, caseId: c.id,
     reason: ["disagree with margin extent", "molecular result pending", "imaging artefact", "clinical override per MDT", "consent scope change"][i % 5],
   }));
 
-  // provenance chain
   const chain = [
     { k: "Inputs", v: "DICOM study 1.2.840…4871 · molecular ORU · consent cohort-2026", hash: "a3f1c9e" },
     { k: "Weights", v: `${m.code} foundation ${ops.models[0].version} · ${ops.models[0].whash}`, hash: ops.models[0].whash },
@@ -128,9 +123,6 @@ aurora audit verify runs/{m.slug}-0007 --rekor
   );
 };
 
-// ════════════════════════════════════════════════════════════════════
-//  VIEW · INSTALL — multi-env, hardware matrix, migration
-// ════════════════════════════════════════════════════════════════════
 window.AV.install = function Install({ m }) {
   const a = m.accent;
   const [tab, setTab] = React.useState("pip");

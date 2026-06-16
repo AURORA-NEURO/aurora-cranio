@@ -1,6 +1,3 @@
-// ════════════════════════════════════════════════════════════════════
-//  AURORA CONSOLE · app shell + router
-// ════════════════════════════════════════════════════════════════════
 
 const NAV = [
   { group: "Clinical", items: [
@@ -60,7 +57,6 @@ function Shell() {
   React.useEffect(() => { localStorage.setItem(lsKey("module"), slug); }, [slug]);
   React.useEffect(() => { localStorage.setItem(lsKey("view"), view); }, [view]);
 
-  // accent flows into --accent (user override wins)
   const rootStyle = { "--accent": accentPref || m.accent };
   const prefs = { theme, setTheme, density, setDensity, accentPref, setAccentPref };
 
@@ -72,14 +68,12 @@ function Shell() {
 
   return (
     <div className={`app ${collapsed ? "collapsed" : ""} ${mobileOpen ? "mobile-open" : ""}`} style={rootStyle}>
-      {/* ── SIDEBAR ── */}
       <aside className="sb">
         <div className="sb-top">
           <div className="sb-mark" />
           <div className="sb-brand"><b>AURORA</b><span>console</span></div>
         </div>
 
-        {/* module switcher */}
         <div className="sb-mod" onClick={() => setModPop(!modPop)}>
           <span className="swatch" style={{ background: m.accent }} />
           <div className="sb-mod-meta"><b>{m.name}</b><span>{m.code}</span></div>
@@ -119,7 +113,6 @@ function Shell() {
         </div>
       </aside>
 
-      {/* ── MAIN ── */}
       <div className="main">
         <header className="topbar">
           <button className="tb-burger" onClick={() => { setCollapsed(!collapsed); setMobileOpen(!mobileOpen); }}><Icon n="burger" /></button>

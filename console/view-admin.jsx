@@ -1,9 +1,4 @@
-// ════════════════════════════════════════════════════════════════════
-//  VIEW · ADMIN — deep fleet-ops console
-//  A console-within-the-console: 12 sub-sections let an admin drill into
 //  anything — fleet, federation, releases, models, users/RBAC, security,
-//  data/consent, equity governance, monitoring, audit log, billing, config.
-// ════════════════════════════════════════════════════════════════════
 window.AV = window.AV || {};
 
 const ADMIN_SECTIONS = [
@@ -50,7 +45,6 @@ window.AV.admin = function Admin({ m, ops, go, setModule }) {
       </div>
 
       <div className="grid" style={{ gridTemplateColumns: "210px 1fr", gap: 16, alignItems: "start" }}>
-        {/* sub-nav */}
         <div className="card" style={{ padding: 8, position: "sticky", top: 0 }}>
           {ADMIN_SECTIONS.map((s) => (
             <a key={s.k} onClick={() => setSec(s.k)} className={`sb-link ${sec === s.k ? "active" : ""}`}
@@ -60,7 +54,6 @@ window.AV.admin = function Admin({ m, ops, go, setModule }) {
           ))}
         </div>
 
-        {/* section body */}
         <div>
           {sec === "fleet" && <AdFleet {...{ fleet, go, setModule }} />}
           {sec === "hospitals" && <AdHospitals {...{ go }} />}
@@ -95,7 +88,6 @@ const Sec = ({ title, sub, children, right }) => (
   </div>
 );
 
-// ── Fleet ──────────────────────────────────────────────────────────
 function AdFleet({ fleet, go, setModule }) {
   return (
     <Sec title="Module fleet" sub="Every disease module — click to enter its console">
@@ -121,7 +113,6 @@ function AdFleet({ fleet, go, setModule }) {
   );
 }
 
-// ── Federation ─────────────────────────────────────────────────────
 function AdFederation({ m, ops, A }) {
   const [node, setNode] = React.useState(ops.deployments[0]);
   return (
@@ -162,7 +153,6 @@ function AdFederation({ m, ops, A }) {
   );
 }
 
-// ── Releases & rollout ─────────────────────────────────────────────
 function AdReleases({ A }) {
   const [ch, setCh] = React.useState("all");
   const channels = ["all", "dev", "staging", "pilot", "public-alpha"];
@@ -195,7 +185,6 @@ function AdReleases({ A }) {
   );
 }
 
-// ── Users & RBAC ───────────────────────────────────────────────────
 function AdUsers({ ops }) {
   const PERMS = ["View cases", "Sign reports", "Override", "Promote models", "Manage sites", "Edit config"];
   const ROLE_PERMS = {
@@ -278,7 +267,6 @@ function AdSecurity({ A }) {
   );
 }
 
-// ── Data & consent ─────────────────────────────────────────────────
 function AdData({ A }) {
   return (
     <Sec title="Federated registries" sub="Compute travels to data · differential-privacy budgets enforced per registry">
@@ -305,7 +293,6 @@ function AdData({ A }) {
   );
 }
 
-// ── Equity governance ──────────────────────────────────────────────
 function AdEquity({ fleet }) {
   return (
     <Sec title="Equity governance" sub="Equity-as-loss runs inside the training loop · releases below threshold are blocked, not warned">
@@ -332,7 +319,6 @@ function AdEquity({ fleet }) {
   );
 }
 
-// ── Monitoring & SRE ───────────────────────────────────────────────
 function AdMonitoring({ A, ops, m }) {
   const SEV = { major: "fail", minor: "warn", info: "beta", planned: "soon" };
   return (
@@ -382,7 +368,6 @@ function AdMonitoring({ A, ops, m }) {
   );
 }
 
-// ── Audit log (enriched + expandable) ──────────────────────────────
 function AdAudit({ A }) {
   const [q, setQ] = React.useState("");
   const [kind, setKind] = React.useState("all");
@@ -433,7 +418,6 @@ function AdAudit({ A }) {
   );
 }
 
-// ── Hospitals (tenant administration — master/detail) ──────────────
 function AdHospitals({ go }) {
   const hosps = React.useMemo(() => window.OPS_HOSPITALS(), []);
   const [sel, setSel] = React.useState(null);
@@ -480,7 +464,6 @@ function HospitalDetail({ h, back, go }) {
   return (
     <div>
       <button className="btn btn-sm btn-ghost" onClick={back} style={{ marginBottom: 12 }}><Icon n="arrow" style={{ transform: "rotate(180deg)" }} /> All hospitals</button>
-      {/* hospital header — branded */}
       <div className="card" style={{ marginBottom: 14, overflow: "hidden" }}>
         <div style={{ height: 4, background: `linear-gradient(90deg, ${bp}, ${ba})` }} />
         <div className="card-b" style={{ display: "flex", gap: 16, alignItems: "center", flexWrap: "wrap", padding: "16px 18px" }}>
@@ -602,7 +585,6 @@ function HospAdmins({ h, ba }) {
   );
 }
 
-// ── Usage & license ────────────────────────────────────────────────
 function AdBilling({ A }) {
   const tot = A.usage.reduce((a, b) => ({ cases: a.cases + b.cases, gpuHrs: a.gpuHrs + b.gpuHrs, storage: a.storage + b.storage, seats: a.seats + b.seats }), { cases: 0, gpuHrs: 0, storage: 0, seats: 0 });
   return (
@@ -637,7 +619,6 @@ function AdBilling({ A }) {
   );
 }
 
-// ── Config & flags ─────────────────────────────────────────────────
 function AdConfig({ A }) {
   return (
     <Sec title="Configuration & feature flags" sub="Locked flags are governance-controlled — changeable only by RFC">
@@ -661,7 +642,6 @@ function AdConfig({ A }) {
   );
 }
 
-// ── Governance / RFCs ──────────────────────────────────────────────
 function AdRfc({ A }) {
   return (
     <Sec title="Governance / RFCs" sub="Council-led roadmap · thresholds and contracts change only here">
@@ -681,7 +661,6 @@ function AdRfc({ A }) {
   );
 }
 
-// ── Approvals & gates ──────────────────────────────────────────────
 function AdApprovals({ A }) {
   const KP = { "Model promotion": "model", "Access request": "users", "RFC vote": "book", "Config change": "cpu" };
   return (
@@ -708,7 +687,6 @@ function AdApprovals({ A }) {
   );
 }
 
-// ── SLOs & error budgets ───────────────────────────────────────────
 function AdSlo({ A }) {
   return (
     <Sec title="SLOs & error budgets" sub="Service-level objectives with remaining error budget and 30-day burn">
@@ -733,7 +711,6 @@ function AdSlo({ A }) {
   );
 }
 
-// ── Cost & capacity ────────────────────────────────────────────────
 function AdCost({ A, m }) {
   const c = A.costPlan;
   const months = ["Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May"];
@@ -758,7 +735,6 @@ function AdCost({ A, m }) {
   );
 }
 
-// ── Notifications ──────────────────────────────────────────────────
 function AdNotifications({ A }) {
   const [rules, setRules] = React.useState(A.notifRules);
   const toggle = (i) => setRules((r) => r.map((x, j) => j === i ? { ...x, on: !x.on } : x));

@@ -1,9 +1,6 @@
-/* AURORA clinician — data model (synthetic, de-identified).
-   Exposed as window.AURORA. */
 (function () {
   const ev = { definite: 'definite', probable: 'probable', mimic: 'mimic', indeterminate: 'indeterminate', insufficient: 'insufficient' };
 
-  // helper to build a triage case
   const C = (id, dx, state, age, delta, note) => ({ id, dx, state, age, delta, note });
 
   const diseases = [
@@ -226,7 +223,6 @@
     { id: 'govern', name: 'Governance', sub: 'Govern', pillar: 'Govern', icon: 'shield' },
   ];
 
-  // Hospital sites the calendar pairs with (uniform across all programs).
   const sites = [
     { id: 'cc',  name: 'Children’s Central',     short: 'CC',  color: '#5B8DEF', synced: true },
     { id: 'sm',  name: 'St. Mary’s Pediatric',   short: 'SM',  color: '#2BD4C0', synced: true },
@@ -234,8 +230,6 @@
     { id: 'tele', name: 'Telehealth',            short: 'TH',  color: '#F0A85A', synced: false },
   ];
 
-  // Weekly schedule (Mon–Fri, hours in 24h decimal). Uniform shell; titles
-  // localize to the active program at render time.
   const calendar = {
     days: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
     dates: [2, 3, 4, 5, 6],

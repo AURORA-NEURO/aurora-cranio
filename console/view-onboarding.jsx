@@ -1,8 +1,3 @@
-// ════════════════════════════════════════════════════════════════════
-//  VIEW · ONBOARDING — brand-aware hospital onboarding assessment
-//  A real, stateful multi-step wizard that stands up a new tenant under
-//  its own brand, identity, federation, data policy, modules and admins.
-// ════════════════════════════════════════════════════════════════════
 window.AV = window.AV || {};
 
 const OB_BRANDS = [
@@ -26,7 +21,7 @@ window.AV.onboarding = function Onboarding({ go }) {
   const bp = f.brand.primary, ba = f.brand.accent;
   const monogram = f.initials || (f.name ? f.name.split(" ").map((w) => w[0]).join("").slice(0, 3).toUpperCase() : "NEW");
 
-  const done = step === STEPS.length; // review submitted state
+  const done = step === STEPS.length;
   const pct = Math.round((step / STEPS.length) * 100);
 
   const toggleModule = (slug) => set("modules", f.modules.includes(slug) ? f.modules.filter((x) => x !== slug) : [...f.modules, slug]);
@@ -42,7 +37,6 @@ window.AV.onboarding = function Onboarding({ go }) {
       />
 
       <div className="grid" style={{ gridTemplateColumns: "240px 1fr", gap: 18, alignItems: "start" }}>
-        {/* stepper */}
         <div className="card" style={{ padding: 16, position: "sticky", top: 0 }}>
           <div className="note" style={{ marginBottom: 12 }}>Setup · {pct}%</div>
           <div className="meter" style={{ marginBottom: 16 }}><div className="fill" style={{ width: pct + "%", background: ba }} /></div>
@@ -54,7 +48,6 @@ window.AV.onboarding = function Onboarding({ go }) {
               </div>
             ))}
           </div>
-          {/* live brand preview */}
           <div style={{ marginTop: 18, borderTop: "1px solid var(--line)", paddingTop: 14 }}>
             <div className="note" style={{ marginBottom: 8 }}>Live preview</div>
             <div style={{ borderRadius: 10, overflow: "hidden", border: "1px solid var(--line)" }}>
@@ -67,7 +60,6 @@ window.AV.onboarding = function Onboarding({ go }) {
           </div>
         </div>
 
-        {/* step body */}
         <div>
           {done ? (
             <Card>
@@ -106,7 +98,6 @@ window.AV.onboarding = function Onboarding({ go }) {
   );
 };
 
-// ── form primitives ────────────────────────────────────────────────
 const OBField = ({ label, hint, children }) => (
   <div style={{ marginBottom: 16 }}>
     <label style={{ display: "block", fontSize: 12.5, fontWeight: 600, marginBottom: 6, letterSpacing: "-0.01em" }}>{label}</label>

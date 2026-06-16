@@ -1,6 +1,3 @@
-// ════════════════════════════════════════════════════════════════════
-//  VIEW · OVERVIEW — per-module command center
-// ════════════════════════════════════════════════════════════════════
 window.AV = window.AV || {};
 
 window.AV.overview = function Overview({ m, ops, go }) {
@@ -22,7 +19,6 @@ window.AV.overview = function Overview({ m, ops, go }) {
         </>}
       />
 
-      {/* status banner */}
       <div className="card" style={{ marginBottom: 14, borderLeft: `3px solid ${a}` }}>
         <div className="card-b" style={{ display: "flex", gap: 22, alignItems: "center", flexWrap: "wrap" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
@@ -39,7 +35,6 @@ window.AV.overview = function Overview({ m, ops, go }) {
         </div>
       </div>
 
-      {/* KPI row */}
       <div className="grid g6" style={{ marginBottom: 14 }}>
         <Kpi edge label="Active cases" icon="cases" value={k.activeCases} delta="+6" dir="up" foot="this week" />
         <Kpi label="Cohort" icon="users" value={k.cohortSize.toLocaleString()} foot="consented" />
@@ -49,9 +44,7 @@ window.AV.overview = function Overview({ m, ops, go }) {
         <Kpi label="Equity gates" icon="equity" value={ops.equityPass} unit={`/ ${ops.equityTotal}`} foot="passing" />
       </div>
 
-      {/* main grid */}
       <div className="grid g3" style={{ alignItems: "start" }}>
-        {/* left 2/3 */}
         <div className="span2 grid" style={{ gap: 14 }}>
           <Card title="Subsystem health" sub={`${m.subsystems.length} subsystems`} right={<button className="btn btn-ghost btn-sm" onClick={() => go("subsystems")}>View all <Icon n="arrow" /></button>}>
             <div className="grid g2">
@@ -102,7 +95,6 @@ window.AV.overview = function Overview({ m, ops, go }) {
           </Card>
         </div>
 
-        {/* right 1/3 */}
         <div className="grid" style={{ gap: 14 }}>
           <Card title="Equity gate" sub="release blocker" right={<span className="note">{ops.equityPass}/{ops.equityTotal} pass</span>}>
             {ops.strata.slice(0, 6).map((s, i) => (

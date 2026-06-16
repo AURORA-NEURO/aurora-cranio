@@ -1,6 +1,3 @@
-// ════════════════════════════════════════════════════════════════════
-//  VIEW · RESEARCH — working papers, evidence base, endpoints
-// ════════════════════════════════════════════════════════════════════
 window.AV = window.AV || {};
 
 window.AV.research = function Research({ m, ops }) {
@@ -8,7 +5,6 @@ window.AV.research = function Research({ m, ops }) {
   const [tab, setTab] = React.useState("papers");
   const evidence = (window.AURORA_DATA.evidence && window.AURORA_DATA.evidence[m.slug]) || [];
 
-  // working papers — one per subsystem
   const KIND = ["Working paper", "Preprint", "Protocol RFC", "Position paper", "Concept note"];
   const STAT = ["Drafting", "In review", "Ratified", "Drafting", "Sketch"];
   const papers = m.subsystems.map((s, i) => ({
@@ -16,7 +12,6 @@ window.AV.research = function Research({ m, ops }) {
     code: s.code, name: s.name, kind: KIND[i % KIND.length], status: STAT[i % STAT.length],
   }));
 
-  // endpoints — pilot targets
   const endpoints = [
     ["+18.4", "%", "Resection / closure quality", "Target lift on partner cohorts vs pre-AURORA baseline."],
     ["−40", "%", "Time to integrated diagnosis", "From sample arrival to guideline-aligned report, board-ready."],
