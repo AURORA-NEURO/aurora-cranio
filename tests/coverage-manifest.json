@@ -1,0 +1,409 @@
+{
+  "repo": "AURORA-NEURO/aurora-cranio",
+  "branch": "codex/coverage-100",
+  "baseBranch": "main",
+  "coveragePolicy": {
+    "line": 100,
+    "branch": 100,
+    "function": 100,
+    "statement": 100,
+    "generatedAndNonExecutableExclusions": [
+      "dist",
+      "build",
+      "coverage",
+      "docs",
+      "notebooks",
+      "fixtures",
+      "generated clients",
+      "vendored assets",
+      "binary model weights",
+      "test files"
+    ]
+  },
+  "requiredScenarioCases": 1200,
+  "stack": {
+    "node": false,
+    "python": false,
+    "pnpm": false,
+    "vitest": false,
+    "jest": false,
+    "nodeTest": false
+  },
+  "sourceModules": [
+    {
+      "path": "console/app.jsx",
+      "suites": [
+        "scripts/coverage-family-check.mjs",
+        "javascript coverage matrix"
+      ],
+      "scenarioFamilies": [
+        "unit-behavior",
+        "property-boundaries",
+        "contract-schema",
+        "safety-hard-stops",
+        "integration-io",
+        "ui-render-or-smoke"
+      ]
+    },
+    {
+      "path": "console/charts.jsx",
+      "suites": [
+        "scripts/coverage-family-check.mjs",
+        "javascript coverage matrix"
+      ],
+      "scenarioFamilies": [
+        "unit-behavior",
+        "property-boundaries",
+        "contract-schema",
+        "safety-hard-stops",
+        "integration-io",
+        "ui-render-or-smoke"
+      ]
+    },
+    {
+      "path": "console/dash-data.jsx",
+      "suites": [
+        "scripts/coverage-family-check.mjs",
+        "javascript coverage matrix"
+      ],
+      "scenarioFamilies": [
+        "unit-behavior",
+        "property-boundaries",
+        "contract-schema",
+        "safety-hard-stops",
+        "integration-io",
+        "ui-render-or-smoke"
+      ]
+    },
+    {
+      "path": "console/data.jsx",
+      "suites": [
+        "scripts/coverage-family-check.mjs",
+        "javascript coverage matrix"
+      ],
+      "scenarioFamilies": [
+        "unit-behavior",
+        "property-boundaries",
+        "contract-schema",
+        "safety-hard-stops",
+        "integration-io",
+        "ui-render-or-smoke"
+      ]
+    },
+    {
+      "path": "console/primitives.jsx",
+      "suites": [
+        "scripts/coverage-family-check.mjs",
+        "javascript coverage matrix"
+      ],
+      "scenarioFamilies": [
+        "unit-behavior",
+        "property-boundaries",
+        "contract-schema",
+        "safety-hard-stops",
+        "integration-io",
+        "ui-render-or-smoke"
+      ]
+    },
+    {
+      "path": "console/shell.jsx",
+      "suites": [
+        "scripts/coverage-family-check.mjs",
+        "javascript coverage matrix"
+      ],
+      "scenarioFamilies": [
+        "unit-behavior",
+        "property-boundaries",
+        "contract-schema",
+        "safety-hard-stops",
+        "integration-io",
+        "ui-render-or-smoke"
+      ]
+    },
+    {
+      "path": "console/view-admin.jsx",
+      "suites": [
+        "scripts/coverage-family-check.mjs",
+        "javascript coverage matrix"
+      ],
+      "scenarioFamilies": [
+        "unit-behavior",
+        "property-boundaries",
+        "contract-schema",
+        "safety-hard-stops",
+        "integration-io",
+        "ui-render-or-smoke"
+      ]
+    },
+    {
+      "path": "console/view-analytics.jsx",
+      "suites": [
+        "scripts/coverage-family-check.mjs",
+        "javascript coverage matrix"
+      ],
+      "scenarioFamilies": [
+        "unit-behavior",
+        "property-boundaries",
+        "contract-schema",
+        "safety-hard-stops",
+        "integration-io",
+        "ui-render-or-smoke"
+      ]
+    },
+    {
+      "path": "console/view-audit.jsx",
+      "suites": [
+        "scripts/coverage-family-check.mjs",
+        "javascript coverage matrix"
+      ],
+      "scenarioFamilies": [
+        "unit-behavior",
+        "property-boundaries",
+        "contract-schema",
+        "safety-hard-stops",
+        "integration-io",
+        "ui-render-or-smoke"
+      ]
+    },
+    {
+      "path": "console/view-cases.jsx",
+      "suites": [
+        "scripts/coverage-family-check.mjs",
+        "javascript coverage matrix"
+      ],
+      "scenarioFamilies": [
+        "unit-behavior",
+        "property-boundaries",
+        "contract-schema",
+        "safety-hard-stops",
+        "integration-io",
+        "ui-render-or-smoke"
+      ]
+    },
+    {
+      "path": "console/view-clinical.jsx",
+      "suites": [
+        "scripts/coverage-family-check.mjs",
+        "javascript coverage matrix"
+      ],
+      "scenarioFamilies": [
+        "unit-behavior",
+        "property-boundaries",
+        "contract-schema",
+        "safety-hard-stops",
+        "integration-io",
+        "ui-render-or-smoke"
+      ]
+    },
+    {
+      "path": "console/view-guides.jsx",
+      "suites": [
+        "scripts/coverage-family-check.mjs",
+        "javascript coverage matrix"
+      ],
+      "scenarioFamilies": [
+        "unit-behavior",
+        "property-boundaries",
+        "contract-schema",
+        "safety-hard-stops",
+        "integration-io",
+        "ui-render-or-smoke"
+      ]
+    },
+    {
+      "path": "console/view-messages.jsx",
+      "suites": [
+        "scripts/coverage-family-check.mjs",
+        "javascript coverage matrix"
+      ],
+      "scenarioFamilies": [
+        "unit-behavior",
+        "property-boundaries",
+        "contract-schema",
+        "safety-hard-stops",
+        "integration-io",
+        "ui-render-or-smoke"
+      ]
+    },
+    {
+      "path": "console/view-models.jsx",
+      "suites": [
+        "scripts/coverage-family-check.mjs",
+        "javascript coverage matrix"
+      ],
+      "scenarioFamilies": [
+        "unit-behavior",
+        "property-boundaries",
+        "contract-schema",
+        "safety-hard-stops",
+        "integration-io",
+        "ui-render-or-smoke"
+      ]
+    },
+    {
+      "path": "console/view-onboarding.jsx",
+      "suites": [
+        "scripts/coverage-family-check.mjs",
+        "javascript coverage matrix"
+      ],
+      "scenarioFamilies": [
+        "unit-behavior",
+        "property-boundaries",
+        "contract-schema",
+        "safety-hard-stops",
+        "integration-io",
+        "ui-render-or-smoke"
+      ]
+    },
+    {
+      "path": "console/view-overview.jsx",
+      "suites": [
+        "scripts/coverage-family-check.mjs",
+        "javascript coverage matrix"
+      ],
+      "scenarioFamilies": [
+        "unit-behavior",
+        "property-boundaries",
+        "contract-schema",
+        "safety-hard-stops",
+        "integration-io",
+        "ui-render-or-smoke"
+      ]
+    },
+    {
+      "path": "console/view-product.jsx",
+      "suites": [
+        "scripts/coverage-family-check.mjs",
+        "javascript coverage matrix"
+      ],
+      "scenarioFamilies": [
+        "unit-behavior",
+        "property-boundaries",
+        "contract-schema",
+        "safety-hard-stops",
+        "integration-io",
+        "ui-render-or-smoke"
+      ]
+    },
+    {
+      "path": "console/view-research.jsx",
+      "suites": [
+        "scripts/coverage-family-check.mjs",
+        "javascript coverage matrix"
+      ],
+      "scenarioFamilies": [
+        "unit-behavior",
+        "property-boundaries",
+        "contract-schema",
+        "safety-hard-stops",
+        "integration-io",
+        "ui-render-or-smoke"
+      ]
+    },
+    {
+      "path": "console/view-settings.jsx",
+      "suites": [
+        "scripts/coverage-family-check.mjs",
+        "javascript coverage matrix"
+      ],
+      "scenarioFamilies": [
+        "unit-behavior",
+        "property-boundaries",
+        "contract-schema",
+        "safety-hard-stops",
+        "integration-io",
+        "ui-render-or-smoke"
+      ]
+    },
+    {
+      "path": "webui/screens/aurora-config.js",
+      "suites": [
+        "scripts/coverage-family-check.mjs",
+        "javascript coverage matrix"
+      ],
+      "scenarioFamilies": [
+        "unit-behavior",
+        "property-boundaries",
+        "contract-schema",
+        "safety-hard-stops",
+        "integration-io",
+        "ui-render-or-smoke"
+      ]
+    },
+    {
+      "path": "webui/screens/aurora.js",
+      "suites": [
+        "scripts/coverage-family-check.mjs",
+        "javascript coverage matrix"
+      ],
+      "scenarioFamilies": [
+        "unit-behavior",
+        "property-boundaries",
+        "contract-schema",
+        "safety-hard-stops",
+        "integration-io",
+        "ui-render-or-smoke"
+      ]
+    },
+    {
+      "path": "webui/screens/clinician-app.jsx",
+      "suites": [
+        "scripts/coverage-family-check.mjs",
+        "javascript coverage matrix"
+      ],
+      "scenarioFamilies": [
+        "unit-behavior",
+        "property-boundaries",
+        "contract-schema",
+        "safety-hard-stops",
+        "integration-io",
+        "ui-render-or-smoke"
+      ]
+    },
+    {
+      "path": "webui/screens/clinician-data.js",
+      "suites": [
+        "scripts/coverage-family-check.mjs",
+        "javascript coverage matrix"
+      ],
+      "scenarioFamilies": [
+        "unit-behavior",
+        "property-boundaries",
+        "contract-schema",
+        "safety-hard-stops",
+        "integration-io",
+        "ui-render-or-smoke"
+      ]
+    },
+    {
+      "path": "webui/screens/clinician-modules.jsx",
+      "suites": [
+        "scripts/coverage-family-check.mjs",
+        "javascript coverage matrix"
+      ],
+      "scenarioFamilies": [
+        "unit-behavior",
+        "property-boundaries",
+        "contract-schema",
+        "safety-hard-stops",
+        "integration-io",
+        "ui-render-or-smoke"
+      ]
+    },
+    {
+      "path": "webui/screens/image-slot.js",
+      "suites": [
+        "scripts/coverage-family-check.mjs",
+        "javascript coverage matrix"
+      ],
+      "scenarioFamilies": [
+        "unit-behavior",
+        "property-boundaries",
+        "contract-schema",
+        "safety-hard-stops",
+        "integration-io",
+        "ui-render-or-smoke"
+      ]
+    }
+  ]
+}
