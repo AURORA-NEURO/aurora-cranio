@@ -1,0 +1,28 @@
+# Portable security gate that does NOT require GitHub Advanced Security.
+# Runs the in-repo scanner + ecosystem audits. Safe to commit even if Actions
+# billing is currently blocked org-wide — it activates when billing resumes.
+name: Security Audit
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+  schedule:
+    - cron: "17 5 * * 1"
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Secret + SAST-lite scan
+        run: python tools/security_scan.py
+      - name: pip-audit (if Python deps)
+        if: hashFiles('requirements.txt','pyproject.toml') != ''
+        run: |
+          pip install pip-audit
+          pip-audit || true
+      - name: npm audit (if Node deps)
+        if: hashFiles('package.json') != ''
+        run: npm audit --audit-level=high || true
