@@ -1,0 +1,13 @@
+{
+  "repo": "AURORA-NEURO/aurora-cranio",
+  "generatedCaseCount": 7200,
+  "perModule": 48,
+  "families": [
+    "unit-behavior",
+    "property-boundaries",
+    "contract-schema",
+    "safety-hard-stops",
+    "integration-io",
+    "ui-render-or-smoke"
+  ]
+}
