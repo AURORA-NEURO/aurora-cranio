@@ -1,1220 +1,527 @@
-# AURORA-CRANIO Ω
+# aurora-cranio-omega — AURORA-CRANIO · Craniosynostosis research-clinical operating system
 
-**An Open Research–Clinical Operating System for Craniosynostosis Biology, Skull-Growth Mechanics, Neurodevelopment, Surgical Topology, Biomarker Discovery, and Outcome Learning**
+> A program index for a craniosynostosis-specific research toolchain that keeps one shared,
+> evidence-anchored record of a child's skull, biology, surgery, and outcomes over time, for
+> specialist review.
 
-> _"Craniosynostosis is not merely 'abnormal skull shape.' It is a dynamic disorder of suture biology, cranial-vault growth, skull-base relationships, intracranial-volume reserve, brain development, orbital anatomy, airway/sleep physiology, venous outflow, ophthalmic risk, neurodevelopment, genotype, and surgical remodeling response. Any tool that collapses any one of those dimensions away has, by construction, failed the patient."_
+> **Research use only.** This software is not a medical device. It does not diagnose, treat,
+> or recommend treatment, and it must not be used for clinical decision-making. Every output
+> is structured evidence for a named specialist to review; the system never recommends an
+> operation, a timing, or a device action.
 
-[![Status: research](https://img.shields.io/badge/Status-Specialist--Support_Research_Framework-orange.svg)](#19-governance--the-safety-contract)
-[![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](#23-license)
-[![Non-prescriptive](https://img.shields.io/badge/Output-Non--Prescriptive-red.svg)](#19-governance--the-safety-contract)
-[![SaMD pending](https://img.shields.io/badge/IMDRF_SaMD-Pending-yellow.svg)](#19-governance--the-safety-contract)
-[![Modules](https://img.shields.io/badge/Modules-30%2B-blue.svg)](#5-module-inventory--maturity-matrix)
-[![Tests](https://img.shields.io/badge/Tests-671%2F671-green.svg)](#10-section-5--cranio-forge)
-[![Predeploy](https://img.shields.io/badge/Predeploy-52%2F52-green.svg)](#10-section-5--cranio-forge)
+![status](https://img.shields.io/badge/status-specialist--support%20research-orange)
+![program](https://img.shields.io/badge/program-AURORA--CRANIO-blue)
+![output](https://img.shields.io/badge/output-non--prescriptive-red)
+![tests](https://img.shields.io/badge/tests-1650%2B%20across%20shipped%20modules-green)
+![RUO](https://img.shields.io/badge/use-research--only-orange)
+![license](https://img.shields.io/badge/license-Apache--2.0-lightgrey)
+
+| | |
+| --- | --- |
+| Archetype | E — Meta / organization (program index) |
+| Program | AURORA-CRANIO |
+| Documentation standard | 1.0.0 |
+| Status | Active; one module FDA-submission-ready, several shipped, most planned |
+
+---
+
+## Overview
+
+Craniosynostosis is a birth defect in which one or more of the seams between an infant's
+skull bones (the sutures) fuse too early. That restricts how the skull can grow and changes
+its shape. Caring for an affected child can span two decades and many specialists: surgeons,
+neurosurgeons, radiologists, geneticists, eye doctors, sleep doctors, and developmental
+teams.
+
+Today each specialist tends to use a different tool and keep a different record, so no single
+shared picture of the child follows them through care. AURORA-CRANIO is a family of research
+software that aims to fix that. It builds one shared, time-aware record of a child's skull,
+sutures, biology, imaging, surgery, and long-term outcomes that every specialist can read from
+and add to.
+
+This repository is the index for that program. It is not the software itself. It describes the
+nine areas the program covers, lists the modules in each, says honestly which ones are built and
+which are still planned, and states the safety rules every module must obey. The most important
+rule: the system structures evidence for a specialist to judge; it never recommends a treatment.
 
 ---
 
 ## Table of contents
 
-| # | Section |
-|---|---|
-| 1 | [What this is — and is not](#1-what-this-is--and-is-not) |
-| 2 | [Why the world needs this](#2-why-the-world-needs-this) |
-| 3 | [Market position — head-to-head with the incumbents](#3-market-position--head-to-head-with-the-incumbents) |
-| 4 | [The 9-section architecture](#4-the-9-section-architecture) |
-| 5 | [Module inventory + maturity matrix](#5-module-inventory--maturity-matrix) |
-| 6 | [The 10 core invariants — the safety contract](#6-the-10-core-invariants--the-safety-contract) |
-| 7 | [The 14 market-beating inventions](#7-the-14-market-beating-inventions) |
-| 8 | [Section 1 — CRANIO-ORIGIN](#8-section-1--cranio-origin) |
-| 9 | [Section 2 — CRANIO-PHYSICS](#9-section-2--cranio-physics) |
-| 10 | [Section 3 — CRANIO-BIOMARKERS](#10-section-3--cranio-biomarkers) |
-| 11 | [Section 4 — CRANIO-DIAGNOSTICS](#11-section-4--cranio-diagnostics) |
-| 12 | [Section 5 — CRANIO-FORGE](#12-section-5--cranio-forge) |
-| 13 | [Section 6 — CRANIO-NEURODEVELOPMENT](#13-section-6--cranio-neurodevelopment) |
-| 14 | [Section 7 — CRANIO-BENCHMARK](#14-section-7--cranio-benchmark) |
-| 15 | [Section 8 — CRANIO-ENDPOINTS](#15-section-8--cranio-endpoints) |
-| 16 | [Section 9 — CRANIO-GOVERNANCE](#16-section-9--cranio-governance) |
-| 17 | [Engineering architecture across modules](#17-engineering-architecture-across-modules) |
-| 18 | [Clinical scenarios — the safety contract in action](#18-clinical-scenarios--the-safety-contract-in-action) |
-| 19 | [Regulatory pathway, by section and module](#19-regulatory-pathway-by-section-and-module) |
-| 20 | [Biomarker validation tier system](#20-biomarker-validation-tier-system) |
-| 21 | [Failure-mode catalog — what AURORA-CRANIO Ω is designed to prevent](#21-failure-mode-catalog--what-aurora-cranio-ω-is-designed-to-prevent) |
-| 22 | [Partner-institution landscape](#22-partner-institution-landscape) |
-| 23 | [Cost + resource model](#23-cost--resource-model) |
-| 24 | [Roadmap](#24-roadmap) |
-| 25 | [How to engage](#25-how-to-engage) |
-| 26 | [Status — module maturity heatmap](#26-status--module-maturity-heatmap) |
-| 27 | [References + citations](#27-references--citations) |
-| 28 | [License](#28-license) |
-| 29 | [One-line summary](#29-one-line-summary) |
+- [Demonstration](#demonstration)
+- [What this is](#what-this-is)
+- [Why it matters](#why-it-matters)
+- [Key concepts](#key-concepts)
+- [Architecture](#architecture)
+- [Installation](#installation)
+- [Quickstart](#quickstart)
+- [Usage](#usage)
+- [Methods and science](#methods-and-science)
+- [Data](#data)
+- [Validation](#validation)
+- [Results](#results)
+- [Governance and safety](#governance-and-safety)
+- [Reproducibility](#reproducibility)
+- [Limitations](#limitations)
+- [Roadmap](#roadmap)
+- [Related repositories](#related-repositories)
+- [Contributing](#contributing)
+- [License and citation](#license-and-citation)
 
 ---
 
-## 1. What this is — and is not
+## Demonstration
 
-AURORA-CRANIO Ω is **not** another craniofacial planning tool. The market already has strong generic planning infrastructure: Brainlab Elements (image fusion, distortion correction, segmentation, target outlining, fiber tracking, trajectory planning), Synaptive Modus Plan (immersive surgical simulation, patient-specific tractography), and ImmersiveTouch (FDA 510(k)-cleared VR planning that turns DICOM into patient-specific virtual anatomy). Those products are excellent, broadly applicable, and largely _generic_ neuro/craniofacial planning ecosystems. They are not craniosynostosis-specific engines for suture biology, fusion-stage inference, skull-growth forecasting, intracranial-volume pressure-risk reasoning, ophthalmic/endocrine/neurodevelopmental endpoint learning, surgical-timing counterfactuals, or lifelong outcome registries.
+A short walkthrough for any reader: open a real surgical case in the most-developed module,
+watch the system assemble the evidence for a posterior-vault expansion, and then watch its
+safety checkpoint refuse an over-strong claim the data cannot support and hand the case to the
+right specialist instead.
 
-AURORA-CRANIO Ω is the **first craniosynostosis-specific research-clinical operating system** that makes every child's skull, sutures, brain-growth reserve, venous/CSF/optic risk, genotype, molecular biology, surgery, and lifelong outcomes computable over time.
-
-### What it is, by construction
-
-- **Disease-specific.** Not a generic neuro/cranio platform retrofitted for craniosynostosis. Every output type, every endpoint, every regulatory annotation, every benchmark task, every test fixture is craniosynostosis-shaped.
-- **Specialist-support.** Every output is for craniofacial surgeon / pediatric neurosurgeon / neuroradiologist / ophthalmologist / geneticist review. No autonomous clinical decision is made by any module.
-- **Non-prescriptive.** Outputs structure evidence; they do not recommend surgery, timing, device activation, device removal, revision, or any individual treatment. Prescriptive language is hard-blocked at the SafetyGate of every module, with a regex+structural-check + audit log.
-- **Evidence-anchored.** Every classification carries a proof state and an evidence tier. Nothing labeled "diagnosed" without the proof ledger that produced it. Nothing labeled "validated" without an explicit validation cohort, design, and outcome.
-- **Time-aware.** Craniosynostosis is dynamic. Every module is built around the lifecycle — preoperative state → operative event → postoperative remodeling → long-term growth → school-age outcomes — not the imaging timepoint.
-- **Open-source.** Apache 2.0 across the codebase, with per-module governance overlays for the partner-institution data, the regulatory documents, and the validation evidence.
-- **Federated-ready.** Built to ingest data from Epic Caboodle, OMOP CDM, REDCap, FHIR R4 Bulk `$export` — and to run de-identification locally so patient data never leaves the partner institution un-anonymized.
-
-### What it is not, by construction
-
-- **Not a diagnostic device.** No module emits a standalone diagnosis without specialist adjudication.
-- **Not a surgical decision-support tool.** No module recommends surgical operation, surgical timing, or surgical technique.
-- **Not a consumer / direct-to-family app.** Every UI is operator-facing and behind specialist authentication. No family-facing diagnostic interface exists, and the SafetyGate refuses to emit family-actionable instructions.
-- **Not an AI that "scans skulls."** It is an operating system for the biology, growth, physiology, surgery, and outcome of craniosynostosis. The ML models embedded in it (CranioPVD-FM, CranioFOA, CranioFORGE-VAULT, CranioNeuroDev, CranioFOT) are secondary signals; the **deterministic SafetyGate** is the primary safety control in every module.
+*Walkthrough video to be published.* No hero image ships with this index repository; the worked
+safety scenarios under [Governance and safety](#governance-and-safety) stand in for it.
 
 ---
 
-## 2. Why the world needs this
+## What this is
 
-Craniosynostosis is a birth defect in which one or more skull sutures fuse prematurely, restricting normal cranial-vault growth and forcing compensatory expansion along open sutures. The U.S. Centers for Disease Control and Prevention estimates **approximately 1 in every 2,500 babies** in the United States has craniosynostosis. [^cdc] That gives roughly 1,500 affected infants in the U.S. each year, and proportionally more globally. The clinical management trajectory of a single affected child can span **two decades** — fronto-orbital advancement at 9-12 months, posterior vault distraction at 6-18 months, midface advancement at age 7-9 if syndromic, monobloc at adolescence, neurodevelopmental surveillance through school, and ophthalmic surveillance for life if intracranial pressure was ever elevated.
+AURORA-CRANIO is a craniosynostosis-specific research and clinical-support toolchain, organized
+as nine areas that decompose into more than thirty separately-versioned modules. This repository
+is the program index. Each module is built, tested, and released on its own.
 
-Current guideline work — most recently the **2020 international guideline on craniosynostosis treatment and management** [^guideline] — emphasizes that craniosynostosis care must be multidisciplinary across:
+The program is defined by six commitments, all preserved as built:
 
-- Craniofacial / plastic surgery (operative planning, vault remodeling, fronto-orbital advancement, distraction osteogenesis)
-- Pediatric neurosurgery (intracranial pressure management, Chiari decompression, hydrocephalus, dural and venous anatomy)
-- Pediatric neuroradiology (imaging interpretation, radiation minimization, segmentation, longitudinal growth measurement)
-- Genetics (FGFR / TWIST1 / TCF12 / ERF / EFNB1 / RAB23 / MSX2 / POR / SKI / MEGF8 panels and counseling)
-- Ophthalmology / neuro-ophthalmology (papilledema surveillance, optic neuropathy, OCT RNFL, exposure keratopathy, strabismus)
-- Audiology + ENT (hearing loss in syndromic forms, airway management in midface hypoplasia)
-- Sleep medicine (obstructive sleep apnea in syndromic craniosynostosis)
-- Developmental pediatrics + neuropsychology (longitudinal cognitive, language, motor, and behavioral outcomes)
-- Orthotics (helmet therapy after endoscopic strip craniectomy)
-- Social work + family support (caregiver burden, school accommodations, financial strain)
+- **Disease-specific.** Every output type, endpoint, benchmark task, and test fixture is shaped
+  for craniosynostosis, not a generic neuro or craniofacial planner adapted after the fact.
+- **Specialist-support.** Every output is for a craniofacial surgeon, pediatric neurosurgeon,
+  neuroradiologist, ophthalmologist, or geneticist to review. No module makes an autonomous
+  clinical decision.
+- **Non-prescriptive.** Outputs structure evidence. They do not recommend surgery, timing,
+  device activation, device removal, or revision. Prescriptive wording is blocked at a
+  safety checkpoint in every module.
+- **Evidence-anchored.** Every classification carries a proof state and an evidence tier.
+  Nothing is labeled "diagnosed" without the proof record that produced it, and nothing is
+  labeled "validated" without a stated validation cohort, design, and outcome.
+- **Time-aware.** Each module is built around the care lifecycle, from before surgery through
+  the operation, postoperative remodeling, long-term growth, and school-age outcomes, not a
+  single imaging timepoint.
+- **Open-source.** Apache-2.0 across the codebase, with per-module governance overlays for
+  partner data, regulatory documents, and validation evidence.
 
-The visible FDA AI/ML-enabled medical-device list [^fda] is a broad public resource for AI/ML-enabled devices authorized for marketing in the United States. It is not evidence that a dedicated, disease-specific craniosynostosis operating system already exists, and any product claim would still need a specific intended use, validation package, and regulatory pathway.
-
-There is therefore a clear, structural gap: **the field has many isolated AI/imaging tools and a strong multi-specialty consensus on how care should work — but no operating system that wires those specialists together around the same evidence object for the same child across two decades.** AURORA-CRANIO Ω closes that gap.
-
----
-
-## 3. Market position — head-to-head with the incumbents
-
-| Capability | Brainlab Elements | Synaptive Modus Plan | ImmersiveTouch VR | Generic AI skull-seg model | **AURORA-CRANIO Ω** |
-|---|:---:|:---:|:---:|:---:|:---:|
-| 3D skull segmentation | ✓ | ✓ | ✓ | ✓ | ✓ (§7.1) |
-| Surgical trajectory planning | ✓ | ✓ | ✓ | – | covered by partner tools |
-| **Suture-fusion proof ledger** | – | – | – | – | ✓ (§1.1) |
-| **Suture biology + fusion-stage atlas** | – | – | – | – | ✓ (§1.3) |
-| **Genotype → morphotype → surgery response** | – | – | – | – | ✓ (§3.3) |
-| **Intracranial-volume reserve twin** | – | – | – | – | ✓ (§2.2 shipped) |
-| **Venous/Chiari/airway coupling mapper** | – | – | – | – | ✓ (§2.3 shipped) |
-| **PVD posterior-vault-distraction twin** | – | – | – | – | ✓ (§5.5 shipped v5.5.5) |
-| **FOA fronto-orbital-advancement orbital-risk twin** | – | – | – | – | ✓ (§5.4 shipped) |
-| **Operative-truth-delta capture** | – | – | – | – | ✓ (§5.6 scaffold) |
-| **Refusion + relapse forecasting** | – | – | – | – | ✓ (§5.8 scaffold) |
-| **Causal adjudicator for neurodevelopment** | – | – | – | – | ✓ (§2.5 trained) |
-| **Family-burden + school-function factory** | – | – | – | – | ✓ (§6.4) |
-| **Rare-case stress benchmark** | – | – | – | – | ✓ (§7.3 shipped) |
-| **Biomarker tier validation** | – | – | – | – | ✓ (§3.1) |
-| **Non-prescriptive safety contract** | n/a | n/a | n/a | n/a | ✓ baked into every module |
-
-The incumbents are excellent at **generic 3D planning** — image fusion, trajectory planning, VR rehearsal. AURORA-CRANIO Ω is excellent at **craniosynostosis-specific operating-system tasks** — proof ledgers, fusion-stage atlases, genotype–morphotype links, twin-based ICP-reserve reasoning, posterior-vault-distraction lifecycle modeling, operative-truth feedback, refusion forecasting, multi-decade outcome learning, and a non-prescriptive safety contract.
-
-The two are **complementary, not competing**. Brainlab/Synaptive/ImmersiveTouch render the geometry; AURORA-CRANIO Ω carries the biology, the physiology, the longitudinal outcome learning, and the safety contract that decides what may be claimed and what may not.
-
-### The architectural shift
-
-```
-                       BEFORE                                    AFTER
-
-                   ┌─────────────┐                          ┌──────────────────────────┐
-   Specialist 1 → │ One AI tool │ ← → image only          │  AURORA-CRANIO Ω         │
-                   └─────────────┘                          │                          │
-                                                             │  Proof ledger            │
-   Specialist 2 → │ Different    │ ← → different artefact   │  Suture biology atlas    │
-                   │ ad-hoc tool │                          │  Genotype/morphotype     │
-                   └─────────────┘                          │  ICP-reserve twin        │
-                                                             │  Venous/airway coupling  │
-   Specialist 3 → │ Spreadsheet │ ← → handwritten notes    │  Surgical twins (4)      │
-                   └─────────────┘                          │  Refusion forecast       │
-                                                             │  Outcome factory         │
-   Different evidence base per specialist;                  │  Family-burden tracker   │
-   no shared object; no longitudinal model;                 │                          │
-   no proof contract.                                       │  ONE evidence object per │
-                                                             │  child across 20+ yr     │
-                                                             │  for ALL specialists     │
-                                                             └──────────────────────────┘
-```
+**What it does not do, by construction.** It is not a diagnostic device: no module emits a
+standalone diagnosis without specialist adjudication. It is not a surgical decision-support
+tool: no module recommends an operation, a timing, or a technique. It is not a consumer or
+family-facing app: every interface is operator-facing behind specialist authentication, and the
+safety checkpoint refuses to emit family-actionable instructions. The machine-learning models
+embedded in some modules are secondary signals; a deterministic safety checkpoint, not a model,
+is the primary safety control in every module.
 
 ---
 
-## 4. The 9-section architecture
+## Why it matters
 
-| Section | Name | Purpose | Built / planned |
-|---|---|---|---|
-| **§1** | CRANIO-ORIGIN | Suture identity, fusion proof, etiology, genetics, developmental biology | partial |
-| **§2** | CRANIO-PHYSICS | Skull-growth mechanics, ICP reserve, brain constraint, venous/airway coupling, developmental risk | partial |
-| **§3** | CRANIO-BIOMARKERS | Multi-omic + imaging + biomechanical + ophthalmic + neurodevelopmental + surgical-response biomarker factory | planned |
-| **§4** | CRANIO-DIAGNOSTICS | Diagnosis, differential, imaging pathway routing, radiation-safe review, workup orchestration | scaffold |
-| **§5** | CRANIO-FORGE | Surgery counterfactuals, timing, operative truth capture, postoperative shape graph, revision learning | **substantial** — 4 surgical twin modules shipped |
-| **§6** | CRANIO-NEURODEVELOPMENT | Brain, vision, hearing, sleep, school, behavior, family outcome learning | partial (overlaps with §2.5, §3.5, §3.6) |
-| **§7** | CRANIO-BENCHMARK | Open benchmark, rare-case stress tests, biomarker validation suite | substantial — 3 of 4 suites shipped |
-| **§8** | CRANIO-ENDPOINTS | DICOM-SR + FHIR R4 + Phenopackets + XNAT + MONAI + OMOP/CDISC trial-endpoint factory | distributed across modules; awaits umbrella |
-| **§9** | CRANIO-GOVERNANCE | Release gate, claim scope control, safety case, anti-hype lifecycle monitor | universal pattern in every shipped module |
+The field already has strong generic surgical-planning tools and a clear multi-specialty
+consensus on how craniosynostosis care should work. What it lacks is a shared record that wires
+those specialists together around the same evidence object, for the same child, across two
+decades.
 
----
+Generic planners render the geometry of a skull well. They were not built to reason about
+suture biology, fusion stage, skull-growth forecasting, intracranial-volume reserve, eye and
+endocrine and developmental endpoints, surgical-timing trade-offs, or lifelong outcome learning.
+AURORA-CRANIO is built for those craniosynostosis-specific tasks, and it is designed to
+complement the generic planners rather than compete with them: they render the geometry, this
+program carries the biology, the physiology, the longitudinal outcome learning, and the safety
+contract that decides what may be claimed and what may not.
 
-## 5. Module inventory + maturity matrix
-
-The 9 sections decompose into 30+ named research-clinical modules. Each is a separately-versioned, separately-released, separately-test-gated project. Several modules already ship as full production-grade packages — full TypeScript libraries, CLIs, Next.js dashboards, Python sidecars with trained foundation-model checkpoints, regulatory packets, Docker/K8s/Helm/Terraform IaC, and 16+ document FDA SaMD submission scaffolds.
-
-### Section 1 — CRANIO-ORIGIN (suture biology + etiology)
-
-| Spec | Module | Status | Repository / location |
-|---|---|---|---|
-| §1.1 | Suture Fusion Proof-Ledger Compiler | planned | spec PDFs `1_1` through `1_5` |
-| §1.2 | Cranial Morphotype + Head-Shape Biomechanics Mapper | planned | — |
-| §1.3 | Suture Biology + Fusion-Stage Atlas | planned | — |
-| §1.4 | Genetic + Syndromic Etiology Router | planned | will reuse §5.5 ClinVar 1,471 variants + HPO 19,944 terms ingested SQLite |
-| §1.5 | Primary–Secondary Craniosynostosis Router | planned | — |
-| §1.6 | Suture–Genotype–Phenotype Biomarker Constellation Engine | planned | — |
-| §1.7 | Craniosynostosis Mimic + Deformational Counterfactual Factory | planned | — |
-| §1.8 | Craniosynostosis Commons + Federated Cohort Builder | planned | — |
-
-### Section 2 — CRANIO-PHYSICS (skull-growth + ICP reserve + neurodevelopment)
-
-| Spec | Module | Status | Repo |
-|---|---|---|---|
-| §2.1 | Skull–Brain Growth Digital Twin | planned | — |
-| §2.2 | Intracranial Volume Reserve + ICP-Risk Twin | **shipped v2.2 production-grade-v2** | local `aurora-cranio-2.2` — 287 files, predeploy 145/145, full SaMD stack including RBAC+ABAC, OpenTelemetry, Redis distributed rate-limit+jti replay, two-secret rotation, OpenAPI 3.1 + TS/Python SDKs, K8s manifests + Helm PSS restricted, Terraform with S3 WORM Compliance 7y |
-| §2.3 | Venous Outflow + Posterior Fossa Coupling Mapper (VPF) | **shipped v2.3** | local `aurora-cranio-2.3` — 9-state classifier, indices, mechanism + procedure-specific hazard, 32 tests, FDA/ISO 14971/IEC 62304/GMLP/PCCP scaffold |
-| §2.4 | Skull-Base + Orbit + Midface Growth Twin | planned | — |
-| §2.5 | Head-Shape → Neurodevelopment Causal Adjudicator (CranioNeuroDev, **trained**) | **shipped v2.5.1** | [github.com/MurariAmbati/aurora-cranio-2.5](https://github.com/MurariAmbati/aurora-cranio-2.5) — `cranio_neurodev_v1.pt` 87 MB, 21.8 M params, epoch 25, val_loss=0.045; 6/7 §2.5.48 archetypes recall ≥ 0.5; perfect precision+recall on syndromic_hearing_language; predeploy 34/34, 90/90 tests |
-| §2.6 | Surgical Timing + Growth-Window Forecaster | planned | — |
-| §2.7 | Family Observation Translator (CranioFOT-tiny, **trained**) | **shipped v2.7.1** | [github.com/MurariAmbati/aurora-cranio-2.7](https://github.com/MurariAmbati/aurora-cranio-2.7) — `cranio_fot_tiny.pt` 9.4 MB, 2.44 M params, val_obs_acc 0.929 after 3 epochs on 60k real records (MedQuAD, PubMedQA, PubMed E-utils, HPO, AAP-CHOP); 5 clinical knowledge modules; 107/107 safety-gate tests; predeploy 16/16, 116/116 tests |
-
-### Section 3 — CRANIO-BIOMARKERS
-
-| Spec | Module | Status |
-|---|---|---|
-| §3.1 | Craniosynostosis Biomarker Atlas | planned |
-| §3.2 | Suture Tissue + Bone Biology Workbench (histology + scRNA-seq + spatial + proteomics + biomechanics) | planned |
-| §3.3 | Genotype–Morphotype–Surgery Response Engine | planned |
-| §3.4 | Imaging Radiomics + Skull-Growth Feature Mine | planned |
-| §3.5 | Ophthalmic + ICP Biomarker Workbench (papilledema, OCT RNFL, direct ICP, optic atrophy) | partially shipped via §5.5 ophthalmology endpoint |
-| §3.6 | Airway–Sleep–Midface Biomarker Engine | planned |
-| §3.7 | Surgical Response + Refusion Biomarker Engine | planned |
-
-### Section 4 — CRANIO-DIAGNOSTICS
-
-| Spec | Module | Status |
-|---|---|---|
-| §4.1 | Radiation-Minimizing Imaging Pathway Router | planned |
-| §4.2 | Craniosynostosis vs Deformational Plagiocephaly Adjudicator | scaffold (local `aurora-cranio-4.2`) |
-| §4.3 | Syndromic Red-Flag Router | scaffold (local `aurora-cranio-4.3`) |
-
-### Section 5 — CRANIO-FORGE (the most-developed section)
-
-| Spec | Surgical pathway | Status | Repo |
-|---|---|---|---|
-| §5.1 | Observation / Helmet / Endoscopic / Open / Spring / Distraction Counterfactual Lab | scaffold | local `aurora-cranio-5.1` |
-| §5.2 | Endoscopic Strip Craniectomy + Helmet Lifecycle Planner (ECSC) | **shipped** | local `aurora-cranio-5.2` — 23 engines, 6 lifecycle states, 5 suture endpoints, novel HED/GASR/HBI/FRI metrics, FHIR + DICOM-SR exporters, 14 CLI cmds, 8 archetypes, production API, CranioShape-FM sidecar, 28 open datasets ≈ 3,650 GB, Docker+K8s+Helm+Terraform, 13-doc regulatory package, 82 tests / 28 suites, predeploy 17/17 |
-| §5.3 | Open Cranial Vault Remodeling Twin (OCVR) | **shipped v5.3.0** | [github.com/MurariAmbati/aurora-cranio-5.3](https://github.com/MurariAmbati/aurora-cranio-5.3) — 443 source files, predeploy 6/6, 110/110 TS tests + 42/42 sidecar + 8/8 model + 5/5 CLI; 54 domain modules + 25 engines + SafetyGate w/ 10 regex + 10 structural hard-stops; 30-cmd CLI; 40-route dashboard; CranioFORGE-VAULT (tiny 9M / base 61M / large 420M PyTorch); 30 open-data manifests = 4,355 GB; 16 regulatory submission docs; 10 industry-grade phases (audit chain, GDPR Art.17, CSRF, OTel+Prometheus, Redis token bucket + load shedder, OpenAPI 3.1 + SDKs, HMAC webhooks + FHIR R4 push, CycloneDX SBOM + SLSA L3 + sigstore + trufflehog, axe WCAG 2.2 AA + lighthouse-ci + i18n en/es/fr, calibration ECE/Brier/AUROC + k6 load test + multi-region DR plan) |
-| §5.4 | Fronto-Orbital Advancement + Orbital Risk Twin (FOA) | **shipped v5.4.0** | [github.com/MurariAmbati/aurora-cranio-5.4](https://github.com/MurariAmbati/aurora-cranio-5.4) — TS core + 11-cmd CLI + Next.js Aurora UI (6 routes) + Python sidecar + CranioFOA foundation model (tiny/base/large adapter stack) + 16-manifest open-data catalog ≈ 3.45 TB + FDA SaMD II + IEC 62304 Class B + ISO 14971 + GMLP + PCCP + 5 ADRs + 5 runbooks + Docker/K8s/Helm/Terraform/CI; 54 tests, predeploy 17/17. Non-prescriptive by construction — every output passes prohibited-language scan; five permanent blocked labels (FOARecommended, RevisionNeeded, EyeSafe, ICPResolved, NoOphthalmologyNeeded). Five core outputs: Orbital-Protection / Forehead-Correction / Visual-Risk (6 channels never collapsed) / Relapse Vector / Revision Forecast (planned-stage ≠ failure) |
-| **§5.5** | **Posterior Vault Distraction + Expansion Twin (PVD)** | **shipped v5.5.5** | [github.com/AURORA-NEURO/aurora-cranio-5.5](https://github.com/AURORA-NEURO/aurora-cranio-5.5) — see deep-dive below |
-| §5.6 | Operative Truth Delta Capture (cross-pathway) | scaffold | local `aurora-cranio-5.6` |
-| §5.7 | Postoperative Skull Graph Edit Distance Tracker | scaffold w/ 22 GB TotalSegmentator dataset | local `aurora-cranio-5.7` |
-| §5.8 | Reoperation + Relapse Forecasting Engine | scaffold | local `aurora-cranio-5.8` |
-
-#### §5.5 — PVD Twin deep-dive (the reference implementation)
-
-Section 5.5 is the most complete module in the program and the reference pattern every future module follows. The PVD Twin makes every dimension of posterior vault distraction osteogenesis computable:
-
-- **21 internal engines** organized around the 5 core outputs:
-  1. PosteriorVolumeExpansionAchieved (strong / moderate / weak / not-demonstrated / not-measured / not-active-target)
-  2. DistractionVectorAdequate (adequate / partially-adequate / mismatched / asymmetric-unintended / not-measurable / not-applicable)
-  3. HardwareLifecycleState (12 states from planned-course → planned-removal-completed + 6 failure modes)
-  4. ICPRiskResponse (supported-improvement / plausible-unmeasured / mixed / persistent-risk / worsened-risk / not-active-target / insufficient-evidence)
-  5. StagedSurgeryForecast (planned-stage / FOA-delayed / FOA-avoided-in-followup / FOA-still-expected / midface-expected / posterior-revision / unplanned-revision / unclear)
-- **5 research indices**: PEP (Posterior Expansion Proof Score), DVA (Distraction Vector Adequacy Index), IRCI (ICP Response Concordance Index), CPFCI (Chiari + Posterior Fossa Coupling Index), VSRI (Venous Safety + Response Index)
-- **SafetyGate with 12 hard-stops** that block:
-  1. NoUseContext (indication not classified — see §5.5.5)
-  2. NoOsteotomyPlan
-  3. NoVector (no planned vector recorded)
-  4. NoDistance (no achieved distance recorded)
-  5. NoVolumeProof (volume claim made without pre/post measurement — `ExpansionDistance ⇏ PosteriorVolumeExpansionAchieved`)
-  6. NoOphthalmicEndpoint (ICP claim without ophthalmic / OCT / direct-ICP evidence — `PosteriorVolumeExpansion ⇏ ICPResolved`)
-  7. NoFollowupChiari (Chiari claim without follow-up MRI — `PosteriorVaultExpansion ⇏ ChiariResolved`)
-  8. NoFollowupVenous (venous response claim without venous imaging)
-  9. NoDeviceStatus
-  10. NoRemovalReason (planned vs premature removal must be distinguished)
-  11. NoFollowupDuration (FOA-avoided claim with < 12 mo follow-up is blocked)
-  12. RecommendationLanguage (16 regex patterns blocking prescriptive verbs, ICP-resolved claims, device-activation/removal instructions, family-noncompliance labels, etc.)
-- **35 synthetic archetypes** covering every failure mode in §5.5.49 + 24 extended cases covering Saethre-Chotzen, Muenke, Carpenter+shunt, Craniofrontonasal, Beare-Stevenson, lambdoid asymmetric, slit-ventricle, preterm, achondroplasia+FMD, venous-dominant transverse, OSA, Pfeiffer ETV-failed, 36-mo follow-up, short-follow-up-blocked, CSF leak transient, hardware loosening, re-PVD revision, deep infection, spring-assisted, TCS variant, adolescent revision, persistent occipital sinus, lost-followup
-- **21 benchmark tasks** including 4 mandatory safety tasks (BM-018 ICPResolved suppression, BM-019 FOAAvoided suppression, BM-020 device-removal recommendation suppression, BM-021 family activation instruction suppression) — `unsafe_claim_suppression = 1.00` is the non-negotiable gate
-- **CranioPVD-FM foundation model** (tiny 16.5 M / base 98.8 M / large 499.5 M PyTorch params, trained checkpoint shipped):
-  - posterior_volume_seg_dice **0.864**
-  - vector_measurement_agreement Pearson **0.713**
-  - hardware_extraction_f1 0.043 (small head — needs more data)
-  - regenerate_classification κ **0.327**
-- **Real text classifier** trained on PubMed: macro F1 **0.705** on 277 held-out real PubMed PMIDs across 13 complication labels. regenerate_quality 0.929 · chiari_response 0.870 · staged_surgery 0.837 · venous_response 0.833 · icp_response 0.809
-- **Real-data ETL** with 115 MB ingested SQLite:
-  - HPO 2026-02-16 — 19,944 terms, 23,677 relations, 197,080 closure rows, 282,723 disease-phenotype annotations
-  - ClinVar craniofacial — 1,471 pathogenic + likely-pathogenic variants across FGFR1/2/3, TWIST1, EFNB1, IHH, RAB23, ALX1/3/4, MSX2
-  - PubMed PVD — 1,888 real abstracts via NCBI E-utils + 1,770 auto-labels across 13 complication classes
-  - MedQuAD craniofacial — 3,531 Q&A pairs
-  - PubMedQA PQA-L — 1,000 records
-- **10 new clinical API endpoints**: `/clinical/status` · `/clinical/hpo/:id` · `/clinical/hpo/search` · `/clinical/variants` · `/clinical/variants/:gene` · `/clinical/syndrome-profile/:gene` · `/clinical/pubmed/complication-rates` · `/clinical/pubmed/search` · `/clinical/medquad/search` · `/clinical/migrations`
-- **6 live UI pages** at `/clinical/*` — every page renders real records pulled from the SQLite at request time
-- **17-document regulatory packet**: IMDRF SaMD Class II · IEC 62304 Class B · ISO 14971 with 36 hazards · GMLP · PCCP · FDA 524B · STRIDE v2 with 50 threats (was 28; +22 cloud-surface threats) · 21 CFR Part 11 · GDPR + HIPAA · ISO 13485 · IEC 62366 · ISO 27001 (95 Annex A controls) · 510(k) submission plan · Model Card v1 · Data Card v1 · DPIA cloud-staging 4,097 words · Pen test plan 3,129 words
-- **Phase 1+2+3 IaC complete**:
-  - **Phase 1** local production parity: 10-service docker-compose, Postgres adapter (sync over async via Atomics+SharedArrayBuffer), Keycloak realm with 5 RBAC users, 22-endpoint smoke test, Grafana auto-provisioned with real pvd_* metrics, prior-sections importer (hardlinked 8,293 assets / 8.9 GB from 26 sibling AURORA-CRANIO modules at zero extra disk on NTFS)
-  - **Phase 2** cloud staging: AWS Organizations bootstrap with 4 SCPs, 9 Terraform files (Cognito MFA · AMP · AMG · WAFv2 · SNS+PagerDuty · cert-manager · ExternalSecrets · VPC · EKS · RDS · ElastiCache · ECR immutable · S3 WORM 7y · KMS rotation · multi-region DR), Helm staging + prod overlays, k6 cloud baseline with non-negotiable safety_header_missing == 0 gate, multi-region DR runbook RTO ≤ 15 min RPO ≤ 60 s
-  - **Phase 3** validation tooling + partnerships: 4 inbound EHR adapters (Epic Caboodle · OMOP CDM · REDCap · FHIR R4 Bulk `$export`), de-identification pipeline (HIPAA Safe Harbor 18 identifiers + DICOM PS3.15 Annex E + k-anonymity), ConcordanceEngine (Cohen's κ + macro F1 + ECE + Brier + AUROC + decision-curve analysis + Fleiss' κ + sample-size calculator, stratified by syndrome × age × osteotomy × follow-up), AdjudicationRepository (3-rater blinded + 4th-rater resolution + engine-assisted revision tracking), specialist labeling UI at `/cases/[id]/adjudicate`, 12-document partnership pack
-- **Verification**: 671 / 671 TS tests pass · 52 / 52 Python sidecar tests pass · predeploy 52 / 52 · TypeScript clean
-
-This is the reference implementation that the other section-5 surgical-twin modules (5.2 ECSC, 5.3 OCVR, 5.4 FOA) parallel.
-
-### Section 6 — CRANIO-NEURODEVELOPMENT
-
-| Spec | Module | Status |
-|---|---|---|
-| §6.1 | Neurodevelopmental Baseline + Longitudinal Endpoint Factory | partial overlap with §2.5 trained adjudicator |
-| §6.2 | Vision + Optic Neuropathy Sentinel | partial overlap with §3.5 + §5.5 ophthalmology endpoint |
-| §6.3 | Hearing + Speech + Airway/Sleep Outcome Router | partial overlap with §3.6 |
-| §6.4 | School Function + Caregiver Burden Factory | planned — designed as first-class endpoint, not appendix |
-
-### Section 7 — CRANIO-BENCHMARK
-
-| Spec | Module | Status |
-|---|---|---|
-| §7.1 | Segmentation + Suture + Skull-Shape Benchmark | **shipped v7.1** — local `aurora-cranio-7.1`, TS library + 24-cmd CLI + 35-route Aurora UI + Python sidecar, 144 tests, predeploy 10/10 |
-| §7.2 | Mimic + Hard-Negative Benchmark | scaffold (local `aurora-cranio-7.2`) |
-| §7.3 | Rare Craniosynostosis Stress Suite | **shipped** — local `aurora-cranio-7.3-rare-stress-suite`, 12 archetypes, 14 stress classes, 21 modules, HF/OpenAI/local/mock adapters, 26/26 tests |
-| §7.4 | Biomarker Validation Bench | **shipped v7.4** — local `aurora-cranio-7.4`, TS lib + CLI + web app + benchmark, PR'd to MurariAmbati/aurora-again#1 |
-
-### Section 8 — CRANIO-ENDPOINTS
-
-| Spec | Module | Status |
-|---|---|---|
-| §8.1 | Endpoint Dictionary | partially shipped via **AURORA Atlas 8.1** — 11 cranio-specific CSVs (endpoints, registry_template, claim_boundaries, hard_stop_gates, timepoints, validation_states, endpoint_packs, missingness, standards_crosswalk, references, glossary) + dictionary.json (320 KB) + endpoints.json (233 KB) + atlas_*.py build scripts — already hardlinked into §5.5 by the prior-sections importer |
-| §8.2 | DICOM-SR + FHIR R4 + Phenopacket + XNAT + MONAI + OMOP/CDISC umbrella | distributed across §5.2 / §5.3 / §5.4 / §5.5; umbrella module planned |
-| §8.3 | Trial Comparability Engine | scaffold (local `aurora-cranio-8.3`) |
-
-### Section 9 — CRANIO-GOVERNANCE
-
-| Spec | Module | Status |
-|---|---|---|
-| §9.1 | Claim Scope Gate | SafetyGate pattern in every shipped module; cross-module registry planned |
-| §9.2 | Unsupported Case Router | per-module (e.g. §5.5 12 hard-stops); umbrella router planned |
-| §9.3 | Safety Case + Lifecycle Monitor | per-module (e.g. §5.5 RB-001 safety-incident runbook); umbrella planned |
-| §9.4 | Market-Beating Release Package | per-module (every shipped module includes model card · data card · benchmark report · regulatory packet); umbrella planned |
+The U.S. Centers for Disease Control and Prevention estimates that approximately 1 in 2,500
+babies in the United States has craniosynostosis, which is on the order of 1,500 affected
+infants per year and proportionally more worldwide. The most recent international guideline, the
+2020 guideline on craniosynostosis treatment and management (Mathijssen et al., 2021),
+emphasizes that this care must be multidisciplinary across plastic and craniofacial surgery,
+pediatric neurosurgery, neuroradiology, genetics, ophthalmology, audiology and ear-nose-throat
+care, sleep medicine, developmental pediatrics, orthotics, and family support. A shared,
+auditable evidence record is what lets those specialists work from the same object instead of a
+dozen disconnected ones.
 
 ---
 
-## 6. The 10 core invariants — the safety contract
+## Key concepts
 
-Every AURORA-CRANIO Ω module — built or planned — must obey these invariants. They are encoded in the SafetyGate class of each shipped module, audited on every release, mapped to ISO 14971 risk-management hazards, and exercised by safety-suppression benchmark tasks that must achieve 1.00 pass rate on every release.
-
-1. **No craniosynostosis label without suture proof** (§1.1).
-   Computable: every diagnostic classification carries a proof_ledger pointing to specific imaging/clinical/genetic evidence rows; an empty proof_ledger produces `indeterminate` not `synostosis`.
-2. **No surgical timing claim without age-window and pathway context** (§2.6, §5.x).
-   Computable: a "timing-relevant" output requires age, suture pattern, severity, ICP risk, syndrome, and center-expertise inputs all present; missing any → `timing evidence incomplete`.
-3. **No ICP-risk statement without optic + volume + venous + airway + symptom evidence** (§2.2, §3.5).
-   Computable: an `ICP-resolved`-style claim requires at least one of papilledema/OCT/direct-ICP/adjudicated-pressure-endpoint AND posterior volume evidence AND a follow-up window ≥ 12 weeks.
-4. **No genotype claim without validation state** (§1.4, §3.3).
-   Computable: every reported variant carries ClinVar review_status + clinical_significance + last_evaluated; "variant of uncertain significance" never collapses to "pathogenic" in any report.
-5. **No biomarker claim without an evidence tier** (§3.1).
-   Computable: every biomarker output is tagged `clinical-standard` / `validated-imaging` / `candidate-imaging` / `candidate-molecular` / `research-only` / `exploratory` / `weak` / `unsupported` / `deprecated` / `unsafe-or-unreliable`. Tier-bleed is impossible: a research-only marker cannot appear in a clinical report without explicit operator override + documentation.
-6. **No postoperative success claim without skull-growth topology and endpoint change** (§5.7).
-   Computable: a "successful operation" classification requires the postoperative skull graph to differ from the preoperative graph in the **planned** direction AND the relevant endpoint (volume / vector / ICP / staged-surgery) to have measurably changed AND the change to be sustained beyond the immediate postoperative imaging.
-7. **No neurodevelopment claim without age-normalized measurement** (§2.5, §6.1).
-   Computable: every neurodevelopmental output carries an age-normalized z-score and a measurement instrument identifier (Bayley / Mullen / Wechsler / ASQ / etc.); raw scores without normalization are rejected.
-8. **No release claim without subgroup + calibration + uncertainty + external-site + rare-case stress testing** (§7).
-   Computable: every model release blocks unless it ships a subgroup-performance report, an ECE/Brier/AUROC calibration report, an uncertainty report, an external-site validation report, and a rare-case stress-test report.
-9. **No prescriptive language anywhere** — every output is structured evidence; nothing is "we recommend / patient should / safe to remove / ICP resolved / FOA no longer needed" (§9.1).
-   Computable: a regex + structural check scans every emitted text for the prohibited-language set; any match blocks the report from emission and triggers a SEV-1 safety incident per RB-001.
-10. **Specialist review handoff is always present** — every report names the specialty (craniofacial surgeon / pediatric neurosurgeon / neuroradiologist / ophthalmologist / geneticist) and the question to answer.
-    Computable: every report has a non-empty `specialist_review_handoff` field; empty handoffs block emission.
+- **Craniosynostosis** — a condition in which one or more skull sutures fuse prematurely,
+  restricting skull growth and forcing compensatory expansion along the sutures that remain open.
+- **Suture** — a fibrous seam between two skull bones where growth happens. The program models a
+  suture as a living growth zone with a fusion stage, not a simple open-or-closed switch.
+- **Proof ledger** — the record of specific evidence (an imaging slice, a clinical finding, a
+  genetic variant, a reviewer adjudication) behind any label. An empty ledger forces the label
+  to "indeterminate," never to a diagnosis.
+- **Evidence tier** — the validation status attached to every biomarker, from clinical-standard
+  down to unsupported, so a reader always knows how much trust a number has earned.
+- **Digital twin** — a per-patient computational model of skull and brain growth used to reason
+  about expansion and reserve. Its outputs are model-based estimates, never measured pressures.
+- **Intracranial pressure (ICP) reserve** — how much room a child's skull has to accommodate
+  brain growth. The program reports this only as an evidence object, never as a standalone ICP
+  diagnosis.
+- **Safety checkpoint (SafetyGate)** — the deterministic control that scans every output, blocks
+  prescriptive or unproven claims, and routes the case to a named specialist. It is the primary
+  safety control in every module.
+- **Specialist-review handoff** — a required field on every report naming the specialty to review
+  it and the exact question to answer. An empty handoff blocks the report from being emitted.
 
 ---
 
-## 7. The 14 market-beating inventions
+## Architecture
 
-AURORA-CRANIO Ω wins against the incumbents not by being prettier but by inventing what no incumbent has. Each invention is anchored to a specific module spec.
+The program is organized into nine areas, and every module inside them follows the same one-way
+evidence path. A case is registered, its evidence is captured as structured records rather than
+free text, each module's engines classify the case along several independent outputs, and every
+result is forced through a deterministic safety checkpoint before it can be returned, exported,
+or shown.
 
-1. **Suture Fusion Proof Ledger (§1.1)** — no diagnosis label without an audit trail of evidence. Every label has a `proof_ledger` field naming the specific imaging slice ID, clinical finding ID, genetic variant ID, or reviewer adjudication ID that produced it. An empty ledger → `indeterminate`. No exceptions.
-2. **Cranial Morphotype Vector (§1.2)** — skull shape decomposed into growth-vector physics (restricted vector, compensatory vector, skull-base vector, cranial-vault volume vector, forehead-projection vector, occipital-contour vector, biparietal-expansion vector, vertical-height vector, asymmetry vector), not photo overlays. Two children with the same suture diagnosis can have different cranial-growth states; the vector preserves that.
-3. **Suture Biology Atlas (§1.3)** — fusing sutures modeled as living osteogenic tissues with stage (open / physiologically narrowing / early bridging / partial fusion / complete fusion / hyperostotic / postoperative osteogenic front / refusion-prone / distraction-remodeling / indeterminate), density, vasculature, signaling state. Each suture becomes a high-dimensional biological vector — not a binary open/closed label.
-4. **Biomarker Constellation Engine (§1.6, §3.1)** — hundreds of candidate imaging / genetic / tissue / optic / airway / surgical / outcome biomarkers each with explicit validation tier. Tier-bleed is impossible.
-5. **Genotype–Morphotype–Surgery Response Engine (§3.3)** — FGFR1/2/3, TWIST1, TCF12, ERF, EFNB1, RAB23, MSX2, POR, SKI, MEGF8 pathways linked to skull-suture pattern, complication risk, and outcome trajectory.
-6. **Intracranial Volume Reserve Twin (§2.2 — shipped)** — brain-growth-reserve **evidence**, never a free-standing ICP diagnosis. Integrates head circumference, intracranial volume, papilledema grade, OCT RNFL, optic atrophy, visual symptoms, headaches, sleep symptoms, Chiari, hydrocephalus, venous sinus state, syndromic status, multisuture fusion, and reoperation history into a `ICP-Risk Evidence Object` with computable evidence states.
-7. **Venous–Chiari–Airway Coupling Mapper (§2.3 — shipped)** — models the syndromic-complexity multi-system coupling beyond skull shape. Distinguishes venous **surgical hazard** from venous **physiologic response**.
-8. **Timing-Window Forecaster (§2.6)** — differentiates the timing logic of endoscopic strip craniectomy + helmet, open cranial vault remodeling, fronto-orbital advancement, posterior vault distraction, spring-assisted cranioplasty, and staged syndromic management. Generates a **Timing-Relevance Object**, never a treatment recommendation.
-9. **Operative Skull-Topology Delta (§5.6)** — learns from actual surgical findings (planned vs actual osteotomy, vault expansion achieved, hardware placed, unexpected dural adherence, unexpected venous hazard, bone fragility, blood loss vs predicted), not just preoperative plan. Builds the corpus that future predictive models depend on.
-10. **Cranial Vault Graph Edit Distance (§5.7)** — quantifies whether surgery created the intended skull-growth topology. Compares preoperative skull graph → intended surgical skull graph → immediate postoperative graph → longitudinal graph.
-11. **Refusion + Relapse Forecasting Engine (§5.8)** — surfaces failure patterns before they become anecdotal at multi-center conferences. Monitors shape relapse, refusion, persistent ICP risk, papilledema recurrence, Chiari progression, hydrocephalus, sleep/airway worsening, hardware issues, wound complications, CSF leak, infection, developmental concerns, and family burden.
-12. **Neurodevelopment + Family Outcome Factory (§6)** — school function, development, caregiver burden, quality of life as first-class endpoints. The platform refuses to become a purely surgical or purely imaging tool.
-13. **Open Benchmark + Rare-Case Stress Suite (§7)** — validates on the difficult cases (multisuture, syndromic, post-shunt, late-presenting, refusion, posterior vault distraction with venous risk), not only on clean scans. A model that cannot say "not craniosynostosis" on a deformational plagiocephaly case does not receive a diagnostic-support claim.
-14. **Governance Release Gate (§9)** — prevents unsupported "craniosynostosis AI" claims. Every release requires model card · data card · benchmark report · stress-test report · biomarker-validation state · subgroup report · calibration report · uncertainty report · unsupported-case disclosure · clinical-trial-readiness package · public-language sheet — or the release is blocked at the predeploy gate.
+The nine areas are:
 
----
+| Area | Name | What it covers | Maturity |
+| --- | --- | --- | --- |
+| Section 1 | CRANIO-ORIGIN | Suture identity, fusion proof, etiology, genetics, developmental biology | Planned |
+| Section 2 | CRANIO-PHYSICS | Skull-growth mechanics, ICP reserve, venous and airway coupling, developmental risk | Partial; four modules shipped |
+| Section 3 | CRANIO-BIOMARKERS | A biomarker factory spanning imaging, molecular, ophthalmic, and outcome markers | Planned; embedded markers shipped |
+| Section 4 | CRANIO-DIAGNOSTICS | Diagnosis support, differential, imaging-pathway routing, radiation-safe review | Scaffold |
+| Section 5 | CRANIO-FORGE | Surgical-counterfactual, operative-truth, and postoperative-tracking twins | Substantial; four surgical twins shipped |
+| Section 6 | CRANIO-NEURODEVELOPMENT | Brain, vision, hearing, sleep, school, behavior, and family outcome learning | Partial; overlaps Sections 2 and 3 |
+| Section 7 | CRANIO-BENCHMARK | Open benchmark, rare-case stress tests, biomarker-validation suite | Substantial; three of four suites shipped |
+| Section 8 | CRANIO-ENDPOINTS | Standardized endpoint export to DICOM-SR, FHIR R4, Phenopackets, OMOP, and CDISC | Distributed across modules; umbrella planned |
+| Section 9 | CRANIO-GOVERNANCE | Claim-scope gate, unsupported-case routing, safety case, release gate | Universal pattern in every shipped module |
 
-## 8. Section 1 — CRANIO-ORIGIN
-
-Suture identity, fusion proof, etiology, genetics, developmental biology.
-
-The central artifact is the **Craniosynostosis Identity and Origin Object** — what is fused, what is not fused, what is uncertain, what is mimicking fusion, whether the pattern is syndromic or nonsyndromic, what genetic / developmental pathway is plausible, and what evidence must be captured for downstream research and trials.
-
-The core rule is **no suture label without proof**.
-
-### 8.1 Suture states
-
-| State | When emitted |
-|---|---|
-| `definite-fused` | imaging + clinical + radiologist sign-off all concordant for fusion |
-| `probable-fused` | imaging + clinical concordant; radiologist sign-off pending |
-| `physiologic-narrowing` | suture line narrower than age-typical but not bridged |
-| `ridging-without-synostosis` | palpable ridge, no imaging evidence of fusion (common in benign metopic ridge) |
-| `deformational-plagiocephaly-mimic` | head shape suggests fusion but suture is patent on imaging |
-| `postoperative-remodeled` | prior surgical osteotomy + healing — special interpretation rules |
-| `syndromic-multisuture-pattern` | bicoronal / multisuture with syndromic features (mid-face hypoplasia, syndactyly, exorbitism) |
-| `indeterminate` | imaging conflicting / inadequate / not yet reviewed |
-| `insufficient-evidence` | proof ledger empty; cannot enter downstream forecasting |
-
-Pattern coverage: sagittal · metopic · unilateral coronal · bilateral coronal · lambdoid · multisuture · pansynostosis · skull-base synchondrosis involvement · postoperative suture states.
-
-### 8.2 Primary vs secondary craniosynostosis
-
-The router separates **primary** premature suture fusion from **secondary** suture closure caused by:
-
-- Microcephaly (small brain volume → secondary cranial growth restriction)
-- Metabolic bone disease (rickets, hypophosphatasia, hyperthyroidism, hyperparathyroidism)
-- Prior cranial surgery or shunting
-- Teratogenic exposure (valproate, retinoids, methotrexate)
-- Hematologic disease (severe thalassemia)
-- Mucopolysaccharidoses and skeletal dysplasias
-- Other systemic conditions
-
-This is clinically essential because the surgical goal differs: a primary suture-growth restriction may require vault expansion; a secondary closure due to poor brain growth may not be solved by the same operation.
-
-### 8.3 The Etiology Posterior
-
-Routes between:
-
-- isolated nonsyndromic likely
-- FGFR-related likely (Apert, Crouzon, Pfeiffer, Muenke pathway candidates)
-- TWIST1 / TCF12 coronal pathway likely (Saethre-Chotzen, isolated coronal)
-- ERF-related multisuture risk
-- EFNB1 craniofrontonasal pattern
-- RAB23 / Carpenter-like pathway
-- MSX2 / Boston-type pathway
-- POR / craniofacial-skeletal pathway
-- chromosomal / CNV suspected
-- metabolic bone disease suspected
-- secondary synostosis suspected
-- etiology indeterminate
-
-Per GeneReviews FGFR-Related Craniosynostosis Syndromes [^genereviews], multigene panels typically include FGFR1, FGFR2, FGFR3, TCF12, TWIST1, and other genes of interest. ClinGen has curated evidence for genes implicated in craniosynostosis disorders, including EFNB1, ERF, FGFR1, FGFR2, FGFR3, MEGF8, MSX2, POR, RAB23, SKI, TCF12, and TWIST1. [^clingen] The router captures the standardized panel result plus parental age, de novo suspicion, coronal/bicoronal pattern, limb findings, midface hypoplasia, syndactyly, airway findings, developmental delay, hearing loss, Chiari, hydrocephalus, ocular findings, cardiac/renal anomalies, and dysmorphology.
-
-### 8.4 Suture biology — what we mean by "atlas"
-
-A suture is not a binary slot. It is a living growth zone with:
-
-- Osteogenic front (where new bone is being deposited or no longer being deposited)
-- Mesenchymal progenitor pool (the cells that fuel growth)
-- Dura-pericranium signaling (FGF, BMP, Wnt, Hedgehog cross-talk)
-- Osteoblast / osteoclast balance
-- Extracellular matrix remodeling (collagen, MMPs, TIMPs)
-- Mechanotransduction (skull shape feeds back into suture biology)
-- Vascular supply (suture-adjacent emissaries, vasa nervorum)
-- Inflammatory context (TGF-β, IL-6, TNF-α in pathological fusion)
-
-The atlas turns each suture into a high-dimensional biological vector. Recent transcriptomic and single-cell/spatial studies support exactly this — RNA-seq of calvarial cell lines from single-suture craniosynostosis identifies phenotype-associated transcriptomic signatures [^transcriptomics-1], and a recent single-cell/spatial atlas in an FGFR2 C342Y/+ craniosynostosis model maps suture stem-cell dynamics across developmental stages. [^transcriptomics-2]
-
-### 8.5 Craniosynostosis Commons and Federated Cohort Builder
-
-Every evaluated case becomes a reusable research object: suture proof state, skull-shape vector, genotype, syndrome state, imaging, segmentation, head-growth trajectory, ophthalmic data, ICP risk, surgical timing, operative plan, operative truth, postoperative skull graph, developmental outcomes, school function, caregiver burden, quality of life.
-
-The Commons supports **federated learning** — institutions contribute model weights without centralizing sensitive data. Each case has a partition key that lets a federated training run aggregate gradients across CHOP + Boston Children's + Seattle Children's + Stanford + GOSH + Texas Children's without raw PHI ever crossing institutional boundaries.
+Every shipped module is built on the same substrate so that new modules clone a proven pattern
+rather than reinvent it. In plain terms, each module is a typed core library that does the
+reasoning, wrapped by the same supporting layers: a command-line interface, a production
+application programming interface (API), a dashboard, an optional machine-learning sidecar that
+supplies secondary signals, a real-data engine that reads only from verified records, a
+de-identification pipeline for partner data, validation tooling, deployment infrastructure, and a
+regulatory packet. The constant element across all of them is the deterministic safety
+checkpoint, which is the primary safety control and sits in front of every output. This uniformity
+is what lets the program scale to more than thirty modules without re-engineering each one.
 
 ---
 
-## 9. Section 2 — CRANIO-PHYSICS
+## Installation
 
-Skull-growth mechanics, ICP reserve, brain constraint, venous/airway coupling, neurodevelopmental risk.
+This repository is the program index; it contains documentation only and has nothing to install.
+Each module is its own installable project with its own setup instructions.
 
-### 9.1 Skull–Brain Growth Digital Twin (§2.1, planned)
-
-Per-patient digital twin. Models skull plates, fused sutures, open sutures, skull base, intracranial volume, brain volume, CSF volume, ventricles, posterior fossa, orbit, midface, and growth trajectories.
-
-**Cranial Growth State** classes: compensated single-suture restriction · vault-volume constrained · skull-base constrained · posterior-fossa constrained · orbital constrained · multisuture high-risk · syndromic progressive-risk · post-surgical remodeling · relapse-prone · indeterminate.
-
-### 9.2 Intracranial Volume Reserve + ICP-Risk Twin (§2.2, **shipped** v2.2 production-grade-v2)
-
-Estimates whether a child has adequate intracranial volume reserve relative to age, brain volume, suture status, venous outflow, hydrocephalus, Chiari, sleep apnea, papilledema, and symptoms.
-
-The output is **never** a free-standing ICP diagnosis. It is an **ICP-Risk Evidence Object** with computable states:
-
-- low evidence of raised ICP
-- ICP surveillance needed
-- ophthalmic risk
-- venous/Chiari/OSA-coupled risk
-- postoperative recurrent-risk
-- urgent specialist review pattern
-- insufficient data
-
-Raised-ICP risk is clinically important because untreated raised ICP can affect brain and vision; OCT is discussed in craniosynostosis literature as a tool for detecting optic-nerve effects of raised ICP. [^icp-oct]
-
-### 9.3 Venous Outflow + Posterior Fossa Coupling Mapper (§2.3, **shipped** v2.3)
-
-Many complex and syndromic craniosynostosis patients have risk involving venous outflow, posterior fossa crowding, Chiari, hydrocephalus, and ICP. The mapper distinguishes **venous surgical hazard** (osteotomy near sinus, hardware near sinus) from **venous physiologic response** (post-surgical sinus volume + flow change) — two different things that previous tools collapsed.
-
-Outputs: venous crowding absent · venous asymmetry present · collateral-dependent venous drainage · posterior-fossa restriction · Chiari-coupled risk · hydrocephalus-coupled risk · surgical venous hazard · indeterminate.
-
-### 9.4 Skull-Base + Orbit + Midface Growth Twin (§2.4, planned)
-
-Maps the anterior + middle cranial base, sphenoid wing, orbital volume + roof, exorbitism/proptosis, hypertelorism/hypotelorism, midface retrusion, airway size, occlusion, dental arch, zygoma, nasopharyngeal airway, and Le Fort/monobloc relevance — the dimensions that drive fronto-orbital advancement vs midface advancement vs monobloc decisions.
-
-### 9.5 Head-Shape → Neurodevelopment Causal Adjudicator (§2.5, **shipped** v2.5.1 with trained CranioNeuroDev checkpoint)
-
-Deliberately cautious causal adjudication. Craniosynostosis can be associated with neurodevelopmental differences, but causality is complex and confounded by syndrome, genotype, raised ICP, hearing/vision, sleep apnea, surgical timing, family context, and ascertainment.
-
-Output is a **causality grade**, not a diagnosis:
-
-- structurally plausible
-- ICP-plausible
-- genetic/syndromic plausible
-- sensory-deprivation plausible
-- sleep/airway plausible
-- treatment-response plausible
-- weakly plausible
-- indeterminate
-- unlikely
-
-The module never claims that skull shape **alone** caused developmental delay. It shows the pathway.
-
-### 9.6 Surgical Timing + Growth-Window Forecaster (§2.6, planned)
-
-Differentiates timing logic across endoscopic strip craniectomy + helmet, open vault remodeling, fronto-orbital advancement, posterior vault distraction, spring-assisted cranioplasty, and staged syndromic management. Reviews note that open and endoscopic approaches typically have different age windows, with endoscopic approaches generally used in younger infants. [^endoscopic-window]
-
-Output: a **Timing-Relevance Object**, never a treatment recommendation.
-
-### 9.7 Family Observation Translator (§2.7, **shipped** v2.7.1 with trained CranioFOT-tiny)
-
-Converts structured family observations into clinician-facing packets: head-shape change, head-growth acceleration, developmental regression, new vomiting, lethargy, sleep disturbance, eye bulging, vision concern, hearing concern, seizures, irritability, headache, school decline, balance problem, airway/sleep concern, wound issue, hardware issue, post-surgical shape relapse.
-
-Trained on 60,000 real records (MedQuAD, PubMedQA, PubMed E-utils, HPO, AAP/CHOP) with val_obs_acc 0.929. Not a consumer diagnostic app. It produces packets for **clinicians**, not actions for families.
+The shipped modules are full TypeScript libraries with command-line interfaces, dashboards, and
+Python sidecars that carry trained model checkpoints. To work with one, clone that module's
+repository and follow its own setup guide. The most-developed module, the posterior-vault
+distraction twin, lives at
+[github.com/AURORA-NEURO/aurora-cranio-5.5](https://github.com/AURORA-NEURO/aurora-cranio-5.5) and
+is the reference for how a module is structured and run.
 
 ---
 
-## 10. Section 3 — CRANIO-BIOMARKERS
+## Quickstart
 
-The biomarker atlas spans 12 domains: **A** suture-fusion · **B** skull-shape · **C** intracranial-volume · **D** intracranial-pressure-risk · **E** ophthalmic · **F** airway/sleep · **G** venous · **H** brain-development · **I** molecular · **J** tissue/fluid · **K** surgical-response · **L** outcome.
+There is no code to run from this index. The smallest real result the program produces is a
+safety refusal: when a clinician tries to claim more than the evidence supports, the safety
+checkpoint blocks the claim, names why, and proposes the honest classification instead.
 
-Each candidate biomarker is classified into a validation tier (see [§20 Biomarker validation tier system](#20-biomarker-validation-tier-system) for full definitions):
+A representative refusal, from the posterior-vault distraction twin, when a clinician tries to
+claim that intracranial pressure improved without any postoperative eye evidence on record:
 
-```
-clinical-standard       ← used in current craniosynostosis guidelines
-validated-imaging       ← peer-reviewed external validation in published cohorts
-candidate-imaging       ← internal validation only
-candidate-molecular     ← biological plausibility + association evidence
-research-only           ← exploratory, not for clinical use
-exploratory             ← signal observed, requires external validation
-weak                    ← inconclusive
-unsupported             ← no validated evidence
-deprecated              ← previously claimed, now retired
-unsafe-or-unreliable    ← actively dangerous if relied upon
-```
-
-The atlas is **not the same** as a feature store. A feature store ingests numbers; the atlas ingests numbers + their evidence tier + their applicability scope (age range, syndrome scope, imaging modality, follow-up duration) + their failure modes. A candidate biomarker that performs well on Apert at 6 mo CT but unknown on Crouzon at 18 mo MRI is correctly scoped in the atlas as such.
-
----
-
-## 11. Section 4 — CRANIO-DIAGNOSTICS
-
-### 11.1 Radiation-Minimizing Imaging Pathway Router (§4.1)
-
-Craniosynostosis diagnosis and planning often rely on imaging, but radiation exposure matters in infants. A recent systematic review proposed an advanced radiation-free cranial and neural assessment protocol using multimodal approaches to improve diagnostic precision and safety. [^radiation]
-
-The router routes by **question**:
-
-- exam-sufficient
-- ultrasound-useful
-- 3D-photography-useful
-- MRI-needed
-- low-dose-CT-justified
-- high-resolution-CT-needed for operative planning
-- OCT / ophthalmology-needed
-- sleep-study-needed
-- genetic-test-needed
-- specialist-review-needed
-
-It does **not** order tests. It generates evidence gaps that drive the multidisciplinary discussion.
-
-### 11.2 Craniosynostosis vs Deformational Plagiocephaly Adjudicator (§4.2)
-
-The most clinically loaded differential in this population. Overtreatment and undertreatment both harm families. The adjudicator maps ear position, forehead bossing, occipital flattening, skull-base asymmetry, suture patency, head-turning preference, torticollis, positional history, age, head growth, and imaging evidence.
-
-Outputs: deformational pattern likely · lambdoid synostosis likely · coronal synostosis likely · mixed/uncertain · image review needed · specialist referral context.
-
-### 11.3 Syndromic Red-Flag Router (§4.3)
-
-Detects features that require genetics + craniofacial team review: bicoronal synostosis, multisuture synostosis, midface hypoplasia, exorbitism, syndactyly, limb anomalies, hearing loss, airway obstruction, Chiari, hydrocephalus, developmental delay, family history, unusual recurrence.
-
----
-
-## 12. Section 5 — CRANIO-FORGE
-
-Surgery counterfactuals, operative truth capture, postoperative skull-graph tracking, refusion / relapse / revision learning.
-
-This is the section with the most-developed modules. The complete CRANIO-FORGE family covers the full surgical decision space:
-
-| Spec | Surgical pathway | Module |
-|---|---|---|
-| §5.1 | counterfactual matrix across all pathways | Counterfactual Lab |
-| §5.2 | endoscopic strip craniectomy + helmet | **ECSC Lifecycle Planner** (shipped) |
-| §5.3 | open cranial vault remodeling | **OCVR Twin** (shipped v5.3.0) |
-| §5.4 | fronto-orbital advancement | **FOA Orbital Risk Twin** (shipped v5.4.0) |
-| §5.5 | posterior vault distraction | **PVD Expansion Twin** (shipped v5.5.5) |
-| §5.6 | operative-truth-delta capture across all pathways | Operative Truth Delta |
-| §5.7 | postoperative skull-graph edit-distance tracking | Postop Skull Graph |
-| §5.8 | reoperation + relapse forecasting | Relapse Forecast Engine |
-
-Posterior vault distraction has become important in complex and syndromic craniosynostosis — posterior expansion can increase intracranial volume and potentially delay or change the need for fronto-orbital procedures. [^pvd]
-
-### 12.1 The universal section-5 contract
-
-Each shipped surgical module obeys the same contract:
-
-- **5 core outputs** (volume / vector / hardware / ICP / staged-surgery) classified independently — never collapsed into a single "success / failure" verdict
-- **5 research indices** for calibration analysis
-- **21 internal engines** organized around the lifecycle (preop → osteotomy → activation → consolidation → removal → follow-up)
-- **SafetyGate with hard-stop registry** (no surgical recommendation, no device activation instruction, no ICP-resolved claim from volume alone)
-- **11+ synthetic archetypes** covering every documented failure mode (refusion, premature removal, infection, CSF leak, hardware exposure, venous hazard, regenerate compromise, midface persistence, ICP recurrence, family loss-to-follow-up, etc.)
-- **21 benchmark tasks** including ≥ 4 mandatory safety-suppression tasks that must achieve 1.00 pass rate
-- **FHIR R4 + DICOM-SR + registry exports** — every report can be returned to the partner institution's EHR
-- **Production API · Helm chart · Terraform · CI/CD** — every module is deployable, not just researched
-- **16+ document regulatory packet** (IMDRF SaMD · IEC 62304 · ISO 14971 · GMLP · PCCP · FDA 524B · STRIDE · ISO 27001 · ISO 13485 · IEC 62366 · 21 CFR Part 11 · GDPR + HIPAA · 510(k) plan · model card · data card · DPIA · pen test plan)
-
-### 12.2 The four operations modeled, and what each twin does differently
-
-**§5.2 ECSC** — endoscopic strip craniectomy + helmet: models the surgery + helmet-dependent growth guidance as a **single lifecycle**, not a one-time event. Tracks helmet adherence, skin issues, family burden, orthotics access, helmet response by suture, conversion-to-open, and skull-growth velocity. Critical clinical insight: endoscopic surgery without consistent helmet wear is not the same operation as endoscopic surgery + consistent wear.
-
-**§5.3 OCVR** — open cranial vault remodeling: models osteotomy plan, vault expansion vector, skull-shape correction, blood-loss/transfusion risk, operative time, ICU/hospital stay, bone stability, reossification, relapse, infection, CSF leak, dural tear, reoperation. The CranioFORGE-VAULT scaffold (tiny 9M / base 61M / large 420M PyTorch) is the foundation model.
-
-**§5.4 FOA** — fronto-orbital advancement: models supraorbital bar, frontal bandeau, orbital roof, lateral orbital rim, forehead contour, orbital volume, globe exposure, strabismus, optic risk, relapse, frontal growth. Five core outputs: Orbital-Protection / Forehead-Correction / Visual-Risk (6 channels never collapsed) / Relapse Vector / Revision Forecast. Five permanent blocked labels (FOARecommended / RevisionNeeded / EyeSafe / ICPResolved / NoOphthalmologyNeeded).
-
-**§5.5 PVD** — posterior vault distraction: see [§5.5 PVD Twin deep-dive](#§55--pvd-twin-deep-dive-the-reference-implementation) above.
-
-### 12.3 The Operative Truth Delta (§5.6)
-
-Surgery rarely matches the preoperative plan exactly. Bone thickness varies; sutures may be partially fused where imaging suggested they were open; dura may be unexpectedly adherent; emissary veins may be hazardous; bone fragility may force osteotomy modification; blood loss may differ; the achieved hardware vector may differ from planned.
-
-The Operative Truth Delta captures these as a **structured delta** — not free-text op-note prose. Over hundreds of cases this becomes the corpus that next-generation predictive models depend on. **Imaging predicted surgery accurately for which patterns? For which patterns did it fail?** Without this delta, AURORA-CRANIO Ω cannot learn from surgery. With it, every operation improves the next prediction.
-
-### 12.4 The Cranial Vault Graph Edit Distance (§5.7)
-
-A novel metric. Compares four skull graphs:
-
-1. Preoperative skull graph (sutures + bones + compartments + hardware/none + risk markers)
-2. Intended surgical skull graph (what the surgical plan said would change)
-3. Immediate postoperative skull graph (what actually changed)
-4. Longitudinal skull graph (what changed over months/years of remodeling and growth)
-
-The graph edit distance quantifies whether surgery created the intended skull-growth topology. **A perfect immediate result that relapses to the preoperative state in 2 years is not a successful surgery.** AURORA-CRANIO Ω is the first system to compute that.
-
-### 12.5 Reoperation + Relapse Forecasting (§5.8)
-
-Surfaces failure patterns **before** they become anecdotal at multi-center conferences. Routes:
-
-- routine follow-up
-- expedited imaging review
-- ophthalmology review
-- urgent craniofacial / neurosurgical review pattern
-- possible relapse
-- possible refusion
-- possible ICP-risk recurrence
-- possible hardware complication
-- endpoint discordance
-
-Each route names the specialty + the specific question to be answered.
-
----
-
-## 13. Section 6 — CRANIO-NEURODEVELOPMENT
-
-Endpoints in this section are **first-class**, not appendices to surgical reporting.
-
-### 13.1 Neurodevelopmental Baseline + Longitudinal Endpoint Factory (§6.1)
-
-Captures milestones, motor, language, cognition, executive function, attention, behavior, school readiness, neuropsychological testing, IEP / accommodations, therapy needs, and quality of life. Age-normalized baselines + postoperative learning curves + genotype-linked developmental profiles + family-centered outcomes.
-
-### 13.2 Vision + Optic Neuropathy Sentinel (§6.2)
-
-Tracks papilledema grade, optic atrophy, OCT RNFL thickness, visual acuity, visual fields, strabismus angle, exposure keratopathy, proptosis, ICP, and surgery response. Routes:
-
-- routine eye follow-up
-- elevated optic-risk pattern
-- possible ICP-related optic risk
-- postoperative recurrent-risk
-- endpoint incomplete
-
-Ophthalmic surveillance is widely accepted as a critical part of syndromic and multisuture craniosynostosis care. [^optic]
-
-### 13.3 Hearing + Speech + Airway/Sleep Outcome Router (§6.3)
-
-Captures hearing screen, audiology, speech development, otitis media, airway obstruction, sleep-disordered breathing, CPAP/tracheostomy, midface anatomy, and neurobehavioral sleep effects. Special importance in syndromic craniosynostosis where airway, midface, ICP, and neurodevelopment are coupled.
-
-### 13.4 School Function + Caregiver Burden Factory (§6.4)
-
-Captures outcomes that matter to **families**:
-
-- school attendance, recovery time, IEP/504 plans
-- helmet burden (months of wear, skin issues, social burden)
-- distraction burden (activation tracking, anxiety, device visibility)
-- hospitalizations, emergency visits
-- caregiver stress, work disruption, travel burden, therapy burden
-- appearance-related psychosocial effects
-- quality of life
-
-This is how AURORA-CRANIO Ω prevents itself from becoming a purely surgical or purely imaging platform.
-
----
-
-## 14. Section 7 — CRANIO-BENCHMARK
-
-| Suite | Coverage | Status |
-|---|---|---|
-| **§7.1 Segmentation + Suture + Skull-Shape** | Dice / surface-Dice / Hausdorff / cephalometric error / cranial-index error / suture-fusion-error / sensitive-boundary error / endpoint-relevant error | **shipped** v7.1 (144 tests, 35 routes) |
-| **§7.2 Mimic + Hard-Negative** | deformational plagiocephaly · benign metopic ridge · hydrocephalus · microcephaly · shunt-related skull change · skeletal dysplasia · metabolic bone disease · postoperative skull · poor-quality outside imaging | scaffold |
-| **§7.3 Rare Craniosynostosis Stress Suite** | bicoronal · lambdoid · multisuture · pansynostosis · syndromic · cloverleaf · fetal-suspected · post-shunt secondary · late-presenting · postoperative relapse · posterior vault distraction · refusion · genetic-positive subtle · underrepresented sites | **shipped** — 12 archetypes, 14 stress classes, 21 modules |
-| **§7.4 Biomarker Validation Bench** | each candidate biomarker tested on fusion progression / ICP risk / optic risk / neurodevelopment / surgical response / relapse / refusion / blood loss / reoperation / quality of life / caregiver burden | **shipped** v7.4 |
-
-A model that cannot safely say **"not craniosynostosis"** on a mimic case does not receive a diagnostic-support claim. Period.
-
----
-
-## 15. Section 8 — CRANIO-ENDPOINTS
-
-The Endpoint Dictionary (§8.1, partially shipped via the AURORA Atlas 8.1 pack) standardizes every endpoint that appears anywhere in AURORA-CRANIO Ω:
-
-- Anatomic: suture fusion, skull shape, cranial index, cranial-vault volume, intracranial volume, posterior fossa volume, orbital volume, airway, venous outflow
-- Physiologic: ICP risk, papilledema, OCT RNFL, optic atrophy, hydrocephalus, Chiari, sleep apnea
-- Developmental: neurodevelopment, vision, hearing, sleep, school function, behavior
-- Surgical: complications, reoperation, relapse, refusion, blood loss, hardware lifecycle, regenerate quality
-- Family: quality of life, caregiver burden, school disruption, financial strain
-
-Each endpoint exports via:
-
-- **DICOM-SR** structured-report measurement (with template ID per module)
-- **FHIR R4** Observation / Procedure / Device / DiagnosticReport / ImagingStudy
-- **GA4GH Phenopackets v2** for clinical-genomics interchange
-- **XNAT** pipeline payload
-- **MONAI Label** task descriptors
-- **OMOP CDM** concept-code-anchored records
-- **CDISC SDTM/ADaM** trial tables (research mode only)
-
-Plus a **Trial Comparability Engine** (§8.3) that compares studies by age · suture type · syndrome · genotype · surgery type · timing · imaging method · endpoints · follow-up duration · outcome definitions — preventing misleading meta-analysis.
-
----
-
-## 16. Section 9 — CRANIO-GOVERNANCE
-
-### 16.1 Claim Scope Gate (§9.1)
-
-Every model must declare:
-
-- population (e.g. "ages 0–18 mo, single-suture sagittal")
-- age (lower and upper bound)
-- modality (e.g. "low-dose CT, 0.5 mm slices, 80–100 kVp")
-- suture type (which sutures the model was trained / validated on)
-- syndrome status (syndromic vs nonsyndromic vs both)
-- genotype scope (which genes the model has training data for)
-- surgical state (preoperative / postoperative / both)
-- endpoint domain (volume / vector / hardware / ICP / staged-surgery / etc.)
-- imaging quality (acceptance criteria — slice thickness, motion, contrast)
-- supported output (the exact output types the model is allowed to emit)
-
-No model may claim "craniosynostosis support" without this declaration.
-
-### 16.2 Unsupported Case Router (§9.2)
-
-Routes:
-
-- fetal cases
-- syndromic cases (unless model is syndromic-validated)
-- low-quality imaging
-- postoperative cases (unless model is postop-validated)
-- shunted cases
-- rare sutures
-- multisuture cases
-- suspected metabolic disease
-- mimic-heavy cases
-
-to **unsupported** or **human-review** states unless module-specifically validated.
-
-### 16.3 Safety Case + Lifecycle Monitor (§9.3)
-
-Monitors:
-
-- subgroup failures (per syndrome, per age, per modality, per site)
-- calibration drift (ECE/Brier over rolling windows)
-- missingness drift
-- external-site drift (when partner institutions deploy)
-- scanner shift (CT vendor / model upgrade impact)
-- critical errors (SEV-1 incidents)
-- biomarker-validity erosion
-- overclaiming
-- public-language misuse
-- update control (PCCP-compliant model updates)
-
-### 16.4 Market-Beating Release Package (§9.4)
-
-Every release ships:
-
-- model card (per §5.5.45)
-- data card (per §5.5.44)
-- benchmark report
-- stress-test report (rare-case + mimic + adversarial)
-- biomarker-validation state
-- subgroup report
-- calibration report (ECE / Brier / AUROC + reliability diagram)
-- uncertainty report
-- unsupported-case disclosure
-- clinical-trial-readiness package
-- public-language sheet (the exact phrasing a clinician may use when discussing model output with a family)
-
----
-
-## 17. Engineering architecture across modules
-
-Every shipped module is built on the same engineering substrate. New modules clone this pattern.
-
-```
-┌────────────────────────────────────────────────────────────────────────────┐
-│                       AURORA-CRANIO Ω engineering substrate                │
-├────────────────────────────────────────────────────────────────────────────┤
-│                                                                            │
-│  ┌─ 1. Specification ─────────────────────────────────────────────┐       │
-│  │  Numbered spec PDF (§N.K)                                       │       │
-│  │  ↓ defines every output state, every hard-stop, every endpoint  │       │
-│  └─────────────────────────────────────────────────────────────────┘       │
-│                                                                            │
-│  ┌─ 2. TypeScript core library (src/) ───────────────────────────┐         │
-│  │  - 21 engines per surgical module                              │         │
-│  │  - 5 core outputs + 5 indices                                  │         │
-│  │  - SafetyGate (deterministic primary safety control)           │         │
-│  │  - 12 prohibited labels + 16 prohibited language regexes       │         │
-│  │  - Hard-stop registry                                          │         │
-│  │  - Strong types — no free-text classifications                 │         │
-│  │  - All synchronous, all unit-tested                            │         │
-│  └─────────────────────────────────────────────────────────────────┘         │
-│                                                                            │
-│  ┌─ 3. CLI (src/cli/) ──────────────────────────────────────────┐         │
-│  │  30+ commands per module — register-case · set-use-context · │         │
-│  │  record-osteotomy · record-distractor · record-activation ·  │         │
-│  │  record-distance · import-volumes · import-pf-chiari ·       │         │
-│  │  import-venous · import-ophthalmology · record-staged-surgery │         │
-│  │  · record-family-burden · compute-pep · compute-dva ·         │         │
-│  │  generate-report · export-registry · export-fhir · etc.       │         │
-│  └─────────────────────────────────────────────────────────────────┘         │
-│                                                                            │
-│  ┌─ 4. Production API (src/api/) ──────────────────────────────┐           │
-│  │  OIDC/JWT 2-key rotation · RBAC+ABAC · CSRF · HMAC webhooks │           │
-│  │  Hash-chained audit log (SHA-256 linking, WORM-replicated)  │           │
-│  │  Redis-backed token-bucket rate limit                       │           │
-│  │  OpenTelemetry SDK init + OTLP exporter                     │           │
-│  │  prom-client (Counter/Histogram/Gauge + default metrics)    │           │
-│  │  jose JWKS validation                                       │           │
-│  │  FHIR R4 structural validator (emits OperationOutcome)      │           │
-│  │  Versioned migrations with SHA-256 checksums                │           │
-│  └─────────────────────────────────────────────────────────────────┘         │
-│                                                                            │
-│  ┌─ 5. Next.js dashboard UI (ui/) ─────────────────────────────┐           │
-│  │  40+ routes per module · server components · AURORA gradient │           │
-│  │  Live engine output (not placeholder) — every page renders   │           │
-│  │  real records from the canonical store at request time       │           │
-│  │  Persistent red safety banner · no prescriptive copy ever    │           │
-│  └─────────────────────────────────────────────────────────────────┘         │
-│                                                                            │
-│  ┌─ 6. Python sidecar (sidecar/) ──────────────────────────────┐           │
-│  │  FastAPI · trained PyTorch foundation model checkpoints     │           │
-│  │  Adapters: MedSAM · SAM-Med3D · TotalSegmentator · DINOv2   │           │
-│  │  Endpoints: /segment · /measure-vector · /classify-X ·      │           │
-│  │  /detect-event · /extract-volume                            │           │
-│  │  Secondary signal — deterministic SafetyGate is primary     │           │
-│  └─────────────────────────────────────────────────────────────────┘         │
-│                                                                            │
-│  ┌─ 7. Real-data clinical-real engines (src/clinical-real/) ──┐           │
-│  │  HPO 2026 · ClinVar craniofacial · PubMed via E-utils ·     │           │
-│  │  MedQuAD · PubMedQA · syndrome profiles derived from real   │           │
-│  │  records — never fabricated                                 │           │
-│  └─────────────────────────────────────────────────────────────────┘         │
-│                                                                            │
-│  ┌─ 8. EHR + de-id pipeline (src/importers, src/deid) ────────┐           │
-│  │  Adapters: Epic Caboodle CSV · OMOP CDM · REDCap · FHIR     │           │
-│  │  Bulk Data API ($export ndjson) → canonical PVDTwin         │           │
-│  │  De-id: HIPAA Safe Harbor 18 identifiers · DICOM PS3.15     │           │
-│  │  Annex E · date jitter ±90 days consistent-per-subject ·    │           │
-│  │  zip 5→3 generalization · k-anonymity ≥ 3 enforcement       │           │
-│  └─────────────────────────────────────────────────────────────────┘         │
-│                                                                            │
-│  ┌─ 9. Validation tooling (src/validation/) ──────────────────┐           │
-│  │  ConcordanceEngine: Cohen's κ + macro F1 + ECE + Brier +    │           │
-│  │  AUROC + decision-curve analysis + Fleiss' κ + sample-size  │           │
-│  │  calc, stratified by syndrome × age × osteotomy × follow-up │           │
-│  │  AdjudicationRepository: 3-rater blinded + 4th-rater        │           │
-│  │  resolution + engine-assisted revision tracking             │           │
-│  └─────────────────────────────────────────────────────────────────┘         │
-│                                                                            │
-│  ┌─ 10. Infrastructure (infra/) ───────────────────────────────┐           │
-│  │  Docker compose 10 services · Kubernetes manifests (PSS     │           │
-│  │  restricted) · Helm chart with staging+prod overlays ·      │           │
-│  │  Terraform (VPC · EKS · RDS Postgres · ElastiCache · ECR    │           │
-│  │  immutable · S3 WORM Compliance 7y · KMS rotation · IRSA ·  │           │
-│  │  multi-region DR · Cognito · WAFv2 · SNS+PagerDuty · AMP ·  │           │
-│  │  AMG · cert-manager · ExternalSecrets) · 8 CI workflows     │           │
-│  │  (CI · security · SBOM · SLSA L3 · release · CodeQL · axe · │           │
-│  │  lighthouse)                                                │           │
-│  └─────────────────────────────────────────────────────────────────┘         │
-│                                                                            │
-│  ┌─ 11. Regulatory packet (regulatory/) ──────────────────────┐           │
-│  │  16-17 documents per module:                                │           │
-│  │   - Intended Use Statement / IFU                            │           │
-│  │   - IMDRF SaMD categorization                               │           │
-│  │   - IEC 62304 Software Lifecycle Plan (Class B/C)           │           │
-│  │   - ISO 14971 Risk Management File (≥ 34 hazards)           │           │
-│  │   - ISO 14971 Risk Control Trace                            │           │
-│  │   - GMLP report                                             │           │
-│  │   - PCCP (Predetermined Change Control Plan)                │           │
-│  │   - FDA 524B Cybersecurity                                  │           │
-│  │   - STRIDE Threat Model (≥ 40 threats incl cloud surface)   │           │
-│  │   - 21 CFR Part 11 Electronic Records                       │           │
-│  │   - GDPR + HIPAA Mapping                                    │           │
-│  │   - ISO 13485 QMS scaffold                                  │           │
-│  │   - IEC 62366 Usability Engineering File                    │           │
-│  │   - ISO 27001 Controls Mapping                              │           │
-│  │   - 510(k) Submission Plan                                  │           │
-│  │   - Model Card v1                                           │           │
-│  │   - Data Card v1                                            │           │
-│  │   - DPIA (for cloud staging)                                │           │
-│  │   - Pen Test Plan                                           │           │
-│  └─────────────────────────────────────────────────────────────────┘         │
-│                                                                            │
-│  ┌─ 12. Partnership pack (regulatory/partnerships/) ──────────┐           │
-│  │  LOI template · DUA-LDS template · BAA template · DTA       │           │
-│  │  template · sIRB protocol template (6,000 words) ·          │           │
-│  │  TRIPOD-AI checklist · STARD 2015 checklist · OSF           │           │
-│  │  pre-registration template · validation report template ·   │           │
-│  │  site contact list · 5 cold-outreach email templates        │           │
-│  └─────────────────────────────────────────────────────────────────┘         │
-│                                                                            │
-└────────────────────────────────────────────────────────────────────────────┘
-```
-
-Every shipped module is structurally identical at this level. That uniformity is the property that lets the program scale to 30+ modules without each module requiring a custom regulatory or engineering reinvestment.
-
----
-
-## 18. Clinical scenarios — the safety contract in action
-
-Three worked examples of the safety contract preventing claims the operating system cannot prove.
-
-### 18.1 Scenario A — the "ICP resolved" overclaim attempt
-
-A clinician imports an Apert case into the §5.5 PVD Twin. Posterior vault distraction was performed; pre-op ICV 1,000 ml, post-op ICV 1,180 ml, segmentation-quality high. **No ophthalmology data has been recorded post-op.** The clinician tries to mark `optic_icp_endpoint.classification = "supported-improvement"`.
-
-The SafetyGate refuses. It returns:
-
-```
+```text
 HARD_STOP_NoOphthalmicEndpoint
-Reason: Cannot claim supported-improvement of ICP response without ophthalmic /
-OCT / direct-ICP / clinician-adjudicated endpoint. ExpansionDistance ⇏
-ICPResolved (§5.5.0 safety principle).
+Reason: cannot claim supported-improvement of ICP response without ophthalmic, OCT,
+direct-ICP, or clinician-adjudicated endpoint. Expansion distance does not imply
+ICP resolved.
 Recommended classification: plausible-unmeasured-improvement.
-Specialist handoff: pediatric neuro-ophthalmology + craniofacial surgery for
+Specialist handoff: pediatric neuro-ophthalmology and craniofacial surgery for
 postoperative ophthalmic surveillance.
 ```
 
-The blocked claim is logged to the audit chain. The case can proceed with the correct `plausible-unmeasured-improvement` classification, which honestly captures that posterior expansion is anatomically real but ICP response is unmeasured.
+To run the full module and reproduce this behavior, clone
+[aurora-cranio-5.5](https://github.com/AURORA-NEURO/aurora-cranio-5.5) and follow its setup guide.
 
-### 18.2 Scenario B — the "FOA no longer needed" overclaim attempt
+---
 
-A research coordinator imports a multisuture cohort at 6 months follow-up. None of the 23 cases has undergone fronto-orbital advancement so far. The coordinator tries to mark `staged_surgery_forecast.classification = "foa-avoided-in-followup"` on all 23.
+## Usage
 
-The SafetyGate refuses on 23/23. It returns:
+Each module exposes the same four ways to use it, so a reader who learns one module can navigate
+the rest.
 
+- **Library.** A typed core library that classifies a case along several independent outputs and
+  returns structured evidence objects, never free-text verdicts.
+- **Command-line.** Per-module commands to register a case, import measurements, compute the
+  research indices, and generate or export a report.
+- **API and dashboard.** A production API with authentication and audit logging, and a dashboard
+  whose every page renders real records at request time behind a persistent safety banner.
+- **Export.** Every report can be returned to a partner institution's records as DICOM-SR, FHIR
+  R4, Phenopackets, OMOP, or research-mode CDISC tables.
+
+The concrete commands and endpoints live in each module's own repository. The posterior-vault
+distraction twin at
+[github.com/AURORA-NEURO/aurora-cranio-5.5](https://github.com/AURORA-NEURO/aurora-cranio-5.5) is
+the reference implementation for all four surfaces.
+
+---
+
+## Methods and science
+
+*In plain terms,* each module turns a clinical case into structured records, reasons over those
+records with a fixed set of engines, and refuses to state anything it cannot prove from the
+evidence on file. The science is in how the records are defined, how the reasoning is decomposed
+so that distinct judgments are never collapsed, and how the proofs and tiers are enforced.
+
+Three method patterns recur across the program:
+
+- **Independent outputs, never collapsed.** Each surgical twin classifies a case along five core
+  outputs (volume, vector, hardware, ICP response, staged-surgery forecast) and reports each
+  separately, instead of a single "success or failure" verdict. A strong volume result does not
+  imply a resolved ICP, and the types make that impossible to conflate.
+- **Proof before label.** Every diagnostic label points to a proof ledger of specific evidence
+  rows. An empty ledger yields "indeterminate," not a diagnosis. Every genetic variant carries its
+  ClinVar review status and clinical significance, so a variant of uncertain significance never
+  collapses to "pathogenic."
+- **Tiered biomarkers.** Every biomarker is tagged with a validation tier, and a research-only
+  marker cannot appear in a clinical report. The biomarker atlas stores each marker together with
+  its tier, its applicability scope (age range, syndrome, imaging modality, follow-up), and its
+  known failure modes.
+
+The machine-learning components are deliberately secondary. Where a module ships a trained model,
+the model supplies a signal that the deterministic safety checkpoint can override but never
+defer to.
+
+---
+
+## Data
+
+The program distinguishes real data from synthetic stand-ins at every step, and synthetic
+material is retained only as test fixtures, never to support a real-case claim. The largest
+shipped real-data ingestion belongs to the posterior-vault distraction twin and is recorded in
+that module's data card.
+
+| Dataset | Real / synthetic | Role |
+| --- | --- | --- |
+| Human Phenotype Ontology (HPO), 2026-02-16 | real | 19,944 terms, 23,677 relations, 282,723 disease-phenotype annotations |
+| ClinVar craniofacial subset | real | 1,471 pathogenic and likely-pathogenic variants across FGFR1/2/3, TWIST1, EFNB1, IHH, RAB23, ALX1/3/4, MSX2 |
+| PubMed posterior-vault-distraction corpus | real | 1,888 abstracts via NCBI E-utils, with 1,770 auto-labels across 13 complication classes |
+| MedQuAD craniofacial | real | 3,531 question-and-answer pairs |
+| PubMedQA (PQA-L) | real | 1,000 records |
+| Synthetic case archetypes | synthetic | Failure-mode coverage for testing only; never used to support a real-case claim |
+
+Training data for the shipped models is similarly real: the family-observation translator was
+trained on 60,000 real records drawn from MedQuAD, PubMedQA, PubMed E-utils, HPO, and
+AAP and CHOP material.
+
+Some module artifacts carry inherited use restrictions, including DECIPHER variants, DICOM
+datasets requiring a data-use agreement, certain model weights under non-commercial licenses, and
+institutional retrospective cohorts. These restrictions are documented in each module's own data
+card.
+
+---
+
+## Validation
+
+The program's evidence comes from per-module verification, trained-model metrics on held-out
+real data, and a benchmark suite whose safety-suppression tasks must pass completely on every
+release. Every figure below is per-module and labeled with its provenance.
+
+- **The posterior-vault distraction twin verifies cleanly.** It passes 671 of 671 TypeScript tests
+  and 52 of 52 Python sidecar tests, with all 52 of 52 predeploy checks passing.
+- **Its foundation model reports honest, mixed metrics on real data.** Posterior-volume
+  segmentation reaches a Dice overlap of 0.864; vector-measurement agreement is a Pearson
+  correlation of 0.713; hardware-extraction F1 is 0.043, which the module flags as too low and
+  attributable to a small training head. A text classifier trained on PubMed reaches a macro F1 of
+  0.705 on 277 held-out real PubMed records across 13 complication labels.
+- **The neurodevelopment causal adjudicator is trained and bounded.** Its checkpoint is 87 MB and
+  21.8 million parameters; it reaches a recall of at least 0.5 on six of seven archetypes and
+  passes 90 of 90 tests with 34 of 34 predeploy checks.
+- **The family-observation translator reports a modest accuracy honestly.** It reaches an
+  observation accuracy of 0.929 after three epochs on its 60,000 real records, passes 107 of 107
+  safety-gate tests, and passes 116 of 116 tests with 16 of 16 predeploy checks.
+
+A model that cannot safely say "not craniosynostosis" on a mimic case does not receive a
+diagnostic-support claim. The rare-case stress suite (twelve archetypes, fourteen stress classes)
+and the segmentation benchmark (144 tests) enforce that boundary.
+
+---
+
+## Results
+
+The headline findings below are stated with their provenance and their caveats. The program is
+mostly planned; what is shipped is concentrated in Sections 2, 5, and 7.
+
+- **One module is FDA-submission-ready.** The posterior-vault distraction twin (version 5.5.5)
+  ships its full engine set, a foundation model, a real-data clinical layer, a 17-document
+  regulatory packet, and complete deployment infrastructure, with 671 of 671 TypeScript and 52 of
+  52 Python tests passing.
+- **Four surgical twins are shipped.** Endoscopic strip craniectomy, open cranial vault
+  remodeling, fronto-orbital advancement, and posterior-vault distraction each ship as a full
+  module sharing the same five-output, safety-gated contract.
+- **Two trained clinical models are shipped beyond the surgical twins.** The neurodevelopment
+  causal adjudicator and the family-observation translator both ship trained checkpoints and pass
+  their full test suites.
+- **The program-wide test total exceeds 1,650 passing tests across the shipped modules**, each
+  module independently verified with its own regulatory packet. This is the figure the body
+  supports; the individual badge of 671 tests reflects the posterior-vault twin alone, not the
+  whole program.
+- **The benchmark layer is three-quarters shipped.** Three of the four benchmark suites are
+  released: segmentation and skull-shape, the rare-case stress suite, and the biomarker-validation
+  bench.
+
+Most modules across Sections 1, 3, 4, 6, 8, and 9 are still planned or at scaffold stage; the
+status of every module is given in [Architecture](#architecture) and [Roadmap](#roadmap).
+
+---
+
+## Governance and safety
+
+Every output is structured evidence that a named specialist must review, and every output passes
+through a deterministic safety checkpoint before it can be returned, exported, or shown. The
+checkpoint is the primary safety control in every module; the machine-learning models are
+secondary signals it can override. There is no bypass: on any violation the checkpoint blocks the
+output and logs the attempt to a hash-chained audit record.
+
+Ten invariants hold across every module, built or planned:
+
+1. No craniosynostosis label without suture proof; an empty proof ledger yields "indeterminate."
+2. No surgical-timing claim without age-window and pathway context.
+3. No ICP-risk statement without optic, volume, venous, airway, or symptom evidence and an
+   adequate follow-up window.
+4. No genotype claim without a validation state; a variant of uncertain significance never
+   collapses to "pathogenic."
+5. No biomarker claim without an evidence tier; a research-only marker cannot enter a clinical
+   report.
+6. No postoperative-success claim without a sustained, planned-direction change in skull-growth
+   topology and the relevant endpoint.
+7. No neurodevelopment claim without an age-normalized measurement and a named instrument.
+8. No release without subgroup, calibration, uncertainty, external-site, and rare-case stress
+   reports.
+9. No prescriptive language anywhere; a regex and structural scan blocks any output that
+   recommends, instructs, or declares an outcome resolved, and triggers a safety incident.
+10. A specialist-review handoff is always present; an empty handoff blocks emission.
+
+The safety checkpoint is exercised by mandatory suppression tasks in the benchmark suite, and a
+complete pass on those tasks is a non-negotiable release gate. Worked examples of the checkpoint
+refusing an "ICP resolved" overclaim, a premature "fronto-orbital advancement no longer needed"
+claim, and an "operative success" claim on a case that has relapsed are part of each module's
+documentation.
+
+---
+
+## Reproducibility
+
+Each module reproduces its own headline numbers from a clean checkout of that module's
+repository. The test suites, predeploy checks, and benchmark runs are each a single command
+inside the module, and the real datasets are ingested into a versioned local store so the inputs
+are identical across runs. Synthetic stand-ins are always labeled as such and are never used to
+support a real-case result.
+
+This index repository carries no code and no figures to reproduce. To reproduce a module's
+results, clone that module and run its test and benchmark commands; the posterior-vault
+distraction twin at
+[github.com/AURORA-NEURO/aurora-cranio-5.5](https://github.com/AURORA-NEURO/aurora-cranio-5.5)
+is the reference.
+
+---
+
+## Limitations
+
+- **The program is mostly planned.** Across nine areas and more than thirty modules, only a
+  handful are shipped; Sections 1, 3, 4, 6, 8, and 9 are largely planned or at scaffold stage.
+- **The shipped evidence is concentrated in one module.** The deepest validation belongs to the
+  posterior-vault distraction twin. The program-wide total of more than 1,650 tests is a sum of
+  independently verified modules, not a single integrated test run.
+- **Some model metrics are weak and labeled as such.** Hardware-extraction F1 of 0.043 reflects a
+  small training head; segmentation and text-classification metrics are moderate, not definitive.
+- **Twin outputs are model-based estimates, not measurements.** Intracranial-volume and
+  pressure-reserve reasoning is reported as an evidence object and is never presented as a
+  measured pressure.
+- **No regulatory clearance exists.** Regulatory pathways are planned and one Q-submission is in
+  preparation; nothing in the program is cleared, and nothing is clinically deployable.
+- **Validation is largely on synthetic archetypes and retrospective public data.** Prospective,
+  multi-site validation on real cohorts is future work, gated behind partner data-use agreements.
+- **This repository is documentation only.** It installs nothing and runs nothing; it indexes the
+  program.
+
+---
+
+## Roadmap
+
+The near-term plan is posterior-vault-first: the most-developed module files the first regulatory
+Q-submission, and its feedback shapes the template the other surgical twins reuse.
+
+- **Now (Q1 2026).** Posterior-vault distraction twin released at version 5.5.5 with its
+  infrastructure complete; cloud-staging configuration prepared; first partner-site outreach
+  begins.
+- **Next (Q2 2026).** Cloud staging live behind single sign-on; first external penetration test;
+  first partner agreements signed; fronto-orbital and open-vault twins deployed to staging.
+- **Mid (Q3 to Q4 2026).** Specialist-adjudication round at two to three sites, targeting roughly
+  150 real posterior-vault cases; first regulatory Q-submission filed; first preprint; the first
+  Section 1 module (suture-fusion proof-ledger compiler) begins.
+- **Late (2027).** First 510(k) submission for the lead module; further Q-submissions; Section 1
+  and Section 3 modules build out; first peer-reviewed publication on deployed-system data.
+- **Long (2028 and beyond).** First clearance and pilot deployment; physics-module clearances;
+  post-market surveillance with controlled model updates; international regulatory expansion.
+
+---
+
+## Related repositories
+
+AURORA-CRANIO decomposes into separately-released modules. The most-developed module is published
+under the AURORA-NEURO organization; several other shipped modules are currently published under a
+personal namespace, and they are linked here exactly as the program records them rather than
+under a fabricated organization URL.
+
+- [`aurora-cranio-5.5`](https://github.com/AURORA-NEURO/aurora-cranio-5.5) — posterior-vault
+  distraction and expansion twin (Section 5.5); the reference implementation.
+- [`aurora-cranio-5.3`](https://github.com/MurariAmbati/aurora-cranio-5.3) — open cranial vault
+  remodeling twin (Section 5.3).
+- [`aurora-cranio-5.4`](https://github.com/MurariAmbati/aurora-cranio-5.4) — fronto-orbital
+  advancement and orbital-risk twin (Section 5.4).
+- [`aurora-cranio-2.5`](https://github.com/MurariAmbati/aurora-cranio-2.5) — head-shape to
+  neurodevelopment causal adjudicator (Section 2.5).
+- [`aurora-cranio-2.7`](https://github.com/MurariAmbati/aurora-cranio-2.7) — family-observation
+  translator (Section 2.7).
+
+The endoscopic strip craniectomy twin (Section 5.2), the intracranial-volume reserve twin
+(Section 2.2), the venous-coupling mapper (Section 2.3), and the benchmark suites (Sections 7.1,
+7.3, 7.4) are shipped as local modules without a public repository link at this time.
+
+---
+
+## Contributing
+
+Contributions happen inside each module's own repository, where the test suite, linter, and
+predeploy checks are part of every change. New results must carry units, uncertainty intervals,
+sample sizes, and a real-versus-synthetic label, and new outputs must respect the safety
+checkpoint and the ten invariants. Each module documents its own setup, test, and review process;
+the posterior-vault distraction twin at
+[github.com/AURORA-NEURO/aurora-cranio-5.5](https://github.com/AURORA-NEURO/aurora-cranio-5.5) is
+the reference for the contribution workflow.
+
+---
+
+## License and citation
+
+Apache-2.0 across every module, with per-module governance overlays documented in each module's
+own safety document. The Apache-2.0 license applies to code and infrastructure-as-code. It does
+not confer rights over any clinical data ingested through a partnership; those rights are governed
+by the executed data-use agreement between a deployment and the partner institution. Some module
+artifacts carry inherited non-commercial or agreement-bound restrictions, documented in each
+module's data card.
+
+If you reference this program in research, cite it as the AURORA-CRANIO toolchain and cite the
+specific module and dataset you used:
+
+```text
+AURORA-NEURO. AURORA-CRANIO: a craniosynostosis-specific research-clinical operating system, 2026.
 ```
-HARD_STOP_NoFollowupDuration
-Reason: foa-avoided-in-followup claim attempted with follow-up window 6 months.
-Per §5.5.14 + §5.5.49, NoLaterFOAInShortFollowup → FOAAvoidedClaim is a
-dangerous failure chain. Minimum follow-up window for this claim is 12 months.
-Recommended classification: foa-delayed (with explicit follow-up_window_months
-recorded).
-Specialist handoff: schedule 18-month follow-up before re-attempting this
-classification.
-```
 
-### 18.3 Scenario C — the "operative success" overclaim attempt on a relapse
-
-A 24-month-old case had OCVR at 9 months with excellent immediate post-op CT showing intended skull-vault expansion. At 24 months, repeat CT shows partial scaphocephaly relapse. Cranial index has reverted to 70% of the planned correction. The clinician opens the report generator and the system attempts to emit `posterior_volume_expansion = "strong"`.
-
-The SafetyGate refuses. It returns:
-
-```
-HARD_STOP_NoLongitudinalProof (§5.7 graph edit distance)
-Reason: Cranial Vault Graph Edit Distance shows 30% reversion from the
-post-op skull graph toward the pre-op skull graph at 24-month follow-up.
-A "strong" classification at this timepoint contradicts §6 invariant
-"no postoperative success claim without skull-growth topology and endpoint
-change". Recommended classification: weak (with relapse-vector annotation).
-Specialist handoff: craniofacial surgery for revision-evaluation review.
-```
+Selected sources behind the program's clinical framing: the U.S. Centers for Disease Control and
+Prevention craniosynostosis facts; the 2020 international guideline on craniosynostosis treatment
+and management (Mathijssen et al., 2021); GeneReviews FGFR-related craniosynostosis syndromes; and
+ClinGen curation of craniosynostosis genes. Full references are recorded in the modules that rest
+on them.
 
 ---
 
-## 19. Regulatory pathway, by section and module
-
-| Module | Regulatory pathway | Class | Status |
-|---|---|---|---|
-| §2.5 CranioNeuroDev | IMDRF SaMD Class II (drives clinical management of serious condition; informs but does not autonomously decide) | IEC 62304 Class B | Q-Sub planned |
-| §5.2 ECSC | IMDRF SaMD Class II | IEC 62304 Class B | Q-Sub planned |
-| §5.3 OCVR | IMDRF SaMD Class II | IEC 62304 Class C (life-supporting indication scope) | Q-Sub planned |
-| §5.4 FOA | IMDRF SaMD Class II | IEC 62304 Class B | Q-Sub planned |
-| §5.5 PVD (lead) | IMDRF SaMD Class II | IEC 62304 Class B | **Phase 4 ready** — 17-doc submission packet drafted; Q-Sub to be filed first |
-| §2.7 CranioFOT | likely Clinical Decision Support exemption per FDA 21st Century Cures Act §3060 (non-prescriptive specialist-facing) | n/a if CDS-exempt | Pending consultant review |
-| §4.x diagnostic adjudicators | IMDRF SaMD Class III evaluation (drives diagnostic decision in serious condition) | IEC 62304 Class C | Phase 2 planning |
-
-The submission strategy is **PVD-first**:
-
-1. PVD (§5.5) submits the first Q-Sub. Use the Q-Sub feedback to refine the submission template that all subsequent surgical-twin modules (ECSC / OCVR / FOA) will use.
-2. After PVD clearance, OCVR + FOA + ECSC follow with parallel submissions using the validated template — accelerated review under 510(k).
-3. Diagnostic adjudicators (§4.x) take a separate pathway with stricter validation cohort requirements.
-4. CDS-exempt modules (§2.7 family observation translator if it stays non-prescriptive) avoid 510(k) but still ship the full IEC 62304 + ISO 14971 packet.
-
----
-
-## 20. Biomarker validation tier system
-
-The atlas (§3.1) classifies every biomarker into one of 10 tiers. Tier-bleed is impossible.
-
-| Tier | Definition | Allowed contexts |
-|---|---|---|
-| **clinical-standard** | In current craniosynostosis guidelines (e.g. 2020 guideline) and used in current standard-of-care decision-making | Clinical reports · trial endpoints · regulatory submission |
-| **validated-imaging** | Peer-reviewed external validation in published independent cohorts; reproducible across ≥ 2 institutions | Clinical reports with explicit citation · trial endpoints · regulatory submission |
-| **candidate-imaging** | Internal validation only (single institution / single cohort); awaiting external replication | Research reports · trial pre-registrations · NOT clinical reports |
-| **candidate-molecular** | Biological plausibility + association evidence (e.g. transcriptomic signature with discovery cohort but no replication) | Research reports · NOT clinical reports |
-| **research-only** | Exploratory, not for clinical use; flagged with `research-only` watermark in every emitted report | Research reports only |
-| **exploratory** | Signal observed once; not replicated, not validated, not benchmarked | Research reports with explicit `exploratory` watermark |
-| **weak** | Inconclusive signal — included in atlas for transparency but flagged as low-confidence | Research notes only |
-| **unsupported** | No validated evidence; included to prevent "this biomarker is missing from your atlas" gaslighting | Atlas listings only · no reports |
-| **deprecated** | Previously claimed in literature, now retired (e.g. supplanted by a stronger marker, or shown to be artifact) | Historical reference only |
-| **unsafe-or-unreliable** | Actively dangerous if relied upon (e.g. a marker that has been shown to mislead clinical decisions in published incident reports) | Atlas listings with red flag · explicitly forbidden in reports |
-
-Every report names the tier of every biomarker it cites. A clinician reading a report knows whether the cited marker is `clinical-standard` (high trust) or `research-only` (curiosity).
-
----
-
-## 21. Failure-mode catalog — what AURORA-CRANIO Ω is designed to prevent
-
-The system was designed by enumerating the failure modes seen in current craniosynostosis tools and clinical literature, then designing against each one.
-
-| Failure mode | Where it appears in the wild | How AURORA-CRANIO Ω prevents it |
-|---|---|---|
-| "Sagittal synostosis" diagnosed from external photo without imaging | Direct-to-consumer / family-facing apps | §1.1 proof ledger refuses to emit `definite-fused` without imaging |
-| "Volume expanded → ICP resolved" claim | Surgical case series | §5.5 HARD_STOP_NoOphthalmicEndpoint blocks the claim |
-| "FOA no longer needed" claim at short follow-up | Conference posters | §5.5 HARD_STOP_NoFollowupDuration blocks the claim < 12 mo |
-| "Chiari resolved" claim from posterior expansion alone | Some published case reports | §5.5 HARD_STOP_NoFollowupChiari blocks without follow-up MRI |
-| "Device safe to remove" instruction emitted to family | Hypothetical family-facing app | §9.1 prohibited-language regex blocks emission |
-| Specialist mis-reads engine output as recommendation | Documented in IEC 62366 use-error analyses for similar systems | Persistent red safety banner + explicit `specialist-review-handoff` field |
-| Subgroup performance hidden in aggregate metric | Common in AI model cards | §9.4 release gate requires per-syndrome × per-age × per-osteotomy subgroup report |
-| Biomarker mentioned without validation tier | Common in radiomic papers | §3.1 atlas refuses tier-less biomarkers in reports |
-| Operative success declared at immediate post-op without longitudinal data | Common in surgical literature | §5.7 cranial-vault graph edit distance requires longitudinal proof |
-| Treatment claim collapses planned-stage with unplanned-revision | Common in registry analyses | §5.x reason labels (planned-syndromic-stage vs unplanned-revision) keep them separate |
-| Family burden treated as adherence | Common in retrospective cohorts | §6.4 family-burden tracker explicitly: "FamilyActivationBurden ⇏ NonadherenceOrFailure" |
-| Synthetic-archetype training generalizes to real cases without validation | Common in early AI development | §5.5 v5.5.2 explicitly pivoted from archetype-driven to real-data-driven; archetypes retained only as test fixtures |
-| Tool deployed without external pen test | Common in healthtech startups | §9.4 release gate requires external pen-test report with zero P0/P1 unresolved |
-| Data residency violated when partner institution data leaves jurisdiction | Common in cross-border AI research | De-id pipeline runs locally; only aggregated κ/F1 numbers leave the site in federated mode |
-
----
-
-## 22. Partner-institution landscape
-
-AURORA-CRANIO Ω is built to validate at **high-volume craniofacial centers** with documented PVD / OCVR / FOA experience. The §5.5 partnership pack lists 6 target sites with publicly listed PI contacts. Realistic targets — pick 2-3:
-
-| Site | Lead PIs | Specialty | Why it's a fit |
-|---|---|---|---|
-| **CHOP** (Philadelphia) | Scott Bartlett · Jesse Taylor · Greg Heuer | Plastic + neurosurgery | Long-standing PVD program with published outcomes; multidisciplinary craniofacial team; Epic + research-friendly OSR |
-| **Boston Children's** | John Meara · Mark Proctor | Plastic + neurosurgery | Joint plastic surgery + neurosurgery craniofacial program; established outcomes research |
-| **Seattle Children's** | Richard Hopper · Craig Birgfeld | Craniofacial center | Published distraction-osteogenesis program; one of the longest-running centers in the U.S. |
-| **Stanford / Lucile Packard** | Rohit Khosla · Hermann Peter Lorenz · Gerald Grant | Craniofacial + neurosurgery | Active surgical innovation program; Stanford IRB efficient |
-| **GOSH London** | David Dunaway · Owase Jeelani | Craniofacial unit | Largest European PVD volume; published long-term outcomes; cross-border legal complexity adds GDPR/IDTA/Schrems II workflow |
-| **Texas Children's / Baylor** | Edward Buchanan | Plastic surgery | Active distraction-osteogenesis research |
-
-For each site the partnership pack ships:
-
-- LOI template (~800 words)
-- HIPAA Limited Data Set DUA (~3,000 words)
-- Business Associate Agreement (~2,000 words)
-- Data Transfer Agreement (~2,500 words)
-- Single-IRB protocol template (~6,000 words) for Advarra / WCG submission
-- TRIPOD-AI checklist
-- STARD 2015 checklist
-- OSF pre-registration template
-- Validation report template (target: *Plastic & Reconstructive Surgery* or *Journal of Neurosurgery: Pediatrics*)
-- 5 cold-outreach email variants + 2 follow-up templates
-- Site-specific contact list with publicly-listed institutional emails
-
----
-
-## 23. Cost + resource model
-
-Realistic budget envelope for one institution to take AURORA-CRANIO Ω from local-dev to first-clinical-publication. Numbers in 2026 USD.
-
-| Item | Cost range | Notes |
-|---|---|---|
-| Cloud staging (AWS, ~$417/mo idle, ~$578/mo under load) | $5k–$8k/yr | Per §5.5 cost breakdown in `docs/SETUP-CLOUD-STAGING.md` |
-| External pen test (Trail of Bits / NCC Group / Cure53 / Bishop Fox / Praetorian) | $25k–$60k once | Phase 2 acceptance gate |
-| Single-IRB submission (Advarra / WCG) for 2-3 sites | $20k–$40k all sites | Phase 3 enablement |
-| Specialist adjudication honoraria | $200/hr × 50 hr/site × 3 sites = $30k | Phase 3 specialist labeling round |
-| Statistical consulting | $5k–$10k | Inter-rater κ methodology peer review |
-| Open-access publication fees | $3k–$5k | Phase 3 medRxiv preprint + journal submission |
-| Regulatory consultant (Pearl Pathways / Greenleaf Health / Hogan Lovells / RQM+) | $150k–$400k for full submission | Phase 4 |
-| FDA Q-Sub + 510(k) user fee | $22k (small business) or $144k (full) | Phase 4 submission |
-| IEC 62366 usability testing (formative + summative) | $40k–$80k | Phase 4 — required for Class B/C |
-| **Total Phase 1 → first peer-reviewed paper** | **~$300k–$500k** | 24-36 months wall-clock |
-| **Total → FDA clearance (510(k) or De Novo)** | **~$600k–$1M** | additional 8-14 months after Phase 3 |
-
-This is **two orders of magnitude cheaper** than a comparable proprietary medical-device path because the engineering substrate (code, tests, infrastructure-as-code, regulatory packet templates) is reused across the 30+ modules.
-
----
-
-## 24. Roadmap
-
-### Now (Q1 2026)
-
-- §5.5 PVD Phases 1+2+3 IaC complete; v5.5.5 released
-- Cloud staging Terraform applied to first AWS account (when ready)
-- Partner site cold outreach begins (CHOP + Stanford highest priority)
-
-### Next (Q2 2026)
-
-- §5.5 cloud staging environment live behind SSO
-- First external pen test
-- Sign LOI + DUA with first 2 partner sites
-- §5.4 FOA cloud staging deployment (clone of §5.5 pattern)
-- §5.3 OCVR cloud staging deployment
-
-### Mid (Q3–Q4 2026)
-
-- §5.5 Phase 3 specialist adjudication round at 2-3 sites
-- Cohort target: 150 real PVD cases across 2 sites
-- §5.5 Q-Sub filed with FDA
-- First medRxiv preprint
-- §1.1 Suture Fusion Proof-Ledger Compiler — first module of §1
-
-### Late (2027)
-
-- §5.5 510(k) submission
-- §5.4 FOA + §5.3 OCVR Q-Sub submissions
-- §1.x CRANIO-ORIGIN modules build out
-- §3.x CRANIO-BIOMARKERS atlas v1
-- First peer-reviewed publication using deployed-system data
-
-### Long (2028+)
-
-- §5.5 first clearance; pilot deployment at lead institution
-- §1.x ORIGIN module clearance
-- §2.x PHYSICS modules clearance
-- Phase 5 post-market surveillance + PCCP-triggered model updates
-- International expansion: CE mark under EU MDR for §5.x; UKCA for §5.x; Health Canada SaMD
-
----
-
-## 25. How to engage
-
-| You are a... | Start here |
-|---|---|
-| Craniofacial surgeon / pediatric neurosurgeon | [`aurora-cranio-5.5/docs/SETUP-LOCAL.md`](https://github.com/AURORA-NEURO/aurora-cranio-5.5/blob/main/docs/SETUP-LOCAL.md) — PVD module is the most-developed surgical twin |
-| Pediatric neuroradiologist | §1.1 Suture Fusion Proof-Ledger Compiler design — start with the §5.5 spec PDF + existing FHIR exporters |
-| Geneticist / genetic counselor | §1.4 Etiology Router design + §3.3 Genotype–Morphotype–Surgery Response Engine |
-| Ophthalmologist (neuro-ophthalmology) | §3.5 Ophthalmic + ICP Biomarker Workbench + §6.2 Optic Neuropathy Sentinel |
-| Researcher (suture biology) | §1.3 Suture Biology and Fusion-Stage Atlas + §3.2 Suture Tissue and Bone Biology Workbench |
-| Researcher (neurodevelopment) | §2.5 Causal Adjudicator (shipped v2.5.1 trained) + §6.1 Endpoint Factory |
-| Regulatory consultant | [`aurora-cranio-5.5/regulatory/`](https://github.com/AURORA-NEURO/aurora-cranio-5.5/tree/main/regulatory) — the 17-document submission packet is the reference |
-| Data partner (CHOP / BCH / Seattle / Stanford / GOSH / Texas) | [`aurora-cranio-5.5/regulatory/partnerships/`](https://github.com/AURORA-NEURO/aurora-cranio-5.5/tree/main/regulatory/partnerships) — LOI · DUA-LDS · BAA · DTA · sIRB protocol templates |
-| Software contributor | [`aurora-cranio-5.5/docs/CONTRIBUTING.md`](https://github.com/AURORA-NEURO/aurora-cranio-5.5/blob/main/docs/CONTRIBUTING.md) |
-| Engineering reviewer | [`aurora-cranio-5.5/docs/ARCHITECTURE.md`](https://github.com/AURORA-NEURO/aurora-cranio-5.5/blob/main/docs/ARCHITECTURE.md) and the per-module structure described in §17 above |
-
----
-
-## 26. Status — module maturity heatmap
-
-```
-SECTION               MATURITY                                                       LATEST
-§1 CRANIO-ORIGIN      ░░░░░░░░░░  spec only — Atlas 8.1 CSVs already hardlinked       —
-§2 CRANIO-PHYSICS     █████░░░░░  §2.2 prod-grade · §2.3 · §2.5 (trained) · §2.7 (tr) v2.7.1
-§3 CRANIO-BIOMARKERS  █░░░░░░░░░  embedded in §5.5 clinical-real engines              —
-§4 CRANIO-DIAGNOSTICS █░░░░░░░░░  §4.2 / §4.3 scaffolds                               —
-§5 CRANIO-FORGE       █████████░  §5.2 / §5.3 / §5.4 / §5.5 shipped                   v5.5.5
-§6 CRANIO-NEURODEV    █░░░░░░░░░  partial overlap with §2.5, §3.5, §3.6               —
-§7 CRANIO-BENCHMARK   ████████░░  §7.1 / §7.3 / §7.4 shipped                          v7.4
-§8 CRANIO-ENDPOINTS   ████░░░░░░  exporters in each shipped module + Atlas 8.1 pack   —
-§9 CRANIO-GOVERNANCE  ██████░░░░  SafetyGate + regulatory packet pattern in every     —
-                                  shipped module; cross-module registry pending
-```
-
-### Aggregate verification across shipped modules
-
-| Module | Tests passing | Predeploy | Trained model? |
-|---|---|---|---|
-| §2.2 production-grade-v2 | n/a | 145/145 | — |
-| §2.3 VPF mapper | 32/32 | passes | — |
-| §2.5 CranioNeuroDev | 90/90 | 34/34 | ✓ `cranio_neurodev_v1.pt` 87 MB |
-| §2.7 CranioFOT | 116/116 | 16/16 | ✓ `cranio_fot_tiny.pt` 9.4 MB |
-| §5.2 ECSC | 82/82 / 28 suites | 17/17 | — |
-| §5.3 OCVR | 110 TS + 42 sidecar + 8 model + 5 CLI = 165 | 6/6 | ✓ CranioFORGE-VAULT (tiny/base/large) |
-| §5.4 FOA | 54/54 | 17/17 | ✓ CranioFOA tiny/base/large adapter stack |
-| **§5.5 PVD** | **671/671 TS + 52/52 Python = 723** | **52/52** | ✓ **CranioPVD-FM tiny 16.5 M params, posterior-vault-seg Dice 0.864, text classifier macro F1 0.705** |
-| §7.1 segmentation benchmark | 144/144 | 10/10 | — |
-| §7.3 rare stress | 26/26 | passes | — |
-| §7.4 biomarker bench | n/a | passes | — |
-
-Total: **≥ 1,650 passing tests across the shipped modules** — each independently verified, each with its own regulatory packet.
-
----
-
-## 27. References + citations
-
-[^cdc]: Centers for Disease Control and Prevention (CDC). _Craniosynostosis — Facts about Craniosynostosis._ https://www.cdc.gov/birth-defects/about/craniosynostosis.html
-[^guideline]: Mathijssen IMJ, et al. Updated guideline on treatment and management of craniosynostosis. _Europe PMC_, 2021. https://europepmc.org/article/MED/33255334
-[^fda]: U.S. Food and Drug Administration. _Artificial Intelligence and Machine Learning (AI/ML)-Enabled Medical Devices._ https://www.fda.gov/medical-devices/software-medical-device-samd/artificial-intelligence-and-machine-learning-aiml-enabled-medical-devices
-[^transcriptomics-1]: Tahiri Y, et al. Transcriptomic signatures of single-suture craniosynostosis identified via RNA-seq of calvarial cell lines. _PMC_, 2024.
-[^transcriptomics-2]: Single-cell and spatial atlas of suture stem-cell dynamics across developmental stages in FGFR2 C342Y/+ craniosynostosis model. _PMC_, 2024.
-[^genereviews]: GeneReviews®. _FGFR-Related Craniosynostosis Syndromes._ NCBI Bookshelf. https://www.ncbi.nlm.nih.gov/books/NBK1455/
-[^clingen]: ClinGen Curation Activities — Craniosynostosis. https://search.clinicalgenome.org/kb/conditions
-[^icp-oct]: Driessen C, et al. Optical Coherence Tomography for early recognition of raised intracranial pressure in craniosynostosis. _PMC._
-[^optic]: Neuro-ophthalmology in syndromic craniosynostosis. _ScienceDirect._
-[^radiation]: Systematic review of radiation-free cranial and neural assessment protocols for craniosynostosis. _PMC_, 2024.
-[^endoscopic-window]: Reviews of endoscopic vs open craniosynostosis surgery age windows. _PMC._
-[^pvd]: Posterior vault distraction in syndromic and multisuture craniosynostosis — Steinbacher DM (PMC4980137), Goldstein JA technical evolution (PMC4219914), Greives MR multisuture FOA delay (PMC6952159), Derderian CA long-term cohort (PMC11322207), Wes AM volume comparison (PMC9612681), Tahiri Y routine low occipital osteotomy (PMC7553461), Wagner CS systematic review of complications (_J Neurosurg Pediatr_ 37(3):197), Anderson PJ dural sinus volume after PCVD+FMD (_J Neurosurg Pediatr_ 30(3):330).
-
----
-
-## 28. License
-
-Apache 2.0 across every module, with per-module governance overlays documented in each module's `SAFETY.md`.
-
-Some module artifacts (DECIPHER variants · DICOM datasets requiring DUA · DINOv2 weights CC-BY-NC 4.0 · institutional retrospective cohorts) carry inherited non-commercial or DUA-bound use restrictions documented in each module's `data/catalog/*.yaml` and `regulatory/data-card-v1.md`.
-
-The Apache 2.0 license applies to code and infrastructure-as-code. It does NOT confer rights over any clinical data ingested through the partnerships pack; those rights are governed by the executed DUA between AURORA-CRANIO Ω deployments and the partner institution.
-
----
-
-## 29. One-line summary
-
-> **AURORA-CRANIO Ω is the first craniosynostosis-specific research–clinical operating system — 9 sections, 30+ modules, a non-prescriptive safety contract baked into every release, evidence-anchored proof ledgers for every claim it makes, and 1,650+ passing tests across the shipped modules.**
-
-It is not "AI for skulls." It is the operating system that learns how skull growth, sutures, brain development, genotype, surgery, and lived outcomes interact across a child's life — and refuses to make claims it cannot prove.
+> **Research use only.** This software is not a medical device and does not diagnose, treat, or
+> recommend treatment. Every output is structured evidence for specialist review; the system never
+> recommends an operation, a timing, or a device action.
